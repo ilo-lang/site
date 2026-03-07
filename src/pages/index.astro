@@ -384,7 +384,7 @@
     <div class="container footer-inner">
       <div class="footer-left">
         <span class="footer-logo">ilo</span>
-        <span class="footer-copy">MIT License</span>
+        <a href="https://github.com/ilo-lang/ilo/blob/main/LICENSE" target="_blank" rel="noopener" class="footer-copy">MIT License</a>
       </div>
       <div class="footer-links">
         <a href="/docs/introduction/">Docs</a>
@@ -393,6 +393,7 @@
         <a href="https://crates.io/crates/ilo" target="_blank" rel="noopener">crates.io</a>
         <a href="https://www.reddit.com/r/ilolang/" target="_blank" rel="noopener">Reddit</a>
         <a href="/contact/">Contact</a>
+        <a href="https://github.com/ilo-lang/ilo/blob/main/PRIVACY.md" target="_blank" rel="noopener">Privacy</a>
       </div>
     </div>
   </footer>
@@ -495,7 +496,7 @@
   }
 
   .nav-links a {
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 500;
     color: var(--text-muted);
     transition: color 0.2s;
@@ -517,7 +518,7 @@
     padding: 6px 16px;
     border-radius: 6px;
     font-weight: 600 !important;
-    font-size: 0.85rem !important;
+    font-size: 1rem !important;
     transition: filter 0.2s;
   }
 
@@ -1250,8 +1251,12 @@
   }
 
   .footer-copy {
-    font-size: 0.8rem;
+    font-size: 1rem;
     color: var(--text-dim);
+    transition: color 0.2s;
+  }
+  .footer-copy:hover {
+    color: var(--accent);
   }
 
   .footer-links {
@@ -1260,7 +1265,7 @@
   }
 
   .footer-links a {
-    font-size: 0.8rem;
+    font-size: 1rem;
     color: var(--text-dim);
     transition: color 0.2s;
   }
