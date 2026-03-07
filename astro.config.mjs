@@ -13,6 +13,9 @@ export default defineConfig({
         { icon: 'reddit', label: 'Reddit', href: 'https://www.reddit.com/r/ilolang/' },
       ],
       customCss: ['./src/styles/global.css'],
+      components: {
+        ThemeSelect: './src/components/ThemeSelect.astro',
+      },
       sidebar: [
         {
           label: 'Getting Started',

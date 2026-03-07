@@ -211,74 +211,114 @@
           </div>
           <div class="examples-panel">
             <div class="example-pane active" data-example-pane="recursion">
-              <pre class="example-code"><code><span class="syn-fn">fac</span> <span class="syn-p">n</span><span class="syn-t">:n</span><span class="syn-op">&gt;</span><span class="syn-t">n</span>;<span class="syn-op">&lt;=</span><span class="syn-p">n</span> 1 1;<span class="syn-p">r</span>=<span class="syn-fn">fac</span> <span class="syn-op">-</span><span class="syn-p">n</span> 1;<span class="syn-op">*</span><span class="syn-p">n</span> <span class="syn-p">r</span></code></pre>
-              <pre class="example-output"><code><span class="syn-dim">$</span> ilo fac.ilo 5
+              <div class="example-compare">
+                <div class="example-version">
+                  <div class="example-version-label">Inline</div>
+                  <pre class="example-code"><code><span class="syn-dim">$</span> ilo <span class="syn-s">'fac n:n>n;<=n 1 1;r=fac -n 1;*n r'</span> 5
 <span class="syn-result">120</span></code></pre>
-              <div class="example-readable-label">Readable</div>
-              <pre class="example-readable">fac n:number &gt; number
-  &lt;= n 1 → return 1
-  r = fac (- n 1)
-  * n r</pre>
-              <div class="example-desc">Factorial in one line. Guard as base case, then recurse.</div>
+                </div>
+                <div class="example-version">
+                  <div class="example-version-label">File</div>
+                  <pre class="example-code"><code><span class="syn-fn">fac</span> <span class="syn-p">n</span><span class="syn-t">:number</span> <span class="syn-op">&gt;</span> <span class="syn-t">number</span>
+  <span class="syn-op">&lt;=</span> <span class="syn-p">n</span> 1 → return 1
+  <span class="syn-p">r</span> = <span class="syn-fn">fac</span> (<span class="syn-op">-</span> <span class="syn-p">n</span> 1)
+  <span class="syn-op">*</span> <span class="syn-p">n</span> <span class="syn-p">r</span></code></pre>
+                </div>
+              </div>
+              <div class="example-desc">Factorial. Guard as base case, then recurse.</div>
             </div>
             <div class="example-pane" data-example-pane="classification">
-              <pre class="example-code"><code><span class="syn-fn">cls</span> <span class="syn-p">sp</span><span class="syn-t">:n</span><span class="syn-op">&gt;</span><span class="syn-t">t</span>;<span class="syn-op">&gt;=</span><span class="syn-p">sp</span> 1000 <span class="syn-s">"gold"</span>;<span class="syn-op">&gt;=</span><span class="syn-p">sp</span> 500 <span class="syn-s">"silver"</span>;<span class="syn-s">"bronze"</span></code></pre>
-              <pre class="example-output"><code><span class="syn-dim">$</span> ilo cls.ilo 750
+              <div class="example-compare">
+                <div class="example-version">
+                  <div class="example-version-label">Inline</div>
+                  <pre class="example-code"><code><span class="syn-dim">$</span> ilo <span class="syn-s">'cls sp:n>t;>=sp 1000 "gold";>=sp 500 "silver";"bronze"'</span> 750
 <span class="syn-result">silver</span></code></pre>
-              <div class="example-readable-label">Readable</div>
-              <pre class="example-readable">cls sp:number &gt; text
-  &gt;= sp 1000 → return "gold"
-  &gt;= sp 500  → return "silver"
-  "bronze"</pre>
+                </div>
+                <div class="example-version">
+                  <div class="example-version-label">File</div>
+                  <pre class="example-code"><code><span class="syn-fn">cls</span> <span class="syn-p">sp</span><span class="syn-t">:number</span> <span class="syn-op">&gt;</span> <span class="syn-t">text</span>
+  <span class="syn-op">&gt;=</span> <span class="syn-p">sp</span> 1000 → return <span class="syn-s">"gold"</span>
+  <span class="syn-op">&gt;=</span> <span class="syn-p">sp</span> 500  → return <span class="syn-s">"silver"</span>
+  <span class="syn-s">"bronze"</span></code></pre>
+                </div>
+              </div>
               <div class="example-desc">Three-tier classifier. Guards fall through &mdash; no if/else needed.</div>
             </div>
             <div class="example-pane" data-example-pane="pipeline">
-              <pre class="example-code"><code><span class="syn-fn">fetch</span> <span class="syn-p">url</span><span class="syn-t">:t</span><span class="syn-op">&gt;</span><span class="syn-t">R</span> ? <span class="syn-t">t</span>;<span class="syn-p">r</span>=(<span class="syn-op">$!</span><span class="syn-p">url</span>);<span class="syn-fn">rdb</span><span class="syn-op">!</span> <span class="syn-p">r</span> <span class="syn-s">"json"</span>
-<span class="syn-fn">proc</span> <span class="syn-p">rows</span><span class="syn-t">:L</span> <span class="syn-t">?</span><span class="syn-op">&gt;</span><span class="syn-t">n</span>;<span class="syn-p">clean</span>=<span class="syn-fn">flt</span> <span class="syn-fn">pos</span> <span class="syn-p">rows</span>;<span class="syn-fn">sum</span> <span class="syn-p">clean</span>
-<span class="syn-fn">pos</span> <span class="syn-p">x</span><span class="syn-t">:?</span><span class="syn-op">&gt;</span><span class="syn-t">b</span>;<span class="syn-op">&gt;</span><span class="syn-p">x</span> 0</code></pre>
-              <pre class="example-output"><code><span class="syn-dim">$</span> ilo pipeline.ilo proc [10,-3,7,-1,4]
+              <div class="example-compare">
+                <div class="example-version">
+                  <div class="example-version-label">Inline</div>
+                  <pre class="example-code"><code><span class="syn-dim">$</span> ilo <span class="syn-s">'proc rows:L ?>n;clean=flt pos rows;sum clean'</span> <span class="syn-s">'pos x:?>b;>x 0'</span> [10,-3,7,-1,4]
 <span class="syn-result">21</span></code></pre>
-              <div class="example-readable-label">Readable</div>
-              <pre class="example-readable">fetch url:text &gt; Result ? text
-  r = (get! url); readbuf! r "json"
-proc rows:List ? &gt; number
-  clean = filter pos rows; sum clean
-pos x:? &gt; bool
-  &gt; x 0</pre>
-              <div class="example-desc">Fetch JSON, parse, filter positives, sum. Three functions, no boilerplate.</div>
+                </div>
+                <div class="example-version">
+                  <div class="example-version-label">File</div>
+                  <pre class="example-code"><code><span class="syn-fn">proc</span> <span class="syn-p">rows</span><span class="syn-t">:List</span> <span class="syn-t">?</span> <span class="syn-op">&gt;</span> <span class="syn-t">number</span>
+  <span class="syn-p">clean</span> = <span class="syn-fn">filter</span> <span class="syn-fn">pos</span> <span class="syn-p">rows</span>
+  <span class="syn-fn">sum</span> <span class="syn-p">clean</span>
+
+<span class="syn-fn">pos</span> <span class="syn-p">x</span><span class="syn-t">:?</span> <span class="syn-op">&gt;</span> <span class="syn-t">bool</span>
+  <span class="syn-op">&gt;</span> <span class="syn-p">x</span> 0</code></pre>
+                </div>
+              </div>
+              <div class="example-desc">Filter positives and sum. Higher-order functions as first-class builtins.</div>
             </div>
             <div class="example-pane" data-example-pane="pipes">
-              <pre class="example-code"><code><span class="syn-fn">dbl</span> <span class="syn-p">x</span><span class="syn-t">:n</span><span class="syn-op">&gt;</span><span class="syn-t">n</span>;<span class="syn-op">*</span><span class="syn-p">x</span> 2
-<span class="syn-fn">inc</span> <span class="syn-p">x</span><span class="syn-t">:n</span><span class="syn-op">&gt;</span><span class="syn-t">n</span>;<span class="syn-op">+</span><span class="syn-p">x</span> 1
-<span class="syn-fn">f</span> <span class="syn-p">x</span><span class="syn-t">:n</span><span class="syn-op">&gt;</span><span class="syn-t">n</span>;<span class="syn-p">x</span><span class="syn-op">&gt;&gt;</span><span class="syn-fn">dbl</span><span class="syn-op">&gt;&gt;</span><span class="syn-fn">inc</span></code></pre>
-              <pre class="example-output"><code><span class="syn-dim">$</span> ilo pipes.ilo f 5
+              <div class="example-compare">
+                <div class="example-version">
+                  <div class="example-version-label">Inline</div>
+                  <pre class="example-code"><code><span class="syn-dim">$</span> ilo <span class="syn-s">'dbl x:n>n;*x 2'</span> <span class="syn-s">'inc x:n>n;+x 1'</span> <span class="syn-s">'f x:n>n;x>>dbl>>inc'</span> 5
 <span class="syn-result">11</span></code></pre>
-              <div class="example-readable-label">Readable</div>
-              <pre class="example-readable">dbl x:number &gt; number; * x 2
-inc x:number &gt; number; + x 1
-f   x:number &gt; number; x &gt;&gt; dbl &gt;&gt; inc</pre>
+                </div>
+                <div class="example-version">
+                  <div class="example-version-label">File</div>
+                  <pre class="example-code"><code><span class="syn-fn">dbl</span> <span class="syn-p">x</span><span class="syn-t">:number</span> <span class="syn-op">&gt;</span> <span class="syn-t">number</span>
+  <span class="syn-op">*</span> <span class="syn-p">x</span> 2
+
+<span class="syn-fn">inc</span> <span class="syn-p">x</span><span class="syn-t">:number</span> <span class="syn-op">&gt;</span> <span class="syn-t">number</span>
+  <span class="syn-op">+</span> <span class="syn-p">x</span> 1
+
+<span class="syn-fn">f</span> <span class="syn-p">x</span><span class="syn-t">:number</span> <span class="syn-op">&gt;</span> <span class="syn-t">number</span>
+  <span class="syn-p">x</span> <span class="syn-op">&gt;&gt;</span> <span class="syn-fn">dbl</span> <span class="syn-op">&gt;&gt;</span> <span class="syn-fn">inc</span></code></pre>
+                </div>
+              </div>
               <div class="example-desc">Pipe chains compose functions left-to-right. No nesting to untangle.</div>
             </div>
             <div class="example-pane" data-example-pane="lists">
-              <pre class="example-code"><code><span class="syn-fn">sq</span> <span class="syn-p">x</span><span class="syn-t">:n</span><span class="syn-op">&gt;</span><span class="syn-t">n</span>;<span class="syn-op">*</span><span class="syn-p">x</span> <span class="syn-p">x</span>
-<span class="syn-fn">big</span> <span class="syn-p">x</span><span class="syn-t">:n</span><span class="syn-op">&gt;</span><span class="syn-t">b</span>;<span class="syn-op">&gt;</span><span class="syn-p">x</span> 10
-<span class="syn-fn">f</span> <span class="syn-p">xs</span><span class="syn-t">:L n</span><span class="syn-op">&gt;</span><span class="syn-t">L n</span>;<span class="syn-fn">flt</span> <span class="syn-fn">big</span> (<span class="syn-fn">map</span> <span class="syn-fn">sq</span> <span class="syn-p">xs</span>)</code></pre>
-              <pre class="example-output"><code><span class="syn-dim">$</span> ilo lists.ilo f 1,2,3,4,5
+              <div class="example-compare">
+                <div class="example-version">
+                  <div class="example-version-label">Inline</div>
+                  <pre class="example-code"><code><span class="syn-dim">$</span> ilo <span class="syn-s">'sq x:n>n;*x x'</span> <span class="syn-s">'big x:n>b;>x 10'</span> <span class="syn-s">'f xs:L n>L n;flt big (map sq xs)'</span> 1,2,3,4,5
 <span class="syn-result">[16, 25]</span></code></pre>
-              <div class="example-readable-label">Readable</div>
-              <pre class="example-readable">sq  x:number &gt; number; * x x
-big x:number &gt; bool;   &gt; x 10
-f   xs:List number &gt; List number
-  filter big (map sq xs)</pre>
+                </div>
+                <div class="example-version">
+                  <div class="example-version-label">File</div>
+                  <pre class="example-code"><code><span class="syn-fn">sq</span> <span class="syn-p">x</span><span class="syn-t">:number</span> <span class="syn-op">&gt;</span> <span class="syn-t">number</span>
+  <span class="syn-op">*</span> <span class="syn-p">x</span> <span class="syn-p">x</span>
+
+<span class="syn-fn">big</span> <span class="syn-p">x</span><span class="syn-t">:number</span> <span class="syn-op">&gt;</span> <span class="syn-t">bool</span>
+  <span class="syn-op">&gt;</span> <span class="syn-p">x</span> 10
+
+<span class="syn-fn">f</span> <span class="syn-p">xs</span><span class="syn-t">:List number</span> <span class="syn-op">&gt;</span> <span class="syn-t">List number</span>
+  <span class="syn-fn">filter</span> <span class="syn-fn">big</span> (<span class="syn-fn">map</span> <span class="syn-fn">sq</span> <span class="syn-p">xs</span>)</code></pre>
+                </div>
+              </div>
               <div class="example-desc">Square a list, keep values over 10. Higher-order functions as first-class builtins.</div>
             </div>
             <div class="example-pane" data-example-pane="errors">
-              <pre class="example-code"><code><span class="syn-fn">safe</span> <span class="syn-p">url</span><span class="syn-t">:t</span><span class="syn-op">&gt;</span><span class="syn-t">t</span>;<span class="syn-p">r</span>=<span class="syn-op">$</span><span class="syn-p">url</span>;<span class="syn-op">??</span><span class="syn-p">r</span> <span class="syn-s">"fallback"</span></code></pre>
-              <pre class="example-output"><code><span class="syn-dim">$</span> ilo safe.ilo "https://api.example.com/data"
+              <div class="example-compare">
+                <div class="example-version">
+                  <div class="example-version-label">Inline</div>
+                  <pre class="example-code"><code><span class="syn-dim">$</span> ilo <span class="syn-s">'safe url:t>t;r=$url;??r "fallback"'</span> "https://api.example.com/data"
 <span class="syn-result">fallback</span></code></pre>
-              <div class="example-readable-label">Readable</div>
-              <pre class="example-readable">safe url:text &gt; text
-  r = get url; ?? r "fallback"</pre>
+                </div>
+                <div class="example-version">
+                  <div class="example-version-label">File</div>
+                  <pre class="example-code"><code><span class="syn-fn">safe</span> <span class="syn-p">url</span><span class="syn-t">:text</span> <span class="syn-op">&gt;</span> <span class="syn-t">text</span>
+  <span class="syn-p">r</span> = <span class="syn-fn">get</span> <span class="syn-p">url</span>
+  <span class="syn-op">??</span> <span class="syn-p">r</span> <span class="syn-s">"fallback"</span></code></pre>
+                </div>
+              </div>
               <div class="example-desc">HTTP GET with nil-coalesce fallback. Errors are values, not exceptions.</div>
             </div>
           </div>
@@ -359,8 +399,8 @@ f   xs:List number &gt; List number
     --border: rgba(255, 255, 255, 0.06);
     --border-hover: rgba(245, 158, 11, 0.25);
     --text: #e4e4e8;
-    --text-muted: #7a7a90;
-    --text-dim: #3e3e52;
+    --text-muted: #9a9ab0;
+    --text-dim: #6e6e88;
     --accent: #f59e0b;
     --accent-bright: #fbbf24;
     --accent-dim: rgba(245, 158, 11, 0.08);
@@ -989,15 +1029,32 @@ f   xs:List number &gt; List number
     display: block;
   }
 
+  .example-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .example-version-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+
   .example-code {
     font-family: var(--font-mono);
-    font-size: 0.82rem;
+    font-size: 0.95rem;
     line-height: 1.7;
     background: rgba(0, 0, 0, 0.25);
-    padding: 14px;
+    padding: 16px;
     border-radius: 6px;
     overflow-x: auto;
-    margin-bottom: 12px;
+    margin-bottom: 0;
   }
 
   .example-code code {
@@ -1006,10 +1063,10 @@ f   xs:List number &gt; List number
 
   .example-output {
     font-family: var(--font-mono);
-    font-size: 0.78rem;
+    font-size: 0.95rem;
     line-height: 1.6;
     background: rgba(0, 0, 0, 0.15);
-    padding: 10px 14px;
+    padding: 12px 18px;
     border-radius: 6px;
     margin-bottom: 12px;
     overflow-x: auto;
@@ -1024,10 +1081,10 @@ f   xs:List number &gt; List number
 
   .example-readable {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     line-height: 1.6;
     color: var(--text-dim);
-    padding: 10px 14px;
+    padding: 12px 18px;
     border-radius: 6px;
     border: 1px dashed var(--border);
     margin-bottom: 12px;
@@ -1037,7 +1094,7 @@ f   xs:List number &gt; List number
 
   .example-readable-label {
     font-family: var(--font-mono);
-    font-size: 0.68rem;
+    font-size: 0.75rem;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -1045,7 +1102,7 @@ f   xs:List number &gt; List number
   }
 
   .example-desc {
-    font-size: 0.82rem;
+    font-size: 0.95rem;
     color: var(--text-dim);
     line-height: 1.5;
   }
