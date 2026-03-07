@@ -3,11 +3,11 @@ title: Guards & Control Flow
 description: Flat conditional logic with guards
 ---
 
-ilo uses **guards** instead of if/else. Guards are flat statements that return early — no nesting, no closing braces.
+ilo uses **guards** instead of if/else. Guards are flat statements that return early - no nesting, no closing braces.
 
 ## Basic guards
 
-```
+```ilo
 cls score:n>t;>=score 90 "A";>=score 80 "B";>=score 70 "C";"F"
 ```
 
@@ -30,7 +30,7 @@ else:
 
 Guards stay flat regardless of how many conditions:
 
-```
+```ilo
 >=score 90 "A"
 >=score 80 "B"
 >=score 70 "C"
@@ -41,7 +41,7 @@ No nesting depth. No closing braces to match. Each guard is independent.
 
 ## Boolean guards
 
-```
+```ilo
 check x:n>t;==x 0 "zero";>x 0 "positive";"negative"
 ```
 
@@ -49,7 +49,7 @@ check x:n>t;==x 0 "zero";>x 0 "positive";"negative"
 
 Prefix a guard with `!` to negate the condition:
 
-```
+```ilo
 f x:n>n;!>x 0 0;x
 ```
 
@@ -69,7 +69,7 @@ Negated braceless guards work with any comparison: `!<=n 0 ^"must be positive"`.
 
 You can wrap the return value in braces. Both forms produce identical results:
 
-```
+```ilo
 -- braceless (saves 2 tokens per guard)
 >=sp 1000 "gold"
 
@@ -79,15 +79,15 @@ You can wrap the return value in braces. Both forms produce identical results:
 
 Use braces when the body has multiple statements:
 
-```
+```ilo
 >=sp 1000{a=classify sp;a}
 ```
 
 ## Ternary (guard-else)
 
-A guard with **two** brace blocks is a ternary — it produces a value without returning from the function:
+A guard with **two** brace blocks is a ternary - it produces a value without returning from the function:
 
-```
+```ilo
 f x:n>t;=x 1{"yes"}{"no"}
 ```
 
@@ -101,7 +101,7 @@ ilo 'f x:n>t;=x 1{"yes"}{"no"}' 2
 
 Unlike guards, ternary does **not** return from the function. Code after the ternary continues executing:
 
-```
+```ilo
 f x:n>n;=x 0{10}{20};+x 1   -- always returns x+1, ternary value is discarded
 ```
 
@@ -111,17 +111,17 @@ Negated ternary works too: `!=x 1{"not one"}{"one"}`.
 
 For value matching:
 
-```
+```ilo
 describe x:t>t;?x{"dog":"woof";"cat":"meow";_:"unknown"}
 ```
 
-`_` is the wildcard arm — catches everything else. No fall-through; each arm is independent.
+`_` is the wildcard arm - catches everything else. No fall-through; each arm is independent.
 
 ### Matching on Result types
 
 Use `?` to destructure a `R` (Result) value:
 
-```
+```ilo
 f r:R n t>t;?r{~v:"ok";^e:e}
 ```
 
@@ -138,7 +138,7 @@ show a:n b:n>t;r=div a b;?r{~v:str v;^e:e}' 10 2
 
 When the input type is unknown (`?`), match on the runtime type:
 
-```
+```ilo
 f x:?>t;?x{n v:"number";t v:"text";_:"other"}
 ```
 
@@ -148,7 +148,7 @@ Each arm specifies a type tag (`n`, `t`, `b`, `l`) followed by a binding variabl
 
 `ret expr` returns from the function immediately:
 
-```
+```ilo
 f x:n>n;>x 0{ret x};0
 ```
 
@@ -156,6 +156,6 @@ If x > 0, return x early. Otherwise return 0.
 
 Guards already provide early return for simple cases. Use `ret` when you need early return inside a loop or deeply nested block:
 
-```
+```ilo
 f xs:L n>n;@x xs{>=x 10{ret x}};0  -- return first element >= 10
 ```

@@ -5,7 +5,7 @@ description: Function chaining with the pipe operator
 
 The pipe operator `>>` chains function calls left-to-right:
 
-```
+```ilo
 dbl x:n>n;*x 2
 inc x:n>n;+x 1
 transform x:n>n;(x>>dbl>>inc)
@@ -15,13 +15,13 @@ transform x:n>n;(x>>dbl>>inc)
 
 ## Without pipes
 
-```
+```ilo
 transform x:n>n;inc(dbl x)
 ```
 
 ## With pipes
 
-```
+```ilo
 transform x:n>n;(x>>dbl>>inc)
 ```
 
@@ -31,7 +31,7 @@ Pipes read left-to-right, matching the data flow direction.
 
 ilo programs can contain multiple functions. Each function is a named declaration separated by a newline (in files) or a space (inline):
 
-```
+```ilo
 dbl x:n>n;*x 2
 inc x:n>n;+x 1
 sq x:n>n;*x x
@@ -67,7 +67,7 @@ Pipes shine when you compose small, reusable functions into larger transforms.
 
 ### Chaining numeric transforms
 
-```
+```ilo
 dbl x:n>n;*x 2
 inc x:n>n;+x 1
 sq x:n>n;*x x
@@ -85,7 +85,7 @@ ilo 'dbl x:n>n;*x 2 inc x:n>n;+x 1 sq x:n>n;*x x transform x:n>n;(x>>dbl>>inc>>s
 
 Pipes work naturally with list higher-order functions like `map`, `flt`, and `fld`:
 
-```
+```ilo
 sq x:n>n;*x x
 pos x:n>b;>x 0
 main xs:L n>L n;xs >> flt pos >> map sq
@@ -102,13 +102,13 @@ Read it: take `xs`, filter to positives, square each. Data flows left to right.
 
 Without pipes, you need intermediate bindings:
 
-```
+```ilo
 transform x:n>n;a=dbl x;b=inc a;sq b
 ```
 
 With pipes, the same logic is a single expression:
 
-```
+```ilo
 transform x:n>n;(x>>dbl>>inc>>sq)
 ```
 
@@ -116,7 +116,7 @@ transform x:n>n;(x>>dbl>>inc>>sq)
 
 Pipes combine with `!` for functions that return `R` (Result) types:
 
-```
+```ilo
 f x:n>>g!>>h
 ```
 
@@ -126,7 +126,7 @@ This desugars to `h(g!(f(x)))` -- if `g` returns an error, it propagates immedia
 
 In a file with multiple functions, wrap pipe chains in parentheses for non-last functions. This prevents the parser from consuming the next function's name:
 
-```
+```ilo
 dbl-inc x:n>n;(x>>dbl>>inc)   -- parens needed (not the last function)
 inc-sq x:n>n;x>>inc>>sq       -- last function, no parens needed
 ```

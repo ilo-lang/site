@@ -9,37 +9,40 @@ description: What is ilo and why does it exist?
 
 AI agents pay three costs per program:
 
-1. **Generation tokens** — producing the code
-2. **Error feedback** — reading error messages when something goes wrong
-3. **Retries** — regenerating after failures
+1. **Generation tokens** - producing the code
+2. **Error feedback** - reading error messages when something goes wrong
+3. **Retries** - regenerating after failures
 
-Traditional languages weren't designed for this. Python's `def total(price: float, quantity: int, rate: float) -> float:` is readable for humans but expensive for agents.
+Traditional languages weren't designed for this.
 
 ## The solution
 
-ilo cuts all three costs:
+Here's the same program in Python and ilo - a function that computes subtotal plus tax:
 
-| | Python | ilo | Saving |
-|---|---|---|---|
-| Tokens | ~30 | ~10 | **67%** |
-| Characters | ~90 | ~20 | **78%** |
+```python
+def tot(p: float, q: float, r: float) -> float:
+    s = p * q
+    t = s * r
+    return s + t
+```
+
+```ilo
+tot p:n q:n r:n>n;s=*p q;t=*s r;+s t
+```
+
+The ilo version is **0.33× the tokens** and **0.22× the characters**. Both are typed, both have named variables, both do the same thing.
+
+The savings come from three things:
 
 - **Prefix notation** eliminates parentheses: `+*a b c` instead of `(a * b) + c`
-- **Type verification** catches errors before execution with compact codes (`ILO-T004`)
-- **Constrained vocabulary** means fewer wrong choices and fewer retries
-
-## Quick example
+- **Type verification** catches errors before execution with compact codes (`ILO-T004`) - not a full stack trace
+- **Constrained vocabulary** means fewer valid next-tokens, fewer wrong choices, fewer retries
 
 ```bash
 # Run inline
 ilo 'tot p:n q:n r:n>n;s=*p q;t=*s r;+s t' 10 20 30
 
 # Run from file
-ilo program.ilo funcname args
+ilo program.ilo tot 10 20 30
 ```
 
-## Next steps
-
-- [Install ilo](/docs/installation/)
-- [Write your first program](/docs/first-program/)
-- [Read the full specification](/docs/reference/spec/)

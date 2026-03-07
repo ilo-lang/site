@@ -7,7 +7,7 @@ description: Results, auto-unwrap, and error codes
 
 Functions that can fail return `R` (Result):
 
-```
+```ilo
 inner x:n>R n t;~x
 ```
 
@@ -25,22 +25,22 @@ ilo 'inner x:n>R n t;~x outer x:n>R n t;r=inner x;?r{~v:~v;^e:^e}' 42
 ilo 'inner x:n>R n t;~x outer x:n>R n t;~(inner! x)' 42
 ```
 
-`!` on a function call unwraps the Result — if it's an error, the error propagates automatically.
+`!` on a function call unwraps the Result - if it's an error, the error propagates automatically.
 
 ## Optional type
 
 `O T` is either a value of type `T` or `nil`:
 
-```
+```ilo
 f>O n;nil           -- returns nil (valid O n)
 g>O n;42            -- returns 42 (valid O n)
 ```
 
 ## Nil-coalesce with `??`
 
-`??` unwraps an optional — if the value is nil, return the default; otherwise return the value:
+`??` unwraps an optional - if the value is nil, return the default; otherwise return the value:
 
-```
+```ilo
 f x:O n>n;??x 0
 ```
 
@@ -67,7 +67,7 @@ ilo 'f k:t>t;r=env k;??r "not set"' HOME
 
 For full control, match on Result with `?` to handle both Ok and Err branches:
 
-```
+```ilo
 div a:n b:n>R n t;=b 0 ^"divide by zero";~/a b
 show a:n b:n>t;r=div a b;?r{~v:str v;^e:e}
 ```

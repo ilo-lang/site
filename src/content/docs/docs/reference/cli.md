@@ -92,13 +92,13 @@ ilo 'code' --expanded  # -e  expanded human-readable format
 
 **Dense** is the default canonical form -- single line per declaration, operators glued to first operand:
 
-```
+```ilo
 cls sp:n>t;>=sp 1000{"gold"};>=sp 500{"silver"};"bronze"
 ```
 
 **Expanded** adds 2-space indentation and spacing for human review:
 
-```
+```ilo
 cls sp:n > t
   >= sp 1000 {
     "gold"

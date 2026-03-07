@@ -30,4 +30,4 @@ Each key is the tool name. The value must include a `url` field.
 ilo --tools tools.json 'get-weather city:t>R t t;weather city' "London"
 ```
 
-Tools are type-checked at load time — the agent can't call a tool with wrong parameter types.
+Tools are type-checked at load time - the agent can't call a tool with wrong parameter types.

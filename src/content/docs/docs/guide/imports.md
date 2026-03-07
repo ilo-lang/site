@@ -5,7 +5,7 @@ description: Splitting ilo programs across multiple files
 
 Split programs across files with `use`:
 
-```
+```ilo
 use "math-lib.ilo"
 ```
 
@@ -13,14 +13,14 @@ All declarations from the imported file merge into a flat namespace -- no module
 
 ## Full import
 
-```
+```ilo
 -- math-lib.ilo
 dbl n:n>n;*n 2
 half n:n>n;/n 2
 sq n:n>n;*n n
 ```
 
-```
+```ilo
 -- main.ilo
 use "math-lib.ilo"
 
@@ -40,7 +40,7 @@ ilo main.ilo hyp-sq 3 4
 
 Import only specific functions with a bracketed list:
 
-```
+```ilo
 use "math-lib.ilo" [dbl sq]
 ```
 
@@ -57,13 +57,13 @@ Now only `dbl` and `sq` are available. `half` is not imported. Requesting a name
 
 ## Multi-file example
 
-```
+```ilo
 -- validators.ilo
 positive n:n>b;>n 0
 in-range n:n lo:n hi:n>b;a=>=n lo;b=<=n hi;?a{true:b;false:false}
 ```
 
-```
+```ilo
 -- app.ilo
 use "validators.ilo" [positive in-range]
 

@@ -5,53 +5,53 @@ description: Lists, maps, and data operations
 
 ## Lists
 
-```
+```ilo
 nums=[1 2 3 4 5]
 ```
 
 ### Operations
 
-```
-len nums        # → 5
-hd nums         # → 1 (first element)
-tl nums         # → [2 3 4 5] (rest)
-nums.2          # → 3 (dot-notation, zero-indexed)
-+=nums 6        # → [1 2 3 4 5 6] (append)
+```ilo
+len nums        -- → 5
+hd nums         -- → 1 (first element)
+tl nums         -- → [2 3 4 5] (rest)
+nums.2          -- → 3 (dot-notation, zero-indexed)
++=nums 6        -- → [1 2 3 4 5 6] (append)
 ```
 
 ### Higher-order functions
 
-```
+```ilo
 dbl x:n>n;*x 2
-map dbl nums     # → [2 4 6 8 10]
+map dbl nums     -- → [2 4 6 8 10]
 
 pos x:n>b;>x 0
-flt pos nums     # → [1 2 3 4 5]
+flt pos nums     -- → [1 2 3 4 5]
 
-sum nums         # → 15
+sum nums         -- → 15
 ```
 
 ## Dot-notation indexing
 
 Access list elements by index with `.`:
 
-```
-xs.0            # first element
-xs.2            # third element
-data.users.0    # chained access
+```ilo
+xs.0            -- first element
+xs.2            -- third element
+data.users.0    -- chained access
 ```
 
 Safe navigation with `.?` returns nil instead of erroring:
 
-```
-user.?email     # nil if "email" doesn't exist
+```ilo
+user.?email     -- nil if "email" doesn't exist
 ```
 
 ## Iterating with `@`
 
 `@` loops over a list or range. The last iteration's value is returned:
 
-```
+```ilo
 sq-last xs:L n>n;@x xs{*x x}
 ```
 
@@ -76,7 +76,7 @@ ilo 'f>n;xs=[];@i 0..3{xs=+=xs i};xs'
 
 ## Slice, contains, and append
 
-### `slc` — slice a list or text
+### `slc` - slice a list or text
 
 `slc xs a b` returns elements from index `a` up to (but not including) `b`:
 
@@ -85,7 +85,7 @@ ilo 'f xs:L n>L n;slc xs 1 3' 10,20,30,40
 # → [20, 30]
 ```
 
-### `has` — contains check
+### `has` - contains check
 
 `has xs v` tests membership. Works on lists (element check) and text (substring check):
 
@@ -97,7 +97,7 @@ ilo 'f s:t>b;has s "llo"' "hello"
 # → true
 ```
 
-### `+=` — append to list
+### `+=` - append to list
 
 `+=xs v` appends an element to a list:
 
@@ -108,11 +108,11 @@ ilo 'f xs:L n>L n;+=xs 99' 1,2,3
 
 ## Maps (`M k v`)
 
-Maps are key-value collections. Keys are always text at runtime. Maps are immutable — `mset` and `mdel` return new maps.
+Maps are key-value collections. Keys are always text at runtime. Maps are immutable - `mset` and `mdel` return new maps.
 
 ### Creating maps with `mmap` and `mset`
 
-```
+```ilo
 scores>n
   m=mmap
   m=mset m "alice" 99
@@ -157,11 +157,11 @@ ilo 'f xs:L n>n;avg xs' 2,4,6
 # → 4
 ```
 
-### `grp` — group by key function
+### `grp` - group by key function
 
 `grp fn xs` groups a list by a key function, returning `M t (L a)`:
 
-```
+```ilo
 cl x:n>t;>x 5{"big"}{"small"}
 classify xs:L n>M t L n;grp cl xs
 ```
@@ -171,7 +171,7 @@ ilo 'cl x:n>t;>x 5{"big"}{"small"} classify xs:L n>M t L n;grp cl xs' classify 1
 # → {big: [7, 10], small: [1, 3, 2]}
 ```
 
-### `flat` — flatten nested lists
+### `flat` - flatten nested lists
 
 Flattens one level of nesting:
 
@@ -180,7 +180,7 @@ ilo 'f>L n;flat [[1, 2], [3], [4, 5]]'
 # → [1, 2, 3, 4, 5]
 ```
 
-### `unq` — deduplicate
+### `unq` - deduplicate
 
 Removes duplicates while preserving order:
 
@@ -198,21 +198,21 @@ ilo 'f xs:L t>L t;unq xs' a,b,a,c,b
 | `fmt tmpl args...` | format string with `{}` placeholders |
 | `cat xs sep` | join list of text with separator |
 
-### `trm` — trim whitespace
+### `trm` - trim whitespace
 
 ```bash
 ilo 'f s:t>t;trm s' "  hello  "
 # → hello
 ```
 
-### `spl` — split text
+### `spl` - split text
 
 ```bash
 ilo 'f s:t>L t;spl s ","' "a,b,c"
 # → [a, b, c]
 ```
 
-### `fmt` — format strings
+### `fmt` - format strings
 
 `{}` placeholders are filled left-to-right:
 
@@ -221,14 +221,14 @@ ilo 'f>t;fmt "{} + {} = {}" 1 2 3'
 # → 1 + 2 = 3
 ```
 
-### `cat` — join list with separator
+### `cat` - join list with separator
 
 ```bash
 ilo 'f xs:L t>t;cat xs ", "' a,b,c
 # → a, b, c
 ```
 
-### `rgx` — regex extract
+### `rgx` - regex extract
 
 `rgx pat s` extracts all matches of a regex pattern from a string. Without capture groups it returns all matches; with groups it returns the first match's captures:
 

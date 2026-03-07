@@ -22,12 +22,10 @@ Prefix eliminates:
 - Operator precedence ambiguity
 - Nesting depth
 
-```
-# Infix: 5 tokens, 13 chars
-(a + b) * c
+```ilo
+(a + b) * c  -- Infix: 5 tokens, 13 chars
 
-# Prefix: 4 tokens, 7 chars
-*+a b c
+*+a b c      -- Prefix: 4 tokens, 7 chars
 ```
 
 ## Reading prefix
@@ -45,9 +43,9 @@ Read inside-out, left-to-right:
 
 ilo supports infix for simple expressions:
 
-```
-a + b        # works
-x * y + 1    # works
+```ilo
+a + b        -- works
+x * y + 1    -- works
 ```
 
 But prefix is preferred because it's always unambiguous and uses fewer tokens.
@@ -114,7 +112,7 @@ When using infix, standard mathematical precedence applies (higher binds tighter
 
 Function application binds tighter than all infix operators:
 
-```
+```ilo
 f a + b     -- means (f a) + b, NOT f(a + b)
 ```
 
@@ -138,7 +136,7 @@ Overall: **22% fewer tokens, 42% fewer characters** vs infix.
 
 Prefix operators nest by each operator greedily consuming the next two operands. Those operands can themselves be operator expressions:
 
-```
+```ilo
 -- Two levels: (a * b) + c
 +*a b c
 
@@ -180,7 +178,7 @@ This is equivalent to `(((a + b) * c) - d) / e` in infix -- note how 4 pairs of 
 
 Operator operands must be atoms (literals, variable references, field access) or nested prefix operators. Function calls are not valid operands -- bind their results first:
 
-```
+```ilo
 -- WRONG: *n fac -n 1    (fac is treated as an atom, not a call)
 -- RIGHT: r=fac -n 1;*n r (bind the call result, then use it)
 ```

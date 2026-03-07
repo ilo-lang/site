@@ -43,3 +43,14 @@ code, pre, .sl-markdown-content code, .sl-markdown-content pre {
   --sl-color-accent: #b87a14;
   --sl-color-accent-high: #3d2408;
 }
+
+/* Dim ilo comments */
+.expressive-code .tm-comment {
+  opacity: 0.45;
+  font-style: italic;
+}
+
+/* Hide terminal dots */
+.expressive-code .frame .header::before {
+  display: none !important;
+}

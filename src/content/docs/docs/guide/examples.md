@@ -9,7 +9,7 @@ Practical patterns you can copy and adapt. Each example is a complete, runnable 
 
 Fetch JSON from an API, filter positive values, sum them:
 
-```
+```ilo
 fetch url:t>R ? t;r=($!url);rdb! r "json"
 pos x:?>b;>x 0
 proc rows:L ?>n;clean=flt pos rows;sum clean
@@ -21,7 +21,7 @@ Three functions, no boilerplate. `$!` auto-unwraps the HTTP response. `rdb!` par
 
 Hit a URL and report whether it responded:
 
-```
+```ilo
 check url:t>t
   r=$url
   ?r{~v:fmt "{}: ok" url;^e:fmt "{}: {}" url e}
@@ -64,7 +64,7 @@ ilo 'f s:t>L t;rgx "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}" s' \
 
 Sort words by length:
 
-```
+```ilo
 wlen s:t>n;len s
 by-len ws:L t>L t;srt wlen ws
 ```
@@ -78,7 +78,7 @@ ilo examples/sort-by-key.ilo by-len '["banana","fig","apple","kiwi"]'
 
 Read an env var with a fallback:
 
-```
+```ilo
 cfg>t
   k=env "API_KEY"
   ?k{~v:v;^e:"missing API_KEY"}
@@ -90,7 +90,7 @@ cfg>t
 
 Declare external tools, then compose them like regular functions:
 
-```
+```ilo
 tool get-user"Retrieve user by ID" uid:t>R profile t timeout:5,retry:2
 tool send-email"Send notification email" to:t subject:t body:t>R _ t timeout:10,retry:1
 
@@ -120,7 +120,7 @@ def total(price: float, quantity: int, rate: float) -> float:
 
 **ilo** (38 chars, ~10 tokens):
 
-```
+```ilo
 tot p:n q:n r:n>n;s=*p q;t=*s r;+s t
 ```
 

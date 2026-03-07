@@ -2,10 +2,46 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import tailwindcss from '@tailwindcss/vite';
+import { readFileSync } from 'fs';
+
+const iloGrammar = JSON.parse(readFileSync(new URL('./ilo.tmLanguage.json', import.meta.url), 'utf-8'));
 
 export default defineConfig({
   integrations: [
     starlight({
+      expressiveCode: {
+        frames: {
+          showCopyToClipboardButton: true,
+          extractFileNameFromCode: false,
+          removeCommentsWhenCopyingTerminalFrames: false,
+        },
+        defaultProps: {
+          frame: 'terminal',
+          overridesByLang: {
+            'ilo': { title: 'ilo' },
+            'bash,sh,shell': { title: 'Shell' },
+            'python': { title: 'Python' },
+            'json': { title: 'JSON' },
+            'powershell': { title: 'PowerShell' },
+          },
+        },
+        styleOverrides: {
+          frames: {
+            frameBoxShadowCssValue: 'none',
+            terminalTitlebarDotsForeground: 'transparent',
+            terminalTitlebarDotsOpacity: '0',
+            editorTabBarBorderBottomColor: 'rgba(255, 255, 255, 0.07)',
+            terminalTitlebarBorderBottomColor: 'rgba(255, 255, 255, 0.07)',
+            editorActiveTabBackground: 'transparent',
+            editorActiveTabBorderColor: 'transparent',
+            editorTabBarBackground: 'transparent',
+            terminalTitlebarBackground: 'transparent',
+          },
+        },
+        shiki: {
+          langs: [iloGrammar],
+        },
+      },
       title: 'ilo',
       description: 'Token-optimised programming language for AI agents',
       social: [
@@ -23,6 +59,7 @@ export default defineConfig({
             { label: 'Introduction', slug: 'docs/introduction' },
             { label: 'Installation', slug: 'docs/installation' },
             { label: 'Your First Program', slug: 'docs/first-program' },
+            { label: 'The REPL', slug: 'docs/repl' },
           ],
         },
         {

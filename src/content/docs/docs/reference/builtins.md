@@ -113,7 +113,7 @@ description: Complete reference for ilo's built-in functions
 | `wr` | `t t t > R t t` | Write file with format | `wr "out.json" data "json"` |
 | `env` | `t > R t t` | Read environment variable | `env "API_KEY"` |
 
-> **Note:** `$` is syntactic sugar — `$url` compiles to `get url`. HTTP builtins (`get`, `$`, `post`) require the native binary; they are not available in the npm/WASM build.
+> **Note:** `$` is syntactic sugar -`$url` compiles to `get url`. HTTP builtins (`get`, `$`, `post`) require the native binary; they are not available in the npm/WASM build.
 
 ## JSON
 
@@ -140,10 +140,10 @@ description: Complete reference for ilo's built-in functions
 
 Any function returning `R` (Result) can be called with `!` to auto-unwrap:
 
-```
-r=$url           # r is R t t (Result)
-v=$!url           # v is t (auto-unwrapped, propagates error)
-data=rdb! r "json"  # auto-unwrap parse result
+```ilo
+r=$url           -- r is R t t (Result)
+v=$!url           -- v is t (auto-unwrapped, propagates error)
+data=rdb! r "json"  -- auto-unwrap parse result
 ```
 
 See [Error Handling](/docs/guide/error-handling/) for full details on `!`, `?`, `??`, and Result types.
@@ -152,17 +152,17 @@ See [Error Handling](/docs/guide/error-handling/) for full details on `!`, `?`, 
 
 Access list elements and record fields with `.`:
 
-```
-xs.0          # first element of list xs
-xs.2          # third element
-user.name     # field "name" of record/map
-data.users.0  # chained access
+```ilo
+xs.0          -- first element of list xs
+xs.2          -- third element
+user.name     -- field "name" of record/map
+data.users.0  -- chained access
 ```
 
 Safe navigation with `.?` returns `nil` instead of erroring on missing keys:
 
-```
-user.?email   # nil if "email" doesn't exist
+```ilo
+user.?email   -- nil if "email" doesn't exist
 ```
 
 ## Builtin aliases
