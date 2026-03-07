@@ -3,7 +3,11 @@ title: Error Handling
 description: Results, optionals, auto-unwrap, and nil-coalesce
 ---
 
-## Errors with `^`
+## Why not try/catch?
+
+Try/catch is verbose. An AI agent generating `try { ... } catch (e) { ... }` pays tokens for boilerplate, and if it forgets the catch block, the error is silently swallowed. ilo makes errors part of the type system — you can't forget to handle them.
+
+## Quick errors with `^`
 
 Any function can bail out early with `^`:
 
@@ -21,17 +25,35 @@ ilo 'div a:n b:n>n;=b 0 ^"divide by zero";/a b' div 10 0
 # → ^divide by zero
 ```
 
-`^` returns an error immediately. The return type stays `> n` — the error bypasses the type system and exits the function.
+`^` exits the function immediately with an error. But there's a problem: the return type says `> n` (a number), so any code **calling** this function expects a number back — it has no way to catch or handle the error. The error just crashes through.
 
-## Result type `R`
+## Recoverable errors with `R`
 
-When callers need to **handle** errors (not just crash), use `R ok err` as the return type. This is like Rust's `Result<T, E>`:
+If you want callers to **catch and handle** errors, use `R` as the return type. This wraps the result so the caller can inspect it:
 
-| ilo | Rust equivalent |
-|-----|-----------------|
-| `R n t` | `Result<f64, String>` |
-| `~value` | `Ok(value)` |
-| `^error` | `Err(error)` |
+```
+R success-type error-type
+```
+
+Read it as: "**R**esult — first type is what you get on success, second is what you get on error".
+
+For example, `R n t` breaks down as:
+
+| Part | Meaning |
+|------|---------|
+| `R` | this is a Result |
+| `n` | success value is a **n**umber |
+| `t` | error value is **t**ext |
+
+Common patterns:
+
+| Type | Success | Error |
+|------|---------|-------|
+| `R n t` | number | text message |
+| `R t t` | text | text message |
+| `R _ t` | nothing (side effect) | text message |
+
+Inside the function, `~` marks the success path and `^` marks the error path:
 
 ```ilo
 div a:n b:n > R n t
@@ -39,7 +61,7 @@ div a:n b:n > R n t
   ~ / a b
 ```
 
-Now `~` wraps the success value explicitly, and callers can match on the result:
+Now callers can match on the result with `?`:
 
 ```ilo
 show a:n b:n > t
@@ -47,8 +69,8 @@ show a:n b:n > t
   ? r {~v: str v; ^e: e}
 ```
 
-- `~v:` matches Ok, binds the value to `v`
-- `^e:` matches Err, binds the error to `e`
+- `~v:` — if success, bind the value to `v`
+- `^e:` — if error, bind the error to `e`
 
 ```bash
 ilo 'div a:n b:n>R n t;=b 0 ^"divide by zero";~/a b
@@ -58,7 +80,7 @@ show a:n b:n>t;r=div a b;?r{~v:str v;^e:e}' show 10 0
 
 ## Auto-unwrap with `!`
 
-`!` unwraps a Result — if it's an error, it propagates up automatically. The calling function must also return `R`:
+Matching every Result is tedious. `!` auto-unwraps: success continues, error propagates up. The calling function must also return `R`:
 
 ```ilo
 calc a:n b:n > R n t
@@ -66,11 +88,11 @@ calc a:n b:n > R n t
   ~ * v 2
 ```
 
-`div! a b` means: call `div`, if error propagate it, if ok bind the value. One token instead of a try/catch block.
+`div! a b` = call `div`, if error return it immediately, if ok bind the value. One character (`!`) replaces a whole try/catch block.
 
 ## Optional type `O`
 
-`O T` is either a value of type `T` or `nil`:
+`O T` means "maybe a value of type `T`, maybe `nil`":
 
 ```ilo
 f > O n; nil
@@ -87,7 +109,7 @@ ilo 'f>O n;42' f
 
 ## Nil-coalesce with `??`
 
-`??` unwraps an optional — if nil, use the default:
+`??` provides a default when a value is nil:
 
 ```ilo
 f x:O n > n; x ?? 0
