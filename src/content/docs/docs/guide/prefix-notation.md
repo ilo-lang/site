@@ -32,16 +32,14 @@ Prefix eliminates:
 
 Read inside-out, left-to-right:
 
-```
-+*a b c
-│└─┤
-│  multiply a and b
-└── add result and c
-```
+| Expression | Meaning |
+|------------|---------|
+| `+a b` | add a and b |
+| `* _ c` | multiply result and c |
 
 ## Infix also works
 
-ilo supports infix for simple expressions:
+ilo supports infix too:
 
 ```ilo
 a + b        -- works
