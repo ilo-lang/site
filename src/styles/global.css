@@ -29,8 +29,8 @@
   --sl-color-gray-3: #9e9eb4;
   --sl-color-gray-2: #c8c8d8;
   --sl-color-gray-1: #e8e8ee;
-  --sl-color-black: #e8e8ee;
-  --sl-color-white: #0a0a10;
+  --sl-color-white: #e8e8ee;
+  --sl-color-black: #0a0a10;
 }
 
 :root[data-theme='light'] {
