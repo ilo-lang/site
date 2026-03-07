@@ -12,9 +12,9 @@ Try/catch is verbose. An AI agent generating `try { ... } catch (e) { ... }` pay
 Any function can bail out early with `^`:
 
 ```ilo
-div a:n b:n > n
-  = b 0 ^"divide by zero"
-  / a b
+div a:n b:n > n            -- two numbers in, number out
+  = b 0 ^"divide by zero"  -- if b is 0, error
+  / a b                     -- otherwise divide
 ```
 
 ```bash
