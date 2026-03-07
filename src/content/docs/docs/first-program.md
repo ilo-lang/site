@@ -7,7 +7,7 @@ Create `hello.ilo`:
 
 ```ilo
 greet name:t > t
-  cat "hello " name
+  +"hello " name
 ```
 
 Run it:
@@ -24,7 +24,7 @@ That's a complete ilo program. Here's what each part means:
 | `greet` | function name |
 | `name:t` | parameter `name`, type text |
 | `> t` | returns text |
-| `cat "hello " name` | body: concatenate two strings |
+| `+"hello " name` | body: concatenate two strings (prefix `+`) |
 
 Now try something with numbers. Create `math.ilo`:
 
