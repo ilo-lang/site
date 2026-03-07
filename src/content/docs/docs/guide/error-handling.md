@@ -1,109 +1,107 @@
 ---
 title: Error Handling
-description: Results, auto-unwrap, and error codes
+description: Results, optionals, auto-unwrap, and nil-coalesce
 ---
 
-## Result type
+## Errors with `^`
 
-Instead of throwing exceptions, ilo uses `~` for success and `^` for error:
+Any function can bail out early with `^`:
 
 ```ilo
 div a:n b:n > n
-  = b 0 ^"divide by zero"  -- error: return early with message
-  / a b                     -- success: return the result
+  = b 0 ^"divide by zero"
+  / a b
 ```
 
 ```bash
-ilo 'div a:n b:n>n;=b 0 ^"divide by zero";/a b' 10 2
+ilo 'div a:n b:n>n;=b 0 ^"divide by zero";/a b' div 10 2
 # → 5
 
-ilo 'div a:n b:n>n;=b 0 ^"divide by zero";/a b' 10 0
-# → error: divide by zero
+ilo 'div a:n b:n>n;=b 0 ^"divide by zero";/a b' div 10 0
+# → ^divide by zero
 ```
 
-`^` returns an error immediately. The caller decides how to handle it.
+`^` returns an error immediately. The return type stays `> n` — the error bypasses the type system and exits the function.
 
-## Result type
+## Result type `R`
 
-When you need to handle errors explicitly in the caller, use the `R` (Result) type. `R n t` means success is a number, error is text:
+When callers need to **handle** errors (not just crash), use `R ok err` as the return type. This is like Rust's `Result<T, E>`:
+
+| ilo | Rust equivalent |
+|-----|-----------------|
+| `R n t` | `Result<f64, String>` |
+| `~value` | `Ok(value)` |
+| `^error` | `Err(error)` |
 
 ```ilo
-div a:n b:n > R n t          -- returns a Result
+div a:n b:n > R n t
   = b 0 ^"divide by zero"
-  ~ / a b                    -- ~ wraps the value as success
+  ~ / a b
 ```
 
-Use `!` to auto-unwrap a Result. If it's an error, it propagates automatically:
-
-```ilo
-calc a:n b:n > R n t
-  v = div! a b   -- unwrap: error propagates, success continues
-  ~ * v 2
-```
-
-Use `?` for full control over both paths:
+Now `~` wraps the success value explicitly, and callers can match on the result:
 
 ```ilo
 show a:n b:n > t
   r = div a b
-  ? r {~v: str v; ^e: e}  -- ~v matches success, ^e matches error
+  ? r {~v: str v; ^e: e}
 ```
 
-## Optional type
-
-`O T` is either a value of type `T` or `nil`:
-
-```ilo
-f>O n;nil           -- returns nil (valid O n)
-g>O n;42            -- returns 42 (valid O n)
-```
-
-## Nil-coalesce with `??`
-
-`??` unwraps an optional - if the value is nil, return the default; otherwise return the value:
-
-```ilo
-f x:O n>n;x??0
-```
-
-```bash
-ilo 'f x:O n>n;x??0' 42
-# → 42
-
-ilo 'f>O n;nil'
-# → nil
-```
-
-`??` chains: `a??b??99` returns the first non-nil value, or 99.
-
-## Combining `!` and `??`
-
-`!` auto-unwraps Results, `??` unwraps Optionals. Together they handle functions that return Results containing optional values:
-
-```bash
-ilo 'f k:t>t;r=env k;??r "not set"' HOME
-# → /Users/dan  (or whatever your HOME is)
-```
-
-## Detailed `?` matching on Result
-
-For full control, match on Result with `?` to handle both Ok and Err branches:
-
-```ilo
-div a:n b:n>R n t;=b 0 ^"divide by zero";~/a b
-show a:n b:n>t;r=div a b;?r{~v:str v;^e:e}
-```
-
-- `~v:` matches Ok, binds the inner value to `v`
+- `~v:` matches Ok, binds the value to `v`
 - `^e:` matches Err, binds the error to `e`
 
 ```bash
 ilo 'div a:n b:n>R n t;=b 0 ^"divide by zero";~/a b
-show a:n b:n>t;r=div a b;?r{~v:str v;^e:e}' 10 0
+show a:n b:n>t;r=div a b;?r{~v:str v;^e:e}' show 10 0
 # → divide by zero
 ```
 
-This gives you explicit control over error handling, compared to `!` which auto-propagates errors.
+## Auto-unwrap with `!`
+
+`!` unwraps a Result — if it's an error, it propagates up automatically. The calling function must also return `R`:
+
+```ilo
+calc a:n b:n > R n t
+  v = div! a b
+  ~ * v 2
+```
+
+`div! a b` means: call `div`, if error propagate it, if ok bind the value. One token instead of a try/catch block.
+
+## Optional type `O`
+
+`O T` is either a value of type `T` or `nil`:
+
+```ilo
+f > O n; nil
+g > O n; 42
+```
+
+```bash
+ilo 'f>O n;nil' f
+# → nil
+
+ilo 'f>O n;42' f
+# → 42
+```
+
+## Nil-coalesce with `??`
+
+`??` unwraps an optional — if nil, use the default:
+
+```ilo
+f x:O n > n; x ?? 0
+```
+
+```bash
+ilo 'f x:O n>n;x??0' f 42
+# → 42
+
+ilo 'f>O n;nil' f
+# → nil
+```
+
+`??` chains: `a??b??99` returns the first non-nil value, or 99.
 
 ## Compact error codes
 
