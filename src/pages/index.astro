@@ -86,9 +86,9 @@
         </div>
         <div class="stat-divider"></div>
         <div class="stat">
-          <div class="stat-number">0</div>
-          <div class="stat-label">runtime surprises</div>
-          <div class="stat-context">type-verified</div>
+          <div class="stat-number">&check;</div>
+          <div class="stat-label">type-verified</div>
+          <div class="stat-context">before execution</div>
         </div>
       </div>
     </section>
@@ -107,12 +107,12 @@
                 <span class="dot dot--green"></span>
               </div>
               <span class="code-filename">total.py</span>
-              <span class="code-badge">~30 tokens</span>
+              <span class="code-badge">~30 tokens &middot; 120 chars</span>
             </div>
-            <pre class="code-body"><code><span class="syn-kw">def</span> <span class="syn-fn">total</span>(<span class="syn-p">price</span>: <span class="syn-t">float</span>, <span class="syn-p">quantity</span>: <span class="syn-t">int</span>, <span class="syn-p">rate</span>: <span class="syn-t">float</span>) -> <span class="syn-t">float</span>:
-    <span class="syn-p">sub</span> = <span class="syn-p">price</span> * <span class="syn-p">quantity</span>
-    <span class="syn-p">tax</span> = <span class="syn-p">sub</span> * <span class="syn-p">rate</span>
-    <span class="syn-kw">return</span> <span class="syn-p">sub</span> + <span class="syn-p">tax</span></code></pre>
+            <pre class="code-body"><code><span class="syn-kw">def</span> <span class="syn-fn">total</span>(<span class="syn-p">p</span>: <span class="syn-t">float</span>, <span class="syn-p">q</span>: <span class="syn-t">int</span>, <span class="syn-p">r</span>: <span class="syn-t">float</span>) -> <span class="syn-t">float</span>:
+    <span class="syn-p">s</span> = <span class="syn-p">p</span> * <span class="syn-p">q</span>
+    <span class="syn-p">t</span> = <span class="syn-p">s</span> * <span class="syn-p">r</span>
+    <span class="syn-kw">return</span> <span class="syn-p">s</span> + <span class="syn-p">t</span></code></pre>
           </div>
           <div class="code-window code-window--highlight">
             <div class="code-header">
@@ -122,7 +122,7 @@
                 <span class="dot dot--green"></span>
               </div>
               <span class="code-filename">total.ilo</span>
-              <span class="code-badge code-badge--accent">~10 tokens</span>
+              <span class="code-badge code-badge--accent">~10 tokens &middot; 38 chars</span>
             </div>
             <pre class="code-body"><code><span class="syn-fn">tot</span> <span class="syn-p">p</span><span class="syn-t">:n</span> <span class="syn-p">q</span><span class="syn-t">:n</span> <span class="syn-p">r</span><span class="syn-t">:n</span><span class="syn-op">&gt;</span><span class="syn-t">n</span>;<span class="syn-p">s</span>=<span class="syn-op">*</span><span class="syn-p">p</span> <span class="syn-p">q</span>;<span class="syn-p">t</span>=<span class="syn-op">*</span><span class="syn-p">s</span> <span class="syn-p">r</span>;<span class="syn-op">+</span><span class="syn-p">s</span> <span class="syn-p">t</span></code></pre>
           </div>
@@ -205,21 +205,81 @@
             <button class="examples-tab-btn active" data-example="recursion">Recursion</button>
             <button class="examples-tab-btn" data-example="classification">Classification</button>
             <button class="examples-tab-btn" data-example="pipeline">Data Pipeline</button>
+            <button class="examples-tab-btn" data-example="pipes">Pipes</button>
+            <button class="examples-tab-btn" data-example="lists">Lists</button>
+            <button class="examples-tab-btn" data-example="errors">Error Handling</button>
           </div>
           <div class="examples-panel">
             <div class="example-pane active" data-example-pane="recursion">
               <pre class="example-code"><code><span class="syn-fn">fac</span> <span class="syn-p">n</span><span class="syn-t">:n</span><span class="syn-op">&gt;</span><span class="syn-t">n</span>;<span class="syn-op">&lt;=</span><span class="syn-p">n</span> 1 1;<span class="syn-p">r</span>=<span class="syn-fn">fac</span> <span class="syn-op">-</span><span class="syn-p">n</span> 1;<span class="syn-op">*</span><span class="syn-p">n</span> <span class="syn-p">r</span></code></pre>
-              <div class="example-desc">Factorial in one line. Guards as base case.</div>
+              <pre class="example-output"><code><span class="syn-dim">$</span> ilo fac.ilo 5
+<span class="syn-result">120</span></code></pre>
+              <div class="example-readable-label">Readable</div>
+              <pre class="example-readable">fac n:number &gt; number
+  &lt;= n 1 → return 1
+  r = fac (- n 1)
+  * n r</pre>
+              <div class="example-desc">Factorial in one line. Guard as base case, then recurse.</div>
             </div>
             <div class="example-pane" data-example-pane="classification">
               <pre class="example-code"><code><span class="syn-fn">cls</span> <span class="syn-p">sp</span><span class="syn-t">:n</span><span class="syn-op">&gt;</span><span class="syn-t">t</span>;<span class="syn-op">&gt;=</span><span class="syn-p">sp</span> 1000 <span class="syn-s">"gold"</span>;<span class="syn-op">&gt;=</span><span class="syn-p">sp</span> 500 <span class="syn-s">"silver"</span>;<span class="syn-s">"bronze"</span></code></pre>
-              <div class="example-desc">Three-tier classifier. No if/else needed.</div>
+              <pre class="example-output"><code><span class="syn-dim">$</span> ilo cls.ilo 750
+<span class="syn-result">silver</span></code></pre>
+              <div class="example-readable-label">Readable</div>
+              <pre class="example-readable">cls sp:number &gt; text
+  &gt;= sp 1000 → return "gold"
+  &gt;= sp 500  → return "silver"
+  "bronze"</pre>
+              <div class="example-desc">Three-tier classifier. Guards fall through &mdash; no if/else needed.</div>
             </div>
             <div class="example-pane" data-example-pane="pipeline">
               <pre class="example-code"><code><span class="syn-fn">fetch</span> <span class="syn-p">url</span><span class="syn-t">:t</span><span class="syn-op">&gt;</span><span class="syn-t">R</span> ? <span class="syn-t">t</span>;<span class="syn-p">r</span>=(<span class="syn-op">$!</span><span class="syn-p">url</span>);<span class="syn-fn">rdb</span><span class="syn-op">!</span> <span class="syn-p">r</span> <span class="syn-s">"json"</span>
 <span class="syn-fn">proc</span> <span class="syn-p">rows</span><span class="syn-t">:L</span> <span class="syn-t">?</span><span class="syn-op">&gt;</span><span class="syn-t">n</span>;<span class="syn-p">clean</span>=<span class="syn-fn">flt</span> <span class="syn-fn">pos</span> <span class="syn-p">rows</span>;<span class="syn-fn">sum</span> <span class="syn-p">clean</span>
 <span class="syn-fn">pos</span> <span class="syn-p">x</span><span class="syn-t">:?</span><span class="syn-op">&gt;</span><span class="syn-t">b</span>;<span class="syn-op">&gt;</span><span class="syn-p">x</span> 0</code></pre>
+              <pre class="example-output"><code><span class="syn-dim">$</span> ilo pipeline.ilo proc [10,-3,7,-1,4]
+<span class="syn-result">21</span></code></pre>
+              <div class="example-readable-label">Readable</div>
+              <pre class="example-readable">fetch url:text &gt; Result ? text
+  r = (get! url); readbuf! r "json"
+proc rows:List ? &gt; number
+  clean = filter pos rows; sum clean
+pos x:? &gt; bool
+  &gt; x 0</pre>
               <div class="example-desc">Fetch JSON, parse, filter positives, sum. Three functions, no boilerplate.</div>
+            </div>
+            <div class="example-pane" data-example-pane="pipes">
+              <pre class="example-code"><code><span class="syn-fn">dbl</span> <span class="syn-p">x</span><span class="syn-t">:n</span><span class="syn-op">&gt;</span><span class="syn-t">n</span>;<span class="syn-op">*</span><span class="syn-p">x</span> 2
+<span class="syn-fn">inc</span> <span class="syn-p">x</span><span class="syn-t">:n</span><span class="syn-op">&gt;</span><span class="syn-t">n</span>;<span class="syn-op">+</span><span class="syn-p">x</span> 1
+<span class="syn-fn">f</span> <span class="syn-p">x</span><span class="syn-t">:n</span><span class="syn-op">&gt;</span><span class="syn-t">n</span>;<span class="syn-p">x</span><span class="syn-op">&gt;&gt;</span><span class="syn-fn">dbl</span><span class="syn-op">&gt;&gt;</span><span class="syn-fn">inc</span></code></pre>
+              <pre class="example-output"><code><span class="syn-dim">$</span> ilo pipes.ilo f 5
+<span class="syn-result">11</span></code></pre>
+              <div class="example-readable-label">Readable</div>
+              <pre class="example-readable">dbl x:number &gt; number; * x 2
+inc x:number &gt; number; + x 1
+f   x:number &gt; number; x &gt;&gt; dbl &gt;&gt; inc</pre>
+              <div class="example-desc">Pipe chains compose functions left-to-right. No nesting to untangle.</div>
+            </div>
+            <div class="example-pane" data-example-pane="lists">
+              <pre class="example-code"><code><span class="syn-fn">sq</span> <span class="syn-p">x</span><span class="syn-t">:n</span><span class="syn-op">&gt;</span><span class="syn-t">n</span>;<span class="syn-op">*</span><span class="syn-p">x</span> <span class="syn-p">x</span>
+<span class="syn-fn">big</span> <span class="syn-p">x</span><span class="syn-t">:n</span><span class="syn-op">&gt;</span><span class="syn-t">b</span>;<span class="syn-op">&gt;</span><span class="syn-p">x</span> 10
+<span class="syn-fn">f</span> <span class="syn-p">xs</span><span class="syn-t">:L n</span><span class="syn-op">&gt;</span><span class="syn-t">L n</span>;<span class="syn-fn">flt</span> <span class="syn-fn">big</span> (<span class="syn-fn">map</span> <span class="syn-fn">sq</span> <span class="syn-p">xs</span>)</code></pre>
+              <pre class="example-output"><code><span class="syn-dim">$</span> ilo lists.ilo f 1,2,3,4,5
+<span class="syn-result">[16, 25]</span></code></pre>
+              <div class="example-readable-label">Readable</div>
+              <pre class="example-readable">sq  x:number &gt; number; * x x
+big x:number &gt; bool;   &gt; x 10
+f   xs:List number &gt; List number
+  filter big (map sq xs)</pre>
+              <div class="example-desc">Square a list, keep values over 10. Higher-order functions as first-class builtins.</div>
+            </div>
+            <div class="example-pane" data-example-pane="errors">
+              <pre class="example-code"><code><span class="syn-fn">safe</span> <span class="syn-p">url</span><span class="syn-t">:t</span><span class="syn-op">&gt;</span><span class="syn-t">t</span>;<span class="syn-p">r</span>=<span class="syn-op">$</span><span class="syn-p">url</span>;<span class="syn-op">??</span><span class="syn-p">r</span> <span class="syn-s">"fallback"</span></code></pre>
+              <pre class="example-output"><code><span class="syn-dim">$</span> ilo safe.ilo "https://api.example.com/data"
+<span class="syn-result">fallback</span></code></pre>
+              <div class="example-readable-label">Readable</div>
+              <pre class="example-readable">safe url:text &gt; text
+  r = get url; ?? r "fallback"</pre>
+              <div class="example-desc">HTTP GET with nil-coalesce fallback. Errors are values, not exceptions.</div>
             </div>
           </div>
         </div>
@@ -274,6 +334,7 @@
         <a href="https://www.npmjs.com/package/ilo-lang" target="_blank" rel="noopener">npm</a>
         <a href="https://crates.io/crates/ilo" target="_blank" rel="noopener">crates.io</a>
         <a href="https://www.reddit.com/r/ilolang/" target="_blank" rel="noopener">Reddit</a>
+        <a href="/contact/">Contact</a>
       </div>
     </div>
   </footer>
@@ -869,16 +930,19 @@
   }
 
   .examples-tabs {
-    max-width: 680px;
+    max-width: 860px;
     margin: 0 auto;
+    display: flex;
+    gap: 0;
   }
 
   .examples-tab-buttons {
     display: flex;
-    gap: 4px;
-    margin-bottom: 0;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 0;
+    flex-direction: column;
+    gap: 2px;
+    flex-shrink: 0;
+    border-right: 1px solid var(--border);
+    padding-right: 0;
   }
 
   .examples-tab-btn {
@@ -890,10 +954,12 @@
     border: none;
     padding: 10px 20px;
     cursor: pointer;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
+    border-right: 2px solid transparent;
+    margin-right: -1px;
     transition: color 0.2s, border-color 0.2s;
     letter-spacing: 0.02em;
+    text-align: left;
+    white-space: nowrap;
   }
 
   .examples-tab-btn:hover {
@@ -902,15 +968,17 @@
 
   .examples-tab-btn.active {
     color: var(--accent);
-    border-bottom-color: var(--accent);
+    border-right-color: var(--accent);
   }
 
   .examples-panel {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-top: none;
-    border-radius: 0 0 12px 12px;
+    border-left: none;
+    border-radius: 0 12px 12px 0;
     padding: 28px;
+    flex: 1;
+    min-width: 0;
   }
 
   .example-pane {
@@ -934,6 +1002,46 @@
 
   .example-code code {
     font-family: inherit;
+  }
+
+  .example-output {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.6;
+    background: rgba(0, 0, 0, 0.15);
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    overflow-x: auto;
+  }
+
+  .example-output code {
+    font-family: inherit;
+  }
+
+  .syn-dim { color: var(--text-dim); }
+  .syn-result { color: var(--accent); font-weight: 500; }
+
+  .example-readable {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: var(--text-dim);
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: 1px dashed var(--border);
+    margin-bottom: 12px;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  .example-readable-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
   }
 
   .example-desc {
@@ -1120,9 +1228,34 @@
       grid-template-columns: 1fr;
     }
 
+    .examples-tabs {
+      flex-direction: column;
+    }
+
+    .examples-tab-buttons {
+      flex-direction: row;
+      flex-wrap: wrap;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+    }
+
     .examples-tab-btn {
       padding: 8px 14px;
       font-size: 0.72rem;
+      border-right: none;
+      border-bottom: 2px solid transparent;
+      margin-right: 0;
+      margin-bottom: -1px;
+    }
+
+    .examples-tab-btn.active {
+      border-right-color: transparent;
+      border-bottom-color: var(--accent);
+    }
+
+    .examples-panel {
+      border-left: 1px solid var(--border);
+      border-radius: 0 0 12px 12px;
     }
 
     .stats-grid {
