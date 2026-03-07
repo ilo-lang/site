@@ -90,7 +90,7 @@ ilo 'code' --dense     # -d  dense wire format (minimal whitespace, for agents)
 ilo 'code' --expanded  # -e  expanded human-readable format
 ```
 
-**Dense** is the default canonical form -- single line per declaration, operators glued to first operand:
+**Dense** is the default canonical form - single line per declaration, operators glued to first operand:
 
 ```ilo
 cls sp:n>t;>=sp 1000{"gold"};>=sp 500{"silver"};"bronze"
@@ -135,13 +135,13 @@ Reports execution time for the named function with the given arguments.
 
 `--explain` (or `-x`) has two modes:
 
-**Explain an error code** -- show a detailed description of any `ILO-*` diagnostic:
+**Explain an error code** - show a detailed description of any `ILO-*` diagnostic:
 
 ```bash
 ilo --explain ILO-T004
 ```
 
-**Explain a program** -- annotate each statement with a human-readable description of what it does:
+**Explain a program** - annotate each statement with a human-readable description of what it does:
 
 ```bash
 ilo 'f x:n>n;*x 2' --explain
@@ -187,7 +187,7 @@ ilo supports multiple execution backends. The default is Cranelift JIT with an i
 | `--run-llvm` | LLVM JIT (requires `--features llvm` build) |
 
 ```bash
-ilo 'fac n:n>n;<=n 1 1;r=fac -n 1;*n r' --run-vm 10
+ilo 'fac n:n>n;<=n 1 1;r=fac -n 1;*n r' --run-vm fac 10
 ```
 
 ## REPL

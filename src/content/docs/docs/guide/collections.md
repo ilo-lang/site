@@ -63,14 +63,14 @@ ilo 'sq-last xs:L n>n;@x xs{*x x}' 3,4,5
 Use `@` with a range to loop over numbers:
 
 ```bash
-ilo 'f>n;s=0;@i 0..5{s=+s i};s'
+ilo 'f>n;s=0;@i 0..5{s=+s i};s' f
 # → 10  (sum of 0+1+2+3+4)
 ```
 
 Use braces when the body has multiple statements:
 
 ```bash
-ilo 'f>n;xs=[];@i 0..3{xs=+=xs i};xs'
+ilo 'f>L n;xs=[];@i 0..3{xs=+=xs i};xs' f
 # → [0, 1, 2]
 ```
 
@@ -121,7 +121,7 @@ scores>n
 ```
 
 ```bash
-ilo 'scores>n;m=mmap;m=mset m "alice" 99;m=mset m "bob" 87;mget m "alice"'
+ilo 'scores>n;m=mmap;m=mset m "alice" 99;m=mset m "bob" 87;mget m "alice"' scores
 # → 99
 ```
 
@@ -141,7 +141,7 @@ ilo 'scores>n;m=mmap;m=mset m "alice" 99;m=mset m "bob" 87;mget m "alice"'
 ### Checking keys with `mhas`
 
 ```bash
-ilo 'check>b;m=mset mmap "x" "1";mhas m "x"'
+ilo 'check>b;m=mset mmap "x" "1";mhas m "x"' check
 # → true
 ```
 
@@ -176,7 +176,7 @@ ilo 'cl x:n>t;>x 5{"big"}{"small"} classify xs:L n>M t L n;grp cl xs' classify 1
 Flattens one level of nesting:
 
 ```bash
-ilo 'f>L n;flat [[1, 2], [3], [4, 5]]'
+ilo 'f>L n;flat [[1, 2], [3], [4, 5]]' f
 # → [1, 2, 3, 4, 5]
 ```
 
@@ -217,7 +217,7 @@ ilo 'f s:t>L t;spl s ","' "a,b,c"
 `{}` placeholders are filled left-to-right:
 
 ```bash
-ilo 'f>t;fmt "{} + {} = {}" 1 2 3'
+ilo 'f>t;fmt "{} + {} = {}" 1 2 3' f
 # → 1 + 2 = 3
 ```
 

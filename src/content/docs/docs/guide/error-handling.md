@@ -5,27 +5,49 @@ description: Results, auto-unwrap, and error codes
 
 ## Result type
 
-Functions that can fail return `R` (Result):
+Instead of throwing exceptions, ilo uses `~` for success and `^` for error:
 
 ```ilo
-inner x:n>R n t;~x
+div a:n b:n > n
+  = b 0 ^"divide by zero"  -- error: return early with message
+  / a b                     -- success: return the result
 ```
-
-`R n t` means: Result with success type `n` and error type `t`.
-
-## Auto-unwrap with `!`
-
-The `!` operator auto-unwraps Results, eliminating boilerplate:
 
 ```bash
-# Without !: 12 tokens
-ilo 'inner x:n>R n t;~x outer x:n>R n t;r=inner x;?r{~v:~v;^e:^e}' 42
+ilo 'div a:n b:n>n;=b 0 ^"divide by zero";/a b' 10 2
+# → 5
 
-# With !: 1 token
-ilo 'inner x:n>R n t;~x outer x:n>R n t;~(inner! x)' 42
+ilo 'div a:n b:n>n;=b 0 ^"divide by zero";/a b' 10 0
+# → error: divide by zero
 ```
 
-`!` on a function call unwraps the Result - if it's an error, the error propagates automatically.
+`^` returns an error immediately. The caller decides how to handle it.
+
+## Result type
+
+When you need to handle errors explicitly in the caller, use the `R` (Result) type. `R n t` means success is a number, error is text:
+
+```ilo
+div a:n b:n > R n t          -- returns a Result
+  = b 0 ^"divide by zero"
+  ~ / a b                    -- ~ wraps the value as success
+```
+
+Use `!` to auto-unwrap a Result. If it's an error, it propagates automatically:
+
+```ilo
+calc a:n b:n > R n t
+  v = div! a b   -- unwrap: error propagates, success continues
+  ~ * v 2
+```
+
+Use `?` for full control over both paths:
+
+```ilo
+show a:n b:n > t
+  r = div a b
+  ? r {~v: str v; ^e: e}  -- ~v matches success, ^e matches error
+```
 
 ## Optional type
 
@@ -41,11 +63,11 @@ g>O n;42            -- returns 42 (valid O n)
 `??` unwraps an optional - if the value is nil, return the default; otherwise return the value:
 
 ```ilo
-f x:O n>n;??x 0
+f x:O n>n;x??0
 ```
 
 ```bash
-ilo 'f x:O n>n;??x 0' 42
+ilo 'f x:O n>n;x??0' 42
 # → 42
 
 ilo 'f>O n;nil'
