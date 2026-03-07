@@ -32,6 +32,9 @@ greet first:t last:t>t;cat first " " last
 
 # Any type, boolean return
 truthy x:?>b;!!x
+
+# Zero-arg function (no parameters)
+pi>n;3.14159
 ```
 
 ## Multiple statements

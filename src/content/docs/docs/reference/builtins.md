@@ -65,7 +65,7 @@ description: Complete reference for ilo's built-in functions
 |----------|-----------|-------------|---------|
 | `map` | `fn L ? > L ?` | Apply function to each element | `map dbl [1,2,3]` |
 | `flt` | `fn L ? > L ?` | Keep elements where function returns true | `flt pos [1,-2,3]` |
-| `fld` | `fn ? L ? > ?` | Reduce list to single value | `fld add 0 [1,2,3]` |
+| `fld` | `fn L ? ? > ?` | Reduce list to single value | `fld add [1,2,3] 0` |
 | `grp` | `fn L ? > M t L ?` | Group elements by function result | `grp cat xs` |
 
 ## Aggregation
@@ -82,8 +82,10 @@ description: Complete reference for ilo's built-in functions
 | `mmap` | `> M` | Create empty map | `m=mmap` |
 | `mget` | `M t > ?` | Get value by key | `mget m "key"` |
 | `mset` | `M t ? > M` | Set key-value pair | `mset m "key" val` |
+| `mhas` | `M t > b` | Check if key exists | `mhas m "key"` |
 | `mkeys` | `M > L t` | Get all keys | `mkeys m` |
 | `mvals` | `M > L ?` | Get all values | `mvals m` |
+| `mdel` | `M t > M` | Remove key, return new map | `mdel m "key"` |
 
 ## Type Conversion
 
@@ -145,3 +147,54 @@ data=rdb! r "json"  # auto-unwrap parse result
 ```
 
 See [Error Handling](/docs/guide/error-handling/) for full details on `!`, `?`, `??`, and Result types.
+
+## Dot-notation indexing
+
+Access list elements and record fields with `.`:
+
+```
+xs.0          # first element of list xs
+xs.2          # third element
+user.name     # field "name" of record/map
+data.users.0  # chained access
+```
+
+Safe navigation with `.?` returns `nil` instead of erroring on missing keys:
+
+```
+user.?email   # nil if "email" doesn't exist
+```
+
+## Builtin aliases
+
+All builtins accept long-form names that resolve to the canonical short form. ilo will emit a hint suggesting the short form:
+
+| Long form | Short form |
+|-----------|------------|
+| `length` | `len` |
+| `head` | `hd` |
+| `tail` | `tl` |
+| `reverse` | `rev` |
+| `sort` | `srt` |
+| `slice` | `slc` |
+| `unique` | `unq` |
+| `filter` | `flt` |
+| `fold` | `fld` |
+| `flatten` | `flat` |
+| `concat` | `cat` |
+| `contains` | `has` |
+| `group` | `grp` |
+| `average` | `avg` |
+| `print` | `prnt` |
+| `trim` | `trm` |
+| `split` | `spl` |
+| `format` | `fmt` |
+| `regex` | `rgx` |
+| `read` | `rd` |
+| `write` | `wr` |
+| `readbuf` | `rdb` |
+| `floor` | `flr` |
+| `ceil` | `cel` |
+| `round` | `rnd` |
+| `string` | `str` |
+| `number` | `num` |

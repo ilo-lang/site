@@ -11,7 +11,7 @@ Create an `mcp.json` file:
 
 ```json
 {
-  "servers": {
+  "mcpServers": {
     "myserver": {
       "command": "node",
       "args": ["server.js"],
@@ -29,4 +29,4 @@ ilo --mcp mcp.json program.ilo funcname args
 
 MCP tools become callable functions in your ilo program, with types verified at load time.
 
-See the [Integrations wiki page](https://github.com/ilo-lang/ilo/wiki/Integrations) for full examples.
+See `examples/mcp.json` in the [ilo repo](https://github.com/ilo-lang/ilo/tree/main/examples) for a working example.

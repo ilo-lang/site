@@ -15,8 +15,8 @@ nums=[1 2 3 4 5]
 len nums        # → 5
 hd nums         # → 1 (first element)
 tl nums         # → [2 3 4 5] (rest)
-nth nums 2      # → 3 (zero-indexed)
-app nums 6      # → [1 2 3 4 5 6]
+nums.2          # → 3 (dot-notation, zero-indexed)
++=nums 6        # → [1 2 3 4 5 6] (append)
 ```
 
 ### Higher-order functions
@@ -31,19 +31,20 @@ flt pos nums     # → [1 2 3 4 5]
 sum nums         # → 15
 ```
 
-## Maps
+## Dot-notation indexing
+
+Access list elements by index with `.`:
 
 ```
-user={"name" "ilo" "version" "0.8.0"}
+xs.0            # first element
+xs.2            # third element
+data.users.0    # chained access
 ```
 
-### Operations
+Safe navigation with `.?` returns nil instead of erroring:
 
 ```
-get user "name"       # → "ilo"
-set user "version" "0.9.0"
-keys user             # → ["name" "version"]
-vals user             # → ["ilo" "0.8.0"]
+user.?email     # nil if "email" doesn't exist
 ```
 
 ## Iterating with `@`
