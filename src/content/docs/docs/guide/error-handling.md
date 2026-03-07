@@ -12,8 +12,8 @@ Try/catch is verbose. An AI agent generating `try { ... } catch (e) { ... }` pay
 Any function can bail out early with `^`:
 
 ```ilo
-div a:n b:n > n            -- two numbers in, number out
-  = b 0 ^"divide by zero"  -- if b is 0, error
+div a:n b:n > n            -- says it returns a number...
+  = b 0 ^"divide by zero"  -- ...but ^ can throw an error
   / a b                     -- otherwise divide
 ```
 
