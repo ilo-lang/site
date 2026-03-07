@@ -5,7 +5,7 @@ description: Results, optionals, auto-unwrap, and nil-coalesce
 
 ## Why not try/catch?
 
-Try/catch is verbose. An AI agent generating `try { ... } catch (e) { ... }` pays tokens for boilerplate, and if it forgets the catch block, the error is silently swallowed. ilo makes errors part of the type system — you can't forget to handle them.
+Try/catch is verbose. An AI agent generating `try { ... } catch (e) { ... }` pays tokens for boilerplate, and if it forgets the catch block, the error is silently swallowed. ilo makes errors part of the type system - you can't forget to handle them.
 
 ## Quick errors with `^`
 
@@ -25,7 +25,7 @@ ilo 'div a:n b:n>n;=b 0 ^"divide by zero";/a b' div 10 0
 # → ^divide by zero
 ```
 
-`^` exits the function immediately with an error. But there's a problem: the return type says `> n` (a number), so any code **calling** this function expects a number back — it has no way to catch or handle the error. The error just crashes through.
+`^` exits the function immediately with an error. But there's a problem: the return type says `> n` (a number), so any code **calling** this function expects a number back - it has no way to catch or handle the error. The error just crashes through.
 
 ## Recoverable errors with `R`
 
@@ -35,7 +35,7 @@ If you want callers to **catch and handle** errors, use `R` as the return type. 
 R success-type error-type
 ```
 
-Read it as: "**R**esult — first type is what you get on success, second is what you get on error".
+Read it as: "**R**esult - first type is what you get on success, second is what you get on error".
 
 For example, `R n t` breaks down as:
 
@@ -69,8 +69,8 @@ show a:n b:n > t
   ? r {~v: str v; ^e: e}
 ```
 
-- `~v:` — if success, bind the value to `v`
-- `^e:` — if error, bind the error to `e`
+- `~v:` - if success, bind the value to `v`
+- `^e:` - if error, bind the error to `e`
 
 ```bash
 ilo 'div a:n b:n>R n t;=b 0 ^"divide by zero";~/a b
