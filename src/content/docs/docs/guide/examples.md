@@ -1,0 +1,134 @@
+---
+title: Real-World Examples
+description: Practical ilo programs for common tasks
+---
+
+Practical patterns you can copy and adapt. Each example is a complete, runnable program.
+
+## Data pipeline
+
+Fetch JSON from an API, filter positive values, sum them:
+
+```
+fetch url:t>R ? t;r=($!url);rdb! r "json"
+pos x:?>b;>x 0
+proc rows:L ?>n;clean=flt pos rows;sum clean
+```
+
+Three functions, no boilerplate. `$!` auto-unwraps the HTTP response. `rdb!` parses JSON. `flt` keeps only elements where `pos` returns true.
+
+## API status checker
+
+Hit a URL and report whether it responded:
+
+```
+check url:t>t
+  r=$url
+  ?r{~v:fmt "{}: ok" url;^e:fmt "{}: {}" url e}
+```
+
+```bash
+ilo 'check url:t>t;r=$url;?r{~v:fmt "{}: ok" url;^e:fmt "{}: {}" url e}' "http://httpbin.org/get"
+# -> http://httpbin.org/get: ok
+```
+
+`$url` makes an HTTP GET. The result is matched: `~v` (Ok) or `^e` (Err).
+
+## CSV processing
+
+```bash
+# Column count of the first row
+ilo 'f p:t>n;d=rd! p;len d.0' data.csv
+
+# Sum a column
+ilo 'f p:t>n;d=rd! p;col=map hd d;sum col' numbers.csv
+```
+
+`rd!` reads and parses the file. `d.0` indexes the first row. `map hd` extracts the head of each row.
+
+## Text processing
+
+Count unique words in a file:
+
+```bash
+ilo 'f p:t>n;t=rd! p "raw";ws=spl t " ";len (unq ws)' document.txt
+```
+
+Extract all emails from text:
+
+```bash
+ilo 'f s:t>L t;rgx "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}" s' \
+  "contact alice@example.com or bob@test.org"
+# -> [alice@example.com, bob@test.org]
+```
+
+Sort words by length:
+
+```
+wlen s:t>n;len s
+by-len ws:L t>L t;srt wlen ws
+```
+
+```bash
+ilo examples/sort-by-key.ilo by-len '["banana","fig","apple","kiwi"]'
+# -> ["fig", "kiwi", "apple", "banana"]
+```
+
+## Environment config
+
+Read an env var with a fallback:
+
+```
+cfg>t
+  k=env "API_KEY"
+  ?k{~v:v;^e:"missing API_KEY"}
+```
+
+`env` returns a `Result`. The match provides the value or a default.
+
+## Tool interaction
+
+Declare external tools, then compose them like regular functions:
+
+```
+tool get-user"Retrieve user by ID" uid:t>R profile t timeout:5,retry:2
+tool send-email"Send notification email" to:t subject:t body:t>R _ t timeout:10,retry:1
+
+type profile{id:t;name:t;email:t;verified:b}
+
+notify uid:t msg:t>R _ t
+  u=get-user! uid
+  !u.verified{^"user not verified"}
+  send-email! u.email "Notification" msg
+  ~_
+```
+
+Tools are type-checked at compile time. `get-user!` unwraps the result, propagating errors automatically.
+
+## Python vs ilo
+
+A tax-inclusive total calculation in both languages.
+
+**Python** (93 chars, ~30 tokens):
+
+```python
+def total(price: float, quantity: int, rate: float) -> float:
+    sub = price * quantity
+    tax = sub * rate
+    return sub + tax
+```
+
+**ilo** (38 chars, ~10 tokens):
+
+```
+tot p:n q:n r:n>n;s=*p q;t=*s r;+s t
+```
+
+Same semantics. 0.33x the tokens, 0.22x the characters. For an AI agent paying per token, this adds up fast across thousands of tool calls.
+
+## What's next
+
+- Run `ilo -ai` to get the compact spec for your AI agent
+- Read the full [language specification](https://github.com/ilo-lang/ilo/blob/main/SPEC.md)
+- Browse [example programs](https://github.com/ilo-lang/ilo/tree/main/examples)
+- Try the REPL: `ilo repl`

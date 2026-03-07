@@ -34,6 +34,9 @@ export default defineConfig({
             { label: 'Pipes', slug: 'docs/guide/pipes' },
             { label: 'Error Handling', slug: 'docs/guide/error-handling' },
             { label: 'Collections', slug: 'docs/guide/collections' },
+            { label: 'Data & I/O', slug: 'docs/guide/data-io' },
+            { label: 'Imports', slug: 'docs/guide/imports' },
+            { label: 'Real-World Examples', slug: 'docs/guide/examples' },
           ],
         },
         {

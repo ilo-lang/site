@@ -1,0 +1,71 @@
+---
+title: Imports
+description: Splitting ilo programs across multiple files
+---
+
+Split programs across files with `use`:
+
+```
+use "math-lib.ilo"
+```
+
+All declarations from the imported file merge into a flat namespace -- no modules, no qualification.
+
+## Full import
+
+```
+-- math-lib.ilo
+dbl n:n>n;*n 2
+half n:n>n;/n 2
+sq n:n>n;*n n
+```
+
+```
+-- main.ilo
+use "math-lib.ilo"
+
+round-trip n:n>n;h=half n;r=dbl h;+r 0
+hyp-sq a:n b:n>n;sa=sq a;sb=sq b;+sa sb
+```
+
+```bash
+ilo main.ilo round-trip 10
+# -> 10
+
+ilo main.ilo hyp-sq 3 4
+# -> 25
+```
+
+## Scoped imports
+
+Import only specific functions with a bracketed list:
+
+```
+use "math-lib.ilo" [dbl sq]
+```
+
+Now only `dbl` and `sq` are available. `half` is not imported. Requesting a name that does not exist in the file is an error (`ILO-P019`).
+
+## Import rules
+
+- Paths are **relative to the importing file's directory**
+- `use` must appear at the **top of the file**, before any function definitions
+- Imports are **transitive**: if `a.ilo` uses `b.ilo`, then `main.ilo` using `a.ilo` gets `b.ilo`'s declarations too
+- **Circular imports** are detected and reported as an error (`ILO-P018`)
+- All imported functions are **type-checked** as part of the full program
+- `use` in inline mode (no file context) is an error (`ILO-P017`)
+
+## Multi-file example
+
+```
+-- validators.ilo
+positive n:n>b;>n 0
+in-range n:n lo:n hi:n>b;a=>=n lo;b=<=n hi;?a{true:b;false:false}
+```
+
+```
+-- app.ilo
+use "validators.ilo" [positive in-range]
+
+check-age age:n>t;?{positive age:?(in-range age 0 150){true:"valid";false:"out of range"};false:"negative"}
+```
