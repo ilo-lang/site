@@ -1,37 +1,40 @@
-@import "tailwindcss" layer(tw);
+/* Tailwind: theme + utilities only — no preflight, which clobbers Starlight's text colors */
+@layer tw;
+@import "tailwindcss/theme" layer(tw);
+@import "tailwindcss/utilities" layer(tw);
 
-/* ilo brand: warm amber on near-black — aligned with landing page */
+/* Load matching fonts for docs */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ilo brand: warm amber on deep ink — softened palette */
 :root {
-  --sl-color-accent-low: #451a03;
-  --sl-color-accent: #f59e0b;
-  --sl-color-accent-high: #fef3c7;
+  --sl-color-accent-low: #2c1a0a;
+  --sl-color-accent: #e09422;
+  --sl-color-accent-high: #f5deb3;
   --sl-font: 'Bricolage Grotesque', system-ui, -apple-system, sans-serif;
   --sl-font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
 }
 
-/* Dark theme backgrounds aligned with landing page (#08080c base) */
+/* Dark theme: warm-tinted grays with readable contrast */
 :root[data-theme='dark'] {
-  --sl-color-bg: #08080c;
-  --sl-color-bg-nav: rgba(8, 8, 12, 0.85);
-  --sl-color-bg-sidebar: #0c0c12;
-  --sl-color-bg-inline-code: rgba(255, 255, 255, 0.06);
-  --sl-color-hairline-light: rgba(255, 255, 255, 0.06);
-  --sl-color-hairline: rgba(255, 255, 255, 0.08);
-  --sl-color-gray-6: #0e0e14;
-  --sl-color-gray-5: #1a1a24;
-  --sl-color-gray-4: #52526a;
-  --sl-color-gray-3: #9090a8;
-  --sl-color-gray-2: #c0c0d0;
-  --sl-color-gray-1: #ededf0;
-  --sl-color-black: #ededf0;
-  --sl-color-white: #08080c;
+  --sl-color-bg: #0a0a10;
+  --sl-color-bg-nav: rgba(10, 10, 16, 0.9);
+  --sl-color-bg-sidebar: #0e0e15;
+  --sl-color-bg-inline-code: rgba(255, 255, 255, 0.07);
+  --sl-color-hairline-light: rgba(255, 255, 255, 0.07);
+  --sl-color-hairline: rgba(255, 255, 255, 0.1);
+  --sl-color-gray-6: #13131b;
+  --sl-color-gray-5: #1e1e2a;
+  --sl-color-gray-4: #6b6b82;
+  --sl-color-gray-3: #9e9eb4;
+  --sl-color-gray-2: #c8c8d8;
+  --sl-color-gray-1: #e8e8ee;
+  --sl-color-black: #e8e8ee;
+  --sl-color-white: #0a0a10;
 }
 
 :root[data-theme='light'] {
-  --sl-color-accent-low: #fef3c7;
-  --sl-color-accent: #d97706;
-  --sl-color-accent-high: #451a03;
+  --sl-color-accent-low: #fdf1da;
+  --sl-color-accent: #b87a14;
+  --sl-color-accent-high: #3d2408;
 }
-
-/* Load matching fonts for docs */
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;500&display=swap');
