@@ -88,6 +88,8 @@ export default defineConfig({
         {
           label: 'Integrations',
           items: [
+            { label: 'Agent Skills', slug: 'docs/integrations/agent-skills' },
+            { label: 'REPL JSON Mode', slug: 'docs/integrations/repl-json' },
             { label: 'MCP Servers', slug: 'docs/integrations/mcp' },
             { label: 'HTTP Tools', slug: 'docs/integrations/http-tools' },
           ],
