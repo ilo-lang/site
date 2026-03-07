@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+/* ilo brand: warm amber on near-black — aligned with landing page */
+:root {
+  --sl-color-accent-low: #451a03;
+  --sl-color-accent: #f59e0b;
+  --sl-color-accent-high: #fef3c7;
+  --sl-font: 'Bricolage Grotesque', system-ui, -apple-system, sans-serif;
+  --sl-font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+}
+
+/* Dark theme backgrounds aligned with landing page (#08080c base) */
+:root[data-theme='dark'] {
+  --sl-color-bg: #08080c;
+  --sl-color-bg-nav: rgba(8, 8, 12, 0.85);
+  --sl-color-bg-sidebar: #0c0c12;
+  --sl-color-bg-inline-code: rgba(255, 255, 255, 0.06);
+  --sl-color-hairline-light: rgba(255, 255, 255, 0.06);
+  --sl-color-hairline: rgba(255, 255, 255, 0.08);
+  --sl-color-gray-6: #0e0e14;
+  --sl-color-gray-5: #1a1a24;
+  --sl-color-gray-4: #52526a;
+  --sl-color-gray-3: #9090a8;
+  --sl-color-gray-2: #c0c0d0;
+  --sl-color-gray-1: #ededf0;
+  --sl-color-black: #ededf0;
+  --sl-color-white: #08080c;
+}
+
+:root[data-theme='light'] {
+  --sl-color-accent-low: #fef3c7;
+  --sl-color-accent: #d97706;
+  --sl-color-accent-high: #451a03;
+}
+
+/* Load matching fonts for docs */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;500&display=swap');
