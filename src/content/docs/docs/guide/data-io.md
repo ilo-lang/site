@@ -3,7 +3,7 @@ title: Data & I/O
 description: File operations, HTTP requests, and environment variables in ilo
 ---
 
-ilo has built-in support for reading and writing files, making HTTP requests, and accessing environment variables. All I/O builtins return `R` (Result) types -- use `!` to auto-unwrap.
+ilo has built-in support for reading and writing files, making HTTP requests, and accessing environment variables. All I/O builtins return `R` (Result) types - use `!` to auto-unwrap.
 
 ## Reading files
 
@@ -36,7 +36,7 @@ lines p:t>R L t t;rdl p
 
 ### Parsing buffers
 
-`rdb string format` parses a string in a given format -- useful for data received from HTTP responses:
+`rdb string format` parses a string in a given format - useful for data received from HTTP responses:
 
 ```ilo
 parse s:t>R ? t;rdb s "json"

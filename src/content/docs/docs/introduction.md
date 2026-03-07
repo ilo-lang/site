@@ -35,6 +35,7 @@ The ilo version is **0.33× the tokens** and **0.22× the characters**. Both are
 The savings come from three things:
 
 - **Prefix notation** eliminates parentheses: `+*a b c` instead of `(a * b) + c`
+- **Short names** - single-char variables (`x`, `n`, `s`), short function names (`dbl`, `fac`), and builtins with compact aliases (`len`, `hd`, `flt`)
 - **Type verification** catches errors before execution with compact codes (`ILO-T004`) - not a full stack trace
 - **Constrained vocabulary** means fewer valid next-tokens, fewer wrong choices, fewer retries
 

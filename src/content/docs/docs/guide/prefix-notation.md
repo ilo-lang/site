@@ -46,7 +46,9 @@ a + b        -- works
 x * y + 1    -- works
 ```
 
-But prefix is preferred because it's always unambiguous and uses fewer tokens.
+:::note
+ilo emits a hint to stderr (or in the JSON `hints` array) suggesting the prefix form. Suppress with `--no-hints` / `-nh`.
+:::
 
 ## Complete operator table
 
@@ -55,11 +57,11 @@ But prefix is preferred because it's always unambiguous and uses fewer tokens.
 | Prefix | Infix | Meaning | Types |
 |--------|-------|---------|-------|
 | `+a b` | `a + b` | add / concat / list concat | `n`, `t`, `L` |
-| `+=a v` | | append to list | `L` |
+| `+=a v` | `a += v` | append to list | `L` |
 | `-a b` | `a - b` | subtract | `n` |
 | `*a b` | `a * b` | multiply | `n` |
 | `/a b` | `a / b` | divide | `n` |
-| `=a b` | `a == b` | equal | any |
+| `=a b` | `a = b` | equal | any |
 | `!=a b` | `a != b` | not equal | any |
 | `>a b` | `a > b` | greater than | `n`, `t` |
 | `<a b` | `a < b` | less than | `n`, `t` |
@@ -82,20 +84,7 @@ But prefix is preferred because it's always unambiguous and uses fewer tokens.
 | `a??b` | nil-coalesce (if a is nil, return b) |
 | `a>>f` | pipe (desugars to `f(a)`) |
 
-## When to use prefix vs infix
-
-**Use prefix** (the default) when:
-- You have nested operations -- prefix eliminates all parentheses
-- You want maximum token density
-- You are generating code for AI consumption
-
-**Use infix** when:
-- A single flat operation reads more naturally: `x + 1`
-- You prefer traditional syntax for simple expressions
-
-Both produce identical results. Prefix is the canonical form that the formatter emits.
-
-### Infix precedence
+## Infix precedence
 
 When using infix, standard mathematical precedence applies (higher binds tighter):
 
@@ -158,23 +147,20 @@ Prefix operators nest by each operator greedily consuming the next two operands.
 
 Read left-to-right. Each operator grabs the next two values (which may themselves be operator expressions):
 
-```
-/-*+a b c d e
-│ │ │ └─┤
-│ │ │   add a and b
-│ │ └───┤
-│ │     multiply result and c
-│ └─────┤
-│       subtract d from result
-└───────┤
-        divide result by e
-```
+`/-*+a b c d e`
 
-This is equivalent to `(((a + b) * c) - d) / e` in infix -- note how 4 pairs of parentheses disappear entirely.
+| Step | Expression | Meaning |
+|------|-----------|---------|
+| 1 | `+a b` | add a and b |
+| 2 | `* _ c` | multiply result and c |
+| 3 | `- _ d` | subtract d from result |
+| 4 | `/ _ e` | divide result by e |
+
+This is equivalent to `(((a + b) * c) - d) / e` in infix - note how 4 pairs of parentheses disappear entirely.
 
 ### Operand rules
 
-Operator operands must be atoms (literals, variable references, field access) or nested prefix operators. Function calls are not valid operands -- bind their results first:
+Operator operands must be atoms (literals, variable references, field access) or nested prefix operators. Function calls are not valid operands - bind their results first:
 
 ```ilo
 -- WRONG: *n fac -n 1    (fac is treated as an atom, not a call)

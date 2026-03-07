@@ -38,20 +38,17 @@ ilo 'check url:t>t;r=$url;?r{~v:fmt "{}: ok" url;^e:fmt "{}: {}" url e}' "http:/
 
 ```bash
 # Column count of the first row
-ilo 'f p:t>n;d=rd! p;len d.0' data.csv
-
-# Sum a column
-ilo 'f p:t>n;d=rd! p;col=map hd d;sum col' numbers.csv
+ilo 'f p:t>R n t;d=rd! p;~len d.0' f data.csv
 ```
 
-`rd!` reads and parses the file. `d.0` indexes the first row. `map hd` extracts the head of each row.
+`rd!` reads and parses the CSV file (returns `R`, so the function must too). `d.0` indexes the first row.
 
 ## Text processing
 
 Count unique words in a file:
 
 ```bash
-ilo 'f p:t>n;t=rd! p "raw";ws=spl t " ";len (unq ws)' document.txt
+ilo 'f p:t>R n t;t=rd! p "raw";ws=spl t " ";~len (unq ws)' f document.txt
 ```
 
 Extract all emails from text:

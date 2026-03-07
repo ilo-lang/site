@@ -9,7 +9,7 @@ Split programs across files with `use`:
 use "math-lib.ilo"
 ```
 
-All declarations from the imported file merge into a flat namespace -- no modules, no qualification.
+All declarations from the imported file merge into a flat namespace - no modules, no qualification.
 
 ## Full import
 

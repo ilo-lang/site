@@ -120,7 +120,7 @@ Pipes combine with `!` for functions that return `R` (Result) types:
 f x:n>>g!>>h
 ```
 
-This desugars to `h(g!(f(x)))` -- if `g` returns an error, it propagates immediately.
+This desugars to `h(g!(f(x)))` - if `g` returns an error, it propagates immediately.
 
 ### Parentheses in multi-function files
 
