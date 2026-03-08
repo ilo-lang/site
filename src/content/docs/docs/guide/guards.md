@@ -109,8 +109,9 @@ Use braces when the body has multiple statements:
 A guard with **two** brace blocks is a ternary - it produces a value without returning from the function:
 
 ```
-=x 1{"yes"}{"no"}          -- ilo (18 chars, 5 tokens)
-x == 1 ? "yes" : "no"      -- JS  (22 chars, 7 tokens)
+?=x 1 "yes" "no"           -- ilo prefix (16 chars, 5 tokens)
+=x 1{"yes"}{"no"}          -- ilo braced  (18 chars, 5 tokens)
+x == 1 ? "yes" : "no"      -- JS          (22 chars, 7 tokens)
 ```
 
 ```ilo
