@@ -165,67 +165,114 @@ describe x:t>t;?x{"dog":"woof";"cat":"meow";_:"unknown"}
 Or as a file:
 
 ```ilo
-describe x:t > t
-  ? x {
-    "dog": "woof"
-    "cat": "meow"
-    _: "unknown"
-  }
+describe x:t > t       -- text in, text out
+  ? x {                -- match on x
+    "dog": "woof"      -- if x is "dog", return "woof"
+    "cat": "meow"      -- if x is "cat", return "meow"
+    _: "unknown"       -- wildcard: catches everything else
+  }                    -- end match
 ```
 
-`_` is the wildcard arm - catches everything else. No fall-through; each arm is independent.
+`_` is the wildcard arm. No fall-through; each arm is independent.
 
 ### Matching on Result types
 
-Use `?` to destructure a `R` (Result) value:
+Functions that can fail return `R ok_type err_type` (a Result). A Result isn't a parameter type — it comes from calling a fallible function and capturing the return value. Use match to handle both cases:
+
+- `~v` — matches the Ok variant, binds the inner value to `v`
+- `^e` — matches the Err variant, binds the error to `e`
 
 Inline:
 
 ```ilo
-f r:R n t>t;?r{~v:"ok";^e:e}
+div a:n b:n>R n t;=b 0 ^"divide by zero";~/a b
+show a:n b:n>t;r=div a b;?r{~v:str v;^e:e}
 ```
 
 Or as a file:
 
 ```ilo
-f r:R n t > t
-  ? r {
-    ~v: "ok"
-    ^e: e
-  }
+div a:n b:n > R n t          -- two numbers in, Result out
+  = b 0 ^"divide by zero"   -- if b is 0, return Err
+  ~/a b                      -- otherwise return Ok(a / b)
+
+show a:n b:n > t             -- two numbers in, text out
+  r = div a b                -- call div, capture Result in r
+  ? r {                      -- match on the Result
+    ~v: str v                -- Ok: convert number to text
+    ^e: e                    -- Err: return error message
+  }                          -- end match
 ```
 
-- `~v` matches Ok, binds the inner value to `v`
-- `^e` matches Err, binds the error to `e`
+`div` returns `R n t` — either an Ok number or an Err string. `show` captures the Result in `r` (without auto-unwrapping) and matches on it.
 
 ```bash
 ilo 'div a:n b:n>R n t;=b 0 ^"divide by zero";~/a b
 show a:n b:n>t;r=div a b;?r{~v:str v;^e:e}' show 10 2
 # → 5
+
+ilo 'div a:n b:n>R n t;=b 0 ^"divide by zero";~/a b
+show a:n b:n>t;r=div a b;?r{~v:str v;^e:e}' show 10 0
+# → divide by zero
 ```
+
+See [Error Handling](/docs/guide/error-handling) for more on `~` (Ok), `^` (Err), and the `R` type.
 
 ### Matching on type
 
 When the input type is unknown (`?`), match on the runtime type:
 
+Inline:
+
 ```ilo
 f x:?>t;?x{n v:"number";t v:"text";_:"other"}
+```
+
+Or as a file:
+
+```ilo
+f x:? > t                  -- unknown type in, text out
+  ? x {                    -- match on runtime type
+    n v: "number"          -- if x is a number
+    t v: "text"            -- if x is text
+    _: "other"             -- anything else
+  }                        -- end match
 ```
 
 Each arm specifies a type tag (`n`, `t`, `b`, `l`) followed by a binding variable.
 
 ## Early return with `ret`
 
-`ret expr` returns from the function immediately:
+The last expression in a function is its return value, no `return` keyword needed. Guards also return early when a condition matches. Use `ret` when you need an explicit early return from inside a loop or braced block:
+
+Inline:
 
 ```ilo
 f x:n>n;>x 0{ret x};0
 ```
 
-If x > 0, return x early. Otherwise return 0.
+Or as a file:
+
+```ilo
+f x:n > n            -- number in, number out
+  > x 0 { ret x }   -- if x > 0, return x early
+  0                  -- fallback
+```
 
 Guards already provide early return for simple cases. Use `ret` when you need early return inside a loop or deeply nested block:
 
+Inline:
+
 ```ilo
 f xs:L n>n;@x xs{>=x 10{ret x}};0  -- return first element >= 10
+```
+
+Or as a file:
+
+```ilo
+f xs:L n > n              -- list of numbers in, number out
+  @ x xs {                -- loop over list
+    >= x 10 { ret x }    -- if x >= 10, return it early
+  }                        -- end loop
+  0                        -- fallback if none found
 ```
