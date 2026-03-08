@@ -179,8 +179,20 @@ describe x:t > t
 
 Use `?` to destructure a `R` (Result) value:
 
+Inline:
+
 ```ilo
 f r:R n t>t;?r{~v:"ok";^e:e}
+```
+
+Or as a file:
+
+```ilo
+f r:R n t > t
+  ? r {
+    ~v: "ok"
+    ^e: e
+  }
 ```
 
 - `~v` matches Ok, binds the inner value to `v`

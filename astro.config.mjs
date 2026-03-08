@@ -74,6 +74,7 @@ export default defineConfig({
             { label: 'Data & I/O', slug: 'docs/guide/data-io' },
             { label: 'Imports', slug: 'docs/guide/imports' },
             { label: 'Real-World Examples', slug: 'docs/guide/examples' },
+            { label: 'Gotchas', slug: 'docs/guide/gotchas' },
           ],
         },
         {
