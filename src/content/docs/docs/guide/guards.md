@@ -104,77 +104,30 @@ Use braces when the body has multiple statements:
 >=sp 1000{a=classify sp;a}
 ```
 
-## Ternary (guard-else)
+## Ternary
 
-A guard with **two** brace blocks is a ternary - it produces a value without returning from the function:
-
-```
-?=x 1 "yes" "no"           -- ilo prefix (16 chars, 5 tokens)
-=x 1{"yes"}{"no"}          -- ilo braced  (18 chars, 5 tokens)
-x == 1 ? "yes" : "no"      -- JS          (22 chars, 7 tokens)
-```
-
-Braced:
-
-```ilo
-f x:n>t;=x 1{"yes"}{"no"}
-```
-
-Prefix:
-
-```ilo
-f x:n>t;?=x 1 "yes" "no"
-```
-
-```bash
-ilo 'f x:n>t;=x 1{"yes"}{"no"}' 1
-# → yes
-
-ilo 'f x:n>t;?=x 1 "yes" "no"' 2
-# → no
-```
-
-Unlike a single-brace guard (which exits the function early), a ternary is an **expression** - it evaluates to a value:
-
-```ilo
-f x:n>n;=x 0{10}{20}   -- returns 10 if x is 0, otherwise 20
-```
-
-:::caution[Gotcha]
-Code after a ternary keeps running - only single-brace guards return from the function.
-:::
-
-Negated ternary works too: `!=x 1{"not one"}{"one"}`.
-
-### Prefix ternary
-
-For a fully prefix-style ternary, use `?` followed by a comparison:
+A ternary produces a value without returning from the function. Two syntaxes:
 
 ```
-?=x 0 10 20            -- ilo prefix (14 chars, 5 tokens)
-=x 0{10}{20}           -- ilo braced  (12 chars, 5 tokens)
-x == 0 ? 10 : 20       -- JS          (17 chars, 7 tokens)
-```
-
-```ilo
-f x:n>n;?=x 0 10 20
+?=x 0 10 20            -- prefix: ? comparison then else
+=x 0{10}{20}           -- braced: condition{then}{else}
 ```
 
 ```bash
 ilo 'f x:n>n;?=x 0 10 20' f 0
 # → 10
 
-ilo 'f x:n>n;?=x 0 10 20' f 5
-# → 20
+ilo 'f x:n>n;=x 0{10}{20}' f 0
+# → 10
 ```
 
-You can assign the result to a variable:
+Unlike guards, a ternary does **not** return from the function - it's an expression that evaluates to a value. Code after it keeps running:
 
 ```ilo
-f x:n>n;v=?>x 100 1 0;*v x
+f x:n>n;v=?=x 0 10 20;+v 1   -- v is 10 or 20, then add 1
 ```
 
-The condition must start with a comparison operator (`=`, `>`, `<`, `>=`, `<=`, `!=`).
+Prefix ternary requires a comparison operator (`=`, `>`, `<`, `>=`, `<=`, `!=`). Braced ternary supports negation: `!=x 1{"not one"}{"one"}`.
 
 ## Match expressions
 
