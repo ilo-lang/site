@@ -91,7 +91,7 @@ Negated braceless guards work with any comparison. Use [`^` (throw)](/docs/guide
 
 ## Braced guards
 
-You can wrap the return value in braces. Both forms produce identical results:
+The return value can be enclosed in braces. Both forms produce identical results:
 
 ```ilo
 -- braceless (saves 2 tokens per guard)
