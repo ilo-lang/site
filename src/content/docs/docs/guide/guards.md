@@ -125,10 +125,10 @@ ilo 'f x:n>t;=x 1{"yes"}{"no"}' 2
 # → no
 ```
 
-Unlike guards, ternary does **not** return from the function. Code after the ternary continues executing:
+Unlike a single-brace guard (which exits the function early), a ternary is an **expression** - it evaluates to a value:
 
 ```ilo
-f x:n>n;=x 0{10}{20};+x 1   -- always returns x+1, ternary value is discarded
+f x:n>n;=x 0{10}{20}   -- returns 10 if x is 0, otherwise 20
 ```
 
 Negated ternary works too: `!=x 1{"not one"}{"one"}`.
