@@ -220,18 +220,18 @@ See [Error Handling](/docs/guide/error-handling) for more on `~` (Ok), `^` (Err)
 
 ### Matching on type
 
-When the input type is unknown (`?`), match on the runtime type:
+When the input type is unknown (`_`), match on the runtime type:
 
 Inline:
 
 ```ilo
-f x:?>t;?x{n v:"number";t v:"text";_:"other"}
+f x:_>t;?x{n v:"number";t v:"text";_:"other"}
 ```
 
 Or as a file:
 
 ```ilo
-f x:? > t                  -- unknown type in, text out
+f x:_ > t                  -- any type in, text out
   ? x {                    -- match on runtime type
     n v: "number"          -- if x is a number
     t v: "text"            -- if x is text

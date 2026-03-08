@@ -48,25 +48,25 @@ description: Complete reference for ilo's built-in functions
 
 | Function | Alias | Signature | Description | Example |
 |----------|-------|-----------|-------------|---------|
-| `len` | `length` | `L ? > n` | List length | `len [1,2,3]` → `3` |
-| `hd` | `head` | `L ? > ?` | First element | `hd [1,2,3]` → `1` |
-| `tl` | `tail` | `L ? > L ?` | All elements except first | `tl [1,2,3]` → `[2,3]` |
-| `rev` | `reverse` | `L ? > L ?` | Reverse a list | `rev [1,2,3]` → `[3,2,1]` |
-| `srt` | `sort` | `L ? > L ?` | Sort a list | `srt [3,1,2]` → `[1,2,3]` |
-| `srt` | `sort` | `fn L ? > L ?` | Sort by key function | `srt cmp xs` |
-| `slc` | `slice` | `L ? n n > L ?` | Slice (start, end) | `slc [1,2,3,4] 1 3` → `[2,3]` |
-| `flat` | `flatten` | `L L ? > L ?` | Flatten nested lists | `flat [[1,2],[3]]` → `[1,2,3]` |
-| `unq` | `unique` | `L ? > L ?` | Remove duplicates | `unq [1,2,2,3]` → `[1,2,3]` |
-| `has` | `contains` | `L ? ? > b` | Check if list contains element | `has [1,2,3] 2` → `true` |
+| `len` | `length` | `L _ > n` | List length | `len [1,2,3]` → `3` |
+| `hd` | `head` | `L _ > _` | First element | `hd [1,2,3]` → `1` |
+| `tl` | `tail` | `L _ > L _` | All elements except first | `tl [1,2,3]` → `[2,3]` |
+| `rev` | `reverse` | `L _ > L _` | Reverse a list | `rev [1,2,3]` → `[3,2,1]` |
+| `srt` | `sort` | `L _ > L _` | Sort a list | `srt [3,1,2]` → `[1,2,3]` |
+| `srt` | `sort` | `fn L _ > L _` | Sort by key function | `srt cmp xs` |
+| `slc` | `slice` | `L _ n n > L _` | Slice (start, end) | `slc [1,2,3,4] 1 3` → `[2,3]` |
+| `flat` | `flatten` | `L L _ > L _` | Flatten nested lists | `flat [[1,2],[3]]` → `[1,2,3]` |
+| `unq` | `unique` | `L _ > L _` | Remove duplicates | `unq [1,2,2,3]` → `[1,2,3]` |
+| `has` | `contains` | `L _ _ > b` | Check if list contains element | `has [1,2,3] 2` → `true` |
 
 ## Higher-Order Functions
 
 | Function | Alias | Signature | Description | Example |
 |----------|-------|-----------|-------------|---------|
-| `map` | | `fn L ? > L ?` | Apply function to each element | `map dbl [1,2,3]` |
-| `flt` | `filter` | `fn L ? > L ?` | Keep elements where function returns true | `flt pos [1,-2,3]` |
-| `fld` | `fold` | `fn ? L ? > ?` | Reduce list to single value | `fld add 0 [1,2,3]` |
-| `grp` | `group` | `fn L ? > M t L ?` | Group elements by function result | `grp cat xs` |
+| `map` | | `fn L _ > L _` | Apply function to each element | `map dbl [1,2,3]` |
+| `flt` | `filter` | `fn L _ > L _` | Keep elements where function returns true | `flt pos [1,-2,3]` |
+| `fld` | `fold` | `fn _ L _ > _` | Reduce list to single value | `fld add 0 [1,2,3]` |
+| `grp` | `group` | `fn L _ > M t L _` | Group elements by function result | `grp cat xs` |
 
 ## Aggregation
 
@@ -80,18 +80,18 @@ description: Complete reference for ilo's built-in functions
 | Function | Signature | Description | Example |
 |----------|-----------|-------------|---------|
 | `mmap` | `> M` | Create empty map | `m=mmap` |
-| `mget` | `M t > ?` | Get value by key | `mget m "key"` |
-| `mset` | `M t ? > M` | Set key-value pair | `mset m "key" val` |
+| `mget` | `M t > _` | Get value by key | `mget m "key"` |
+| `mset` | `M t _ > M` | Set key-value pair | `mset m "key" val` |
 | `mhas` | `M t > b` | Check if key exists | `mhas m "key"` |
 | `mkeys` | `M > L t` | Get all keys | `mkeys m` |
-| `mvals` | `M > L ?` | Get all values | `mvals m` |
+| `mvals` | `M > L _` | Get all values | `mvals m` |
 | `mdel` | `M t > M` | Remove key, return new map | `mdel m "key"` |
 
 ## Type Conversion
 
 | Function | Signature | Description | Example |
 |----------|-----------|-------------|---------|
-| `str` | `? > t` | Convert to string | `str 42` → `"42"` |
+| `str` | `_ > t` | Convert to string | `str 42` → `"42"` |
 | `num` | `t > n` | Parse string to number | `num "42"` → `42` |
 | `abs` | `n > n` | Absolute value | `abs -5` → `5` |
 | `flr` | `n > n` | Floor | `flr 3.7` → `3` |
@@ -119,16 +119,16 @@ description: Complete reference for ilo's built-in functions
 
 | Function | Signature | Description | Example |
 |----------|-----------|-------------|---------|
-| `rdb` | `t t > R ? t` | Parse data (format: `"json"`, `"csv"`) | `rdb data "json"` |
+| `rdb` | `t t > R _ t` | Parse data (format: `"json"`, `"csv"`) | `rdb data "json"` |
 | `jpth` | `t t > R t t` | Extract JSON path | `jpth data "users.0.name"` |
-| `jdmp` | `? > t` | Dump value as JSON string | `jdmp [1,2,3]` |
-| `jpar` | `t > R ? t` | Parse JSON string to value | `jpar '{"a":1}'` |
+| `jdmp` | `_ > t` | Dump value as JSON string | `jdmp [1,2,3]` |
+| `jpar` | `t > R _ t` | Parse JSON string to value | `jpar '{"a":1}'` |
 
 ## Output
 
 | Function | Signature | Description | Example |
 |----------|-----------|-------------|---------|
-| `prnt` | `? > ?` | Print value and return it | `prnt "hello"` |
+| `prnt` | `_ > _` | Print value and return it | `prnt "hello"` |
 
 ## Time
 

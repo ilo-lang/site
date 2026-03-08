@@ -5,11 +5,19 @@ description: Lists, maps, and data operations
 
 ## Lists
 
-Lists are homogeneous, every element must be the same type. The type is `L n` (list of numbers), `L t` (list of text), etc.
+Lists use `L` followed by the element type: `L n` (list of numbers), `L t` (list of text). Elements are separated by spaces or commas. Variables and expressions work as elements.
 
 ```ilo
 nums=[1 2 3 4 5]       -- L n (list of numbers)
 words=["hi" "bye"]     -- L t (list of text)
+w="world"
+greet=["hi" w]         -- L t (variable in list)
+```
+
+Lists can contain mixed types using `L _` (any element type):
+
+```ilo
+args=["search" 10 true] -- L _ (heterogeneous list)
 ```
 
 ### Operations

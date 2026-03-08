@@ -11,19 +11,19 @@ ilo has built-in support for reading and writing files, making HTTP requests, an
 
 | Extension | Returns |
 |-----------|---------|
-| `.csv` | `R ? t` -- list of lists (grid) |
-| `.tsv` | `R ? t` -- list of lists (grid) |
-| `.json` | `R ? t` -- parsed JSON value |
-| other | `R ? t` -- raw text string |
+| `.csv` | `R _ t` -- list of lists (grid) |
+| `.tsv` | `R _ t` -- list of lists (grid) |
+| `.json` | `R _ t` -- parsed JSON value |
+| other | `R _ t` -- raw text string |
 
 ```ilo
-load p:t>R ? t;rd p
+load p:t>R _ t;rd p
 ```
 
 Force a specific format with a second argument:
 
 ```ilo
-load p:t>R ? t;rd p "json"
+load p:t>R _ t;rd p "json"
 ```
 
 ### Reading lines
@@ -39,7 +39,7 @@ lines p:t>R L t t;rdl p
 `rdb string format` parses a string in a given format - useful for data received from HTTP responses:
 
 ```ilo
-parse s:t>R ? t;rdb s "json"
+parse s:t>R _ t;rdb s "json"
 ```
 
 ## Writing files

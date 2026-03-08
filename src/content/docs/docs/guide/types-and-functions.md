@@ -16,17 +16,20 @@ funcname param1:type param2:type>returntype;body
 | `n` | Number | Integers and floats |
 | `t` | Text | Strings |
 | `b` | Boolean | `true` / `false` |
-| `?` | Any | Accepts any type |
+| `_` | Any | Wildcard — accepts any type |
 | `L` | List | Ordered collection `[1 2 3]` |
 | `M` | Map | Key-value pairs `{"key" "val"}` |
 | `R` | Result | Success or error value |
+| `O` | Optional | Nil or a value: `O n` |
+
+`_` means "don't care" — same as in match patterns. Use it for heterogeneous lists (`L _`), results where you ignore a type (`R _ t`), or generic parameters (`x:_`).
 
 ## Examples
 
 ```ilo
 dbl x:n>n;*x 2                            -- number → number
 greet first:t last:t>t;cat first " " last -- text params, text return
-truthy x:?>b;!!x                          -- any type, boolean return
+truthy x:_>b;!!x                          -- any type, boolean return
 pi>n;3.14159                              -- zero-arg function
 ```
 

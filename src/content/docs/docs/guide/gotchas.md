@@ -3,22 +3,21 @@ title: Gotchas
 description: Common surprises and disambiguation in ilo
 ---
 
-## `?` is context-sensitive
+## `?` and `_` — context-sensitive symbols
 
-`?` has three meanings depending on position:
+`?` has two meanings, `_` has two meanings:
 
 | Context | Syntax | Meaning |
 |---------|--------|---------|
-| Type annotation | `x:?` | Unknown/any type |
+| Type annotation | `x:_` | Any/unknown type (wildcard) |
 | Match expression | `?x{...}` | Match on value |
 | Prefix ternary | `?=x 0 10 20` | Conditional expression |
+| Match wildcard | `_:"default"` | Catch-all arm |
 
-The parser disambiguates by position: type annotations appear after `:`, match expressions start a statement, and prefix ternaries follow `?` with a comparison operator.
-
-This can look dense in inline code:
+`_` means "don't care" in both type annotations and match patterns. `?` is always a conditional/match operator.
 
 ```ilo
-f x:?>t;?x{n v:"number";t v:"text";_:"other"}
+f x:_>t;?x{n v:"number";t v:"text";_:"other"}
 ```
 
-Here the first `?` is the type (unknown), and the second `?` starts a match.
+Here `_` after `:` is the any type, `?` starts a match, and `_:` in the match is the wildcard arm.

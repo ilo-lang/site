@@ -10,9 +10,9 @@ Practical patterns you can copy and adapt. Each example is a complete, runnable 
 Fetch JSON from an API, filter positive values, sum them:
 
 ```ilo
-fetch url:t>R ? t;r=($!url);rdb! r "json"
-pos x:?>b;>x 0
-proc rows:L ?>n;clean=flt pos rows;sum clean
+fetch url:t>R _ t;r=($!url);rdb! r "json"
+pos x:_>b;>x 0
+proc rows:L _>n;clean=flt pos rows;sum clean
 ```
 
 Three functions, no boilerplate. `$!` auto-unwraps the HTTP response. `rdb!` parses JSON. `flt` keeps only elements where `pos` returns true.
