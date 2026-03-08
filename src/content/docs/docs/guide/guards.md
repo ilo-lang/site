@@ -114,15 +114,23 @@ A guard with **two** brace blocks is a ternary - it produces a value without ret
 x == 1 ? "yes" : "no"      -- JS          (22 chars, 7 tokens)
 ```
 
+Braced:
+
 ```ilo
 f x:n>t;=x 1{"yes"}{"no"}
+```
+
+Prefix:
+
+```ilo
+f x:n>t;?=x 1 "yes" "no"
 ```
 
 ```bash
 ilo 'f x:n>t;=x 1{"yes"}{"no"}' 1
 # → yes
 
-ilo 'f x:n>t;=x 1{"yes"}{"no"}' 2
+ilo 'f x:n>t;?=x 1 "yes" "no"' 2
 # → no
 ```
 
