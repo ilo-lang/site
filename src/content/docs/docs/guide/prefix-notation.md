@@ -71,7 +71,7 @@ ilo emits a hint to stderr (or in the JSON `hints` array) suggesting the prefix 
 | `\|a b` | `a \| b` | logical OR (short-circuit) | any (truthy) |
 
 :::note
-The `=` operator is used for both equality checks and assignment depending on context. This is under review. See [issue #120](https://github.com/ilo-lang/ilo/issues/120).
+Both `=` and `==` currently mean equality in prefix position. This syntax is under review. See [issue #120](https://github.com/ilo-lang/ilo/issues/120).
 :::
 
 ### Unary operators
