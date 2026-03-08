@@ -5,11 +5,16 @@ description: Lists, maps, and data operations
 
 ## Lists
 
+Lists are homogeneous, every element must be the same type. The type is `L n` (list of numbers), `L t` (list of text), etc.
+
 ```ilo
-nums=[1 2 3 4 5]
+nums=[1 2 3 4 5]       -- L n (list of numbers)
+words=["hi" "bye"]     -- L t (list of text)
 ```
 
 ### Operations
+
+Built-in functions for working with lists:
 
 ```ilo
 len nums        -- → 5
@@ -17,23 +22,100 @@ hd nums         -- → 1 (first element)
 tl nums         -- → [2 3 4 5] (rest)
 nums.2          -- → 3 (dot-notation, zero-indexed)
 +=nums 6        -- → [1 2 3 4 5 6] (append)
+rev nums        -- → [5 4 3 2 1] (reverse)
+srt nums        -- → [1 2 3 4 5] (sort ascending)
+rev(srt nums)   -- → [5 4 3 2 1] (sort descending)
+```
+
+#### `srt` / `sort` with key function
+
+`srt` also accepts a key function for sort-by (`srt fn list`):
+
+```ilo
+neg x:n>n;-x                              -- negate a number
+srt neg nums                              -- sort by negative → [5 4 3 1 1]
+
+slen s:t>n;len s                          -- string length as key
+srt slen ["banana" "fig" "apple" "kiwi"]  -- → [fig kiwi apple banana]
+```
+
+Number functions that pair well with lists:
+
+```ilo
+flr 3.7         -- → 3 (floor)
+cel 3.2         -- → 4 (ceiling)
+rou 3.5         -- → 4 (round)
 ```
 
 ### Higher-order functions
 
+Pass functions to `map`, `flt`, and `fld` to transform, filter, and reduce lists. Most builtins have a short and long form, both work: `flt` or `filter`, `fld` or `fold`, `srt` or `sort`, etc. See the full [alias table](/docs/reference/builtins#builtin-aliases). The examples below use short forms inline and long forms in multiline.
+
+#### `map`
+
+`map fn list` applies `fn` to every element, returning a new list:
+
 ```ilo
-dbl x:n>n;*x 2
-map dbl nums     -- → [2 4 6 8 10]
+dbl x:n>n;*x 2 main xs:L n>L n;map dbl xs  -- → [2 4 6 8 10]
+```
 
-pos x:n>b;>x 0
-flt pos nums     -- → [1 2 3 4 5]
+Or as a file:
 
-sum nums         -- → 15
+```ilo
+double x:n > n           -- double a number
+  *x 2                   -- multiply x by 2
+
+main nums:L n > L n      -- map double over a list
+  map double nums        -- → [2 4 6 8 10]
+```
+
+#### `flt` / `filter`
+
+`flt fn list` keeps only elements where `fn` returns true:
+
+```ilo
+pos x:n>b;>x 0 main xs:L n>L n;flt pos xs  -- → [1 2 3 4 5]
+```
+
+Or as a file:
+
+```ilo
+positive x:n > b         -- is positive?
+  > x 0                  -- x greater than 0
+
+main nums:L n > L n      -- keep only positives
+  filter positive nums   -- → [1 2 3 4 5]
+```
+
+#### `fld` / `fold`
+
+`fld fn init list` reduces a list to a single value. Applies `fn` to an accumulator and each element left-to-right. Like `reduce` in JavaScript or `foldl` in Haskell:
+
+```ilo
+add a:n b:n>n;+a b main xs:L n>n;fld add 0 xs  -- → 15
+```
+
+Or as a file:
+
+```ilo
+add a:n b:n > n          -- add two numbers
+  +a b                   -- return a + b
+
+main nums:L n > n        -- sum via fold
+  fold add 0 nums       -- → 15
+```
+
+#### `sum`
+
+Shorthand for folding with addition:
+
+```ilo
+sum nums                 -- → 15
 ```
 
 ## Dot-notation indexing
 
-Access list elements by index with `.`:
+Access elements by index (zero-based) using `.`. Works on lists and maps:
 
 ```ilo
 xs.0            -- first element
@@ -49,7 +131,7 @@ user.?email     -- nil if "email" doesn't exist
 
 ## Iterating with `@`
 
-`@` loops over a list or range. The last iteration's value is returned:
+`@` is ilo's loop construct. It iterates over a list or range, and returns the last iteration's value:
 
 ```ilo
 sq-last xs:L n>n;@x xs{*x x}
@@ -75,6 +157,8 @@ ilo 'f>L n;xs=[];@i 0..3{xs=+=xs i};xs' f
 ```
 
 ## Slice, contains, and append
+
+Common operations for working with lists and text:
 
 ### `slc` - slice a list or text
 
@@ -108,7 +192,7 @@ ilo 'f xs:L n>L n;+=xs 99' 1,2,3
 
 ## Maps (`M k v`)
 
-Maps are key-value collections. Keys are always text at runtime. Maps are immutable - `mset` and `mdel` return new maps.
+Maps are key-value collections, like dictionaries in Python or objects in JavaScript. Keys are always text. Maps are immutable: `mset` and `mdel` return new maps rather than modifying in place.
 
 ### Creating maps with `mmap` and `mset`
 
@@ -146,6 +230,8 @@ ilo 'check>b;m=mset mmap "x" "1";mhas m "x"' check
 ```
 
 ## Aggregation
+
+Functions that reduce a collection to a single value:
 
 ### `sum` and `avg`
 
@@ -190,6 +276,8 @@ ilo 'f xs:L t>L t;unq xs' a,b,a,c,b
 ```
 
 ## String builtins
+
+Built-in functions for text manipulation:
 
 | Call | Meaning |
 |------|---------|

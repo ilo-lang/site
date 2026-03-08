@@ -46,27 +46,27 @@ description: Complete reference for ilo's built-in functions
 
 ## Collections (Lists)
 
-| Function | Signature | Description | Example |
-|----------|-----------|-------------|---------|
-| `len` | `L ? > n` | List length | `len [1,2,3]` → `3` |
-| `hd` | `L ? > ?` | First element | `hd [1,2,3]` → `1` |
-| `tl` | `L ? > L ?` | All elements except first | `tl [1,2,3]` → `[2,3]` |
-| `rev` | `L ? > L ?` | Reverse a list | `rev [1,2,3]` → `[3,2,1]` |
-| `srt` | `L ? > L ?` | Sort a list | `srt [3,1,2]` → `[1,2,3]` |
-| `srt` | `fn L ? > L ?` | Sort with comparator | `srt cmp xs` |
-| `slc` | `L ? n n > L ?` | Slice (start, end) | `slc [1,2,3,4] 1 3` → `[2,3]` |
-| `flat` | `L L ? > L ?` | Flatten nested lists | `flat [[1,2],[3]]` → `[1,2,3]` |
-| `unq` | `L ? > L ?` | Remove duplicates | `unq [1,2,2,3]` → `[1,2,3]` |
-| `has` | `L ? ? > b` | Check if list contains element | `has [1,2,3] 2` → `true` |
+| Function | Alias | Signature | Description | Example |
+|----------|-------|-----------|-------------|---------|
+| `len` | `length` | `L ? > n` | List length | `len [1,2,3]` → `3` |
+| `hd` | `head` | `L ? > ?` | First element | `hd [1,2,3]` → `1` |
+| `tl` | `tail` | `L ? > L ?` | All elements except first | `tl [1,2,3]` → `[2,3]` |
+| `rev` | `reverse` | `L ? > L ?` | Reverse a list | `rev [1,2,3]` → `[3,2,1]` |
+| `srt` | `sort` | `L ? > L ?` | Sort a list | `srt [3,1,2]` → `[1,2,3]` |
+| `srt` | `sort` | `fn L ? > L ?` | Sort by key function | `srt cmp xs` |
+| `slc` | `slice` | `L ? n n > L ?` | Slice (start, end) | `slc [1,2,3,4] 1 3` → `[2,3]` |
+| `flat` | `flatten` | `L L ? > L ?` | Flatten nested lists | `flat [[1,2],[3]]` → `[1,2,3]` |
+| `unq` | `unique` | `L ? > L ?` | Remove duplicates | `unq [1,2,2,3]` → `[1,2,3]` |
+| `has` | `contains` | `L ? ? > b` | Check if list contains element | `has [1,2,3] 2` → `true` |
 
 ## Higher-Order Functions
 
-| Function | Signature | Description | Example |
-|----------|-----------|-------------|---------|
-| `map` | `fn L ? > L ?` | Apply function to each element | `map dbl [1,2,3]` |
-| `flt` | `fn L ? > L ?` | Keep elements where function returns true | `flt pos [1,-2,3]` |
-| `fld` | `fn L ? ? > ?` | Reduce list to single value | `fld add [1,2,3] 0` |
-| `grp` | `fn L ? > M t L ?` | Group elements by function result | `grp cat xs` |
+| Function | Alias | Signature | Description | Example |
+|----------|-------|-----------|-------------|---------|
+| `map` | | `fn L ? > L ?` | Apply function to each element | `map dbl [1,2,3]` |
+| `flt` | `filter` | `fn L ? > L ?` | Keep elements where function returns true | `flt pos [1,-2,3]` |
+| `fld` | `fold` | `fn ? L ? > ?` | Reduce list to single value | `fld add 0 [1,2,3]` |
+| `grp` | `group` | `fn L ? > M t L ?` | Group elements by function result | `grp cat xs` |
 
 ## Aggregation
 

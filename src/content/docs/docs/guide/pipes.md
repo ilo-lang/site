@@ -3,12 +3,12 @@ title: Pipes
 description: Function chaining with the pipe operator
 ---
 
-The pipe operator `>>` chains function calls left-to-right:
+Inspired by Unix shell pipes (`|`), the pipe operator `>>` chains function calls left-to-right:
 
 ```ilo
-dbl x:n>n;*x 2
-inc x:n>n;+x 1
-transform x:n>n;(x>>dbl>>inc)
+dbl x:n>n;*x 2                  -- double a number
+inc x:n>n;+x 1                  -- add 1
+transform x:n>n;(x>>dbl>>inc)   -- double, then add 1
 ```
 
 `x>>dbl>>inc` means: take `x`, pass to `dbl`, pass result to `inc`.
@@ -27,40 +27,6 @@ transform x:n>n;(x>>dbl>>inc)
 
 Pipes read left-to-right, matching the data flow direction.
 
-## Multi-function programs
-
-ilo programs can contain multiple functions. Each function is a named declaration separated by a newline (in files) or a space (inline):
-
-```ilo
-dbl x:n>n;*x 2
-inc x:n>n;+x 1
-sq x:n>n;*x x
-```
-
-### Selecting a function from the CLI
-
-When a program has multiple functions, name the one you want to run:
-
-```bash
-ilo program.ilo dbl 5
-# → 10
-
-ilo program.ilo sq 5
-# → 25
-```
-
-Inline programs work the same way:
-
-```bash
-ilo 'dbl x:n>n;*x 2 sq x:n>n;*x x' dbl 5
-# → 10
-
-ilo 'dbl x:n>n;*x 2 sq x:n>n;*x x' sq 5
-# → 25
-```
-
-If you omit the function name, ilo runs the first one.
-
 ## Composition patterns
 
 Pipes shine when you compose small, reusable functions into larger transforms.
@@ -68,12 +34,11 @@ Pipes shine when you compose small, reusable functions into larger transforms.
 ### Chaining numeric transforms
 
 ```ilo
-dbl x:n>n;*x 2
-inc x:n>n;+x 1
-sq x:n>n;*x x
+dbl x:n>n;*x 2                      -- double a number
+inc x:n>n;+x 1                      -- add 1
+sq x:n>n;*x x                       -- square a number
 
--- double, increment, then square
-transform x:n>n;(x>>dbl>>inc>>sq)
+transform x:n>n;(x>>dbl>>inc>>sq)   -- double, add 1, then square
 ```
 
 ```bash
@@ -83,20 +48,24 @@ ilo 'dbl x:n>n;*x 2 inc x:n>n;+x 1 sq x:n>n;*x x transform x:n>n;(x>>dbl>>inc>>s
 
 ### Chaining list operations
 
-Pipes work naturally with list higher-order functions like `map`, `flt`, and `fld`:
+Pipes work naturally with list higher-order functions:
+
+- `map fn list` applies `fn` to every element
+- `flt fn list` keeps elements where `fn` returns true (filter)
+- `fld fn init list` reduces a list to a single value (fold)
 
 ```ilo
-sq x:n>n;*x x
-pos x:n>b;>x 0
-main xs:L n>L n;xs >> flt pos >> map sq
+sq x:n>n;*x x                             -- square a number
+pos x:n>b;>x 0                            -- is positive?
+main xs:L n>L n;xs >> flt pos >> map sq   -- filter positives, square each
 ```
+
+Read it left to right: take `xs`, keep only positives, square each.
 
 ```bash
 ilo 'sq x:n>n;*x x pos x:n>b;>x 0 main xs:L n>L n;xs >> flt pos >> map sq' main -3,-1,0,2,4
-# → [4, 16]
+# → [4, 16]  (-3,-1,0 filtered out; 2→4, 4→16)
 ```
-
-Read it: take `xs`, filter to positives, square each. Data flows left to right.
 
 ### Eliminating intermediate variables
 
