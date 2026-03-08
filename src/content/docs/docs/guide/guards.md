@@ -156,8 +156,21 @@ Ternary syntax is under review - one of these forms may be removed in a future r
 
 For value matching:
 
+Inline:
+
 ```ilo
 describe x:t>t;?x{"dog":"woof";"cat":"meow";_:"unknown"}
+```
+
+Or as a file:
+
+```ilo
+describe x:t > t
+  ? x {
+    "dog": "woof"
+    "cat": "meow"
+    _: "unknown"
+  }
 ```
 
 `_` is the wildcard arm - catches everything else. No fall-through; each arm is independent.
