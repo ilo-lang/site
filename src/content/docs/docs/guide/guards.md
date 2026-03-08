@@ -137,6 +137,36 @@ Code after a ternary keeps running - only single-brace guards return from the fu
 
 Negated ternary works too: `!=x 1{"not one"}{"one"}`.
 
+### Prefix ternary
+
+For a fully prefix-style ternary, use `?` followed by a comparison:
+
+```
+?=x 0 10 20            -- ilo prefix (14 chars, 5 tokens)
+=x 0{10}{20}           -- ilo braced  (12 chars, 5 tokens)
+x == 0 ? 10 : 20       -- JS          (17 chars, 7 tokens)
+```
+
+```ilo
+f x:n>n;?=x 0 10 20
+```
+
+```bash
+ilo 'f x:n>n;?=x 0 10 20' f 0
+# → 10
+
+ilo 'f x:n>n;?=x 0 10 20' f 5
+# → 20
+```
+
+You can assign the result to a variable:
+
+```ilo
+f x:n>n;v=?>x 100 1 0;*v x
+```
+
+The condition must start with a comparison operator (`=`, `>`, `<`, `>=`, `<=`, `!=`).
+
 ## Match expressions
 
 For value matching:
