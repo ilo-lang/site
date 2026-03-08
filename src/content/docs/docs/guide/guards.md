@@ -94,11 +94,8 @@ Negated braceless guards work with any comparison. Use [`^` (throw)](/docs/guide
 The return value can be enclosed in braces. Both forms produce identical results:
 
 ```ilo
--- braceless (saves 2 tokens per guard)
->=sp 1000 "gold"
-
--- braced
->=sp 1000{"gold"}
+>=sp 1000 "gold"    -- braceless
+>=sp 1000{"gold"}   -- braced (identical result)
 ```
 
 Use braces when the body has multiple statements:
