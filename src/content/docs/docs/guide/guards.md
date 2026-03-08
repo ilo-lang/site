@@ -129,6 +129,10 @@ f x:n>n;v=?=x 0 10 20;+v 1   -- v is 10 or 20, then add 1
 
 Prefix ternary requires a comparison operator (`=`, `>`, `<`, `>=`, `<=`, `!=`). Braced ternary supports negation: `!=x 1{"not one"}{"one"}`.
 
+:::note
+Ternary syntax is under review - one of these forms may be removed in a future release. See [issue #119](https://github.com/ilo-lang/ilo/issues/119).
+:::
+
 ## Match expressions
 
 For value matching:
