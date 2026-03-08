@@ -132,7 +132,7 @@ f x:n>n;=x 0{10}{20}   -- returns 10 if x is 0, otherwise 20
 ```
 
 :::caution[Gotcha]
-Code after a ternary keeps running. A ternary does **not** return from the function - only single-brace guards do that.
+Code after a ternary keeps running - only single-brace guards return from the function.
 :::
 
 Negated ternary works too: `!=x 1{"not one"}{"one"}`.
