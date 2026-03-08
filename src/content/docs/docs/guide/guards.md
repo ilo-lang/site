@@ -106,7 +106,7 @@ Use braces when the body has multiple statements:
 
 ## Ternary
 
-Like `x == 0 ? 10 : 20` in JS/C/Go, a ternary produces a value. Unlike guards, it does **not** return early - code after it keeps running. If it's the last expression in the function, its value is returned.
+Like `x == 0 ? 10 : 20` in JS/C/Go, a ternary produces a value. Unlike guards, it does **not** return early - code after it keeps running, unless it's the last expression in the function.
 
 ### Prefix ternary
 
