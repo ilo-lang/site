@@ -106,28 +106,47 @@ Use braces when the body has multiple statements:
 
 ## Ternary
 
-A ternary produces a value without returning from the function. Two syntaxes:
+A ternary produces a value without returning from the function. Unlike guards, it does **not** return early - code after it keeps running.
 
-```
-?=x 0 10 20            -- prefix: ? comparison then else
-=x 0{10}{20}           -- braced: condition{then}{else}
+### Prefix ternary
+
+`?` followed by a comparison operator, then the true and false values:
+
+```ilo
+f x:n>n;?=x 0 10 20
 ```
 
 ```bash
 ilo 'f x:n>n;?=x 0 10 20' f 0
 # → 10
 
-ilo 'f x:n>n;=x 0{10}{20}' f 0
-# → 10
+ilo 'f x:n>n;?=x 0 10 20' f 5
+# → 20
 ```
 
-Unlike guards, a ternary does **not** return from the function - it's an expression that evaluates to a value. Code after it keeps running:
+The condition must start with a comparison operator (`=`, `>`, `<`, `>=`, `<=`, `!=`). You can assign the result:
 
 ```ilo
 f x:n>n;v=?=x 0 10 20;+v 1   -- v is 10 or 20, then add 1
 ```
 
-Prefix ternary requires a comparison operator (`=`, `>`, `<`, `>=`, `<=`, `!=`). Braced ternary supports negation: `!=x 1{"not one"}{"one"}`.
+### Braced ternary
+
+A guard with **two** brace blocks - `{then}{else}`:
+
+```ilo
+f x:n>t;=x 1{"yes"}{"no"}
+```
+
+```bash
+ilo 'f x:n>t;=x 1{"yes"}{"no"}' 1
+# → yes
+
+ilo 'f x:n>t;=x 1{"yes"}{"no"}' 2
+# → no
+```
+
+Supports negation: `!=x 1{"not one"}{"one"}`.
 
 :::note
 Ternary syntax is under review - one of these forms may be removed in a future release. See [issue #119](https://github.com/ilo-lang/ilo/issues/119).
