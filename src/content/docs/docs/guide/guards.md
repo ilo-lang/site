@@ -7,13 +7,13 @@ ilo uses **guards** instead of if/else. Guards are flat statements that return e
 
 ## Basic guards
 
-Inline example (semicolons replace newlines):
+Inline (semicolons replace newlines):
 
 ```ilo
 grd s:n>t;>=s 90 "A";>=s 80 "B";>=s 70 "C";"F"
 ```
 
-Or as a file (newlines and indentation):
+Or the same thing as a file (newlines and indentation):
 
 ```ilo
 grade score:n > t    -- number in, text out
@@ -44,9 +44,13 @@ Guards eliminate `if`/`elif`/`else` keywords, braces, and deep nesting - fewer t
 
 ## Boolean guards
 
+Inline:
+
 ```ilo
 chk x:n>t;==x 0 "zero";>x 0 "positive";"negative"
 ```
+
+Or as a file:
 
 ```ilo
 check x:n > t        -- number in, text out
@@ -59,9 +63,13 @@ check x:n > t        -- number in, text out
 
 Prefix a guard with `!` to negate the condition:
 
+Inline:
+
 ```ilo
 f x:n>n;!>x 0 0;x
 ```
+
+Or as a file:
 
 ```ilo
 f x:n > n  -- number in, number out
