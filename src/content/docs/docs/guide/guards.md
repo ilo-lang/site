@@ -271,7 +271,7 @@ Or as a file:
 
 ```ilo
 f xs:L n > n              -- list of numbers in, number out
-  @ x xs {                -- loop over list
+  @x xs {                 -- loop over list
     >= x 10 { ret x }    -- if x >= 10, return it early
   }                        -- end loop
   0                        -- fallback if none found

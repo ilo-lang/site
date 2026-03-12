@@ -19,7 +19,7 @@ Or as a file:
 
 ```ilo
 sq-last xs:L n > n     -- list of numbers in, number out
-  @ x xs {             -- for each x in xs
+  @x xs {             -- for each x in xs
     * x x              -- square x
   }                    -- returns last squared value
 ```
@@ -34,7 +34,7 @@ Variables from the outer scope can be updated inside the loop body:
 ```ilo
 total xs:L n > n       -- sum a list manually
   s = 0                -- accumulator
-  @ x xs {             -- for each x in xs
+  @x xs {             -- for each x in xs
     s = + s x          -- add x to s
   }
   s                    -- return the sum
@@ -62,7 +62,7 @@ Or as a file:
 ```ilo
 f > n                  -- no params, returns number
   s = 0                -- accumulator
-  @ i 0..5 {           -- i goes 0, 1, 2, 3, 4
+  @i 0..5 {           -- i goes 0, 1, 2, 3, 4
     s = + s i          -- add i to s
   }
   s                    -- → 10
@@ -132,7 +132,7 @@ In ilo, [guards](/docs/guide/guards) inside loops keep the body flat — no inde
 ```ilo
 count-passing scores:L n > n
   c = 0
-  @ s scores {
+  @s scores {
     = s 100 { ret + c 1 }   -- perfect score, return early
     >= s 60 { c = + c 1 }   -- passing score, increment
   }
@@ -183,7 +183,7 @@ Or as a file:
 
 ```ilo
 first-big xs:L n > n        -- find first element >= 10
-  @ x xs {                  -- loop over list
+  @x xs {                  -- loop over list
     >= x 10 { ret x }       -- if x >= 10, return it
   }
   0                          -- fallback if none found
