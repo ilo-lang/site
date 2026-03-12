@@ -1,0 +1,491 @@
+---
+// Manifesto page — same visual style as landing page
+---
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Manifesto — ilo</title>
+  <meta name="description" content="Every programming language was designed for people. ilo is designed for AI agents." />
+  <meta name="theme-color" content="#f59e0b" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">ilo</a>
+      <div class="nav-links">
+        <a href="https://github.com/ilo-lang/ilo" target="_blank" rel="noopener" class="nav-github">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <a href="/docs/introduction/" class="nav-cta">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <article class="manifesto">
+      <div class="container">
+
+        <header class="manifesto-header">
+          <h1>The ilo Manifesto</h1>
+        </header>
+
+        <section>
+          <h2>The Audience Is Not Human</h2>
+          <p>Every programming language in use today was designed for people. The syntax, the error messages, the tooling - all optimised for a brain that reads left-to-right, tracks visual indentation, and cares about aesthetics.</p>
+          <p>AI agents are not that brain. They produce tokens sequentially. They consume tokens from a finite context window. Every token they spend - generating, reading, retrying - costs real time and real money.</p>
+          <p>ilo is designed for them.</p>
+        </section>
+
+        <section>
+          <h2>The Only Metric</h2>
+          <p><strong>Total tokens from intent to working code.</strong></p>
+          <pre><code>Total cost = spec loading + generation + context loading + error feedback + retries</code></pre>
+          <p>Every design decision is evaluated against this number. If a feature reduces it, it's in. If it increases it, it's out. No exceptions for elegance, readability, or convention.</p>
+          <p>Until agents are trained on ilo, spec clarity is itself a token cost - a confusing spec means more retries. Some decisions that look like "readability" concessions are actually optimising the spec-loading term.</p>
+        </section>
+
+        <section>
+          <h2>The Five Principles</h2>
+
+          <div class="principle">
+            <h3>1. Token-Conservative</h3>
+            <p>The north star. Every choice evaluated against total token cost across the full loop - not just "short syntax," but including retries, error feedback, and context loading.</p>
+            <p>A named argument like <code>amount: 42</code> costs more tokens than positional <code>42</code>. I initially worried positional args would cause parameter-swap errors - but across 10 syntax variants and 4 task types, positional args scored 10/10 generation accuracy. The swap concern was unfounded. Positional args are the single biggest token saver.</p>
+
+            <div class="aside">
+              <strong>What the agent cares about:</strong> "How many tokens will this cost me end-to-end?"<br/>
+              <strong>How this helps:</strong> The language is as terse as possible <em>without increasing retry rate</em>. Where there's a tradeoff between generation cost and error rate, we optimise for total cost.
+            </div>
+
+            <p><strong>Prefix notation</strong> eliminates parentheses and saves tokens at every nesting level. <code>(a * b) + c</code> becomes <code>+*a b c</code> - 4 fewer characters, 1 fewer token. Deeper nesting saves more: <code>((a + b) * c) >= 100</code> becomes <code>>=*+a b c 100</code> - 7 fewer characters, 3 fewer tokens. Across 25 expression patterns, prefix notation saves 22% of tokens and 42% of characters vs infix.</p>
+
+            <p><strong>Guards instead of if/else</strong> eliminate nesting depth. In a traditional language, conditional logic stacks:</p>
+
+            <pre><code>if a:
+    if b:
+        if c:
+            return x</code></pre>
+
+            <p>Each level adds indentation, a closing brace, and more state for the agent to track. In ilo, guards are flat statements that return early and chain vertically:</p>
+
+            <pre><code>>=a 0 x   -- if a >= 0, return x; otherwise continue
+>=b 0 y   -- if b >= 0, return y; otherwise continue
+z         -- default return</code></pre>
+
+            <p>No nesting. No closing braces to match. Each guard is a single statement the agent can emit and forget. Depth stays constant regardless of how many conditions there are.</p>
+
+            <p><strong>Match instead of switch</strong> eliminates fall-through - a common source of bugs in C-style languages where missing a <code>break</code> causes execution to bleed into the next case. In ilo, each match arm is independent and exhaustive. There is no fall-through because there is no execution path between arms.</p>
+
+            <p><strong>Naming rule:</strong> prefer single-word identifiers. Across all major LLM tokenisers (OpenAI, Anthropic), common English words are 1 token. Hyphenated compounds are always 2 - the hyphen forces a token split. Every hyphen in a name doubles its token cost. Abbreviations (<code>uid</code> vs <code>user</code>) save characters but not tokens - tokenisers encode common words as single tokens either way.</p>
+          </div>
+
+          <div class="principle">
+            <h3>2. Constrained</h3>
+            <p>Small vocabulary. Closed world. Few ways to do things.</p>
+            <p>When an agent generates the next token, how many valid options are there? Fewer valid next-tokens means fewer wrong choices means fewer retries. This isn't about limiting expressiveness - it's about making the right token obvious.</p>
+            <ul>
+              <li><strong>Closed world.</strong> Every callable function is known ahead of time. The agent cannot hallucinate an API that doesn't exist.</li>
+              <li><strong>Small vocabulary.</strong> Fewer keywords, fewer constructs, one way to define a function, one way to call it, one way to handle errors.</li>
+              <li><strong>Verification before execution.</strong> All calls resolve, all types align, all dependencies exist - checked before running anything.</li>
+            </ul>
+
+            <div class="aside">
+              <strong>What the agent cares about:</strong> "At each generation step, how many valid tokens are there?"<br/>
+              <strong>How this helps:</strong> The language becomes a set of rails. Constrained generation can feed valid next-token sets back to the agent, making it <em>impossible</em> to generate invalid code.
+            </div>
+          </div>
+
+          <div class="principle">
+            <h3>3. Self-Contained</h3>
+            <p>Each unit carries its own context: deps, types, rules.</p>
+            <p>An agent working on function A shouldn't need to load functions B through Z to understand what A does. The less context required per step, the fewer tokens consumed, the more of the context window is available for the actual task.</p>
+            <ul>
+              <li><strong>Explicit dependencies.</strong> Each function declares exactly what it needs - by name, with types. No globals, no ambient state, no implicit imports.</li>
+              <li><strong>Small units.</strong> A function that fits in a few dozen tokens can be loaded, understood, and modified cheaply.</li>
+              <li><strong>Spec as context.</strong> Until foundation models are trained on ilo, agents need the spec somewhere they can access it - bundled with the program, fetched on demand, or installed locally.</li>
+            </ul>
+
+            <div class="aside">
+              <strong>What the agent cares about:</strong> "How much context do I need to load to work on this unit?"<br/>
+              <strong>How this helps:</strong> Minimal context loading per task. Each unit is self-describing. The agent never needs to hunt for definitions elsewhere.
+            </div>
+          </div>
+
+          <div class="principle">
+            <h3>4. Language-Agnostic</h3>
+            <p>Minimise dependency on English or any natural language.</p>
+            <p>Early variants used short English-derived keywords (<code>fn</code>, <code>let</code>, <code>match</code>, <code>for</code>, <code>if</code>). Experiments showed structural tokens outperform keywords entirely - the winning syntax replaced control-flow keywords with single-character sigils:</p>
+            <ul>
+              <li><code>?</code> conditional/match, <code>!</code> auto-unwrap, <code>~</code> ok-wrap, <code>^</code> err/throw, <code>@</code> iterate, <code>></code> pipe/return</li>
+              <li>Builtins are short abbreviated names: <code>len</code>, <code>hd</code>, <code>tl</code>, <code>map</code>, <code>flt</code>, <code>fld</code>, <code>srt</code>, <code>cat</code>, <code>spl</code>. A closed, memorisable set - not open-ended English.</li>
+              <li>Agents learned the full vocabulary from spec + examples with 10/10 accuracy.</li>
+            </ul>
+
+            <div class="aside">
+              <strong>What the agent cares about:</strong> "Can I learn this language from its spec and examples, regardless of my training?"<br/>
+              <strong>How this helps:</strong> The spec is small enough to bundle with any program. Keywords are learned from structure, not from natural language understanding.
+            </div>
+          </div>
+
+          <div class="principle">
+            <h3>5. Graph-Reducible</h3>
+            <p>When analysing code, reduce context size by loading only the relevant subgraph.</p>
+            <p>Writing code costs the same tokens regardless of program size. But <em>reading</em> code - understanding what exists, what calls what, what breaks if you change something - scales with program size. ilo makes the dependency graph explicit and queryable, so the agent loads only what it needs.</p>
+            <ul>
+              <li><strong>Typed signatures as contracts.</strong> Every function declares its params and return type. To understand what <code>create-user</code> does, an agent only needs its signature - not the 20 other functions in the file.</li>
+              <li><strong>Explicit dependencies.</strong> <code>use "auth.ilo" [vld-email vld-plan]</code> declares exactly what's imported. No scanning, no guessing.</li>
+              <li><strong>Queryable structure.</strong> <code>ilo graph</code> extracts call graphs, type dependencies, reverse callers, and transitive subgraphs as JSON. An agent modifying one function in a 30-function program loads 6-10% of the code instead of 100%.</li>
+            </ul>
+
+            <div class="aside">
+              <strong>What the agent cares about:</strong> "How much do I need to read before I can write?"<br/>
+              <strong>How this helps:</strong> The agent loads the target function's source, its dependencies' signatures, and the types it references - nothing more. As programs grow, the savings compound.
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Principles We Considered and Dropped</h2>
+          <p><strong>Deterministic</strong> - falls out naturally from constrained + self-contained. An agent doesn't think about determinism; it thinks "did this work?" If the language is constrained and self-contained, determinism follows.</p>
+          <p><strong>Append-only</strong> - solved by small self-contained units. If units are small enough, regenerating them is cheap and safe. No need for a structural constraint.</p>
+          <p><strong>Immediate feedback</strong> - a property of the runtime/tooling, not the language itself. Important for the ecosystem, but not a language principle.</p>
+        </section>
+
+        <section>
+          <h2>The Name</h2>
+          <p><em>ilo</em> is Toki Pona for "tool."</p>
+          <p>Toki Pona is a constructed language built around radical minimalism. ~120 words. 14 phonemes. Complex ideas expressed by combining simple terms. It constrains human expression to force clarity of thought.</p>
+          <p>ilo does the same for machine programmers. A minimal, verified vocabulary. Complex programs built by composing small, self-contained units. The constraint is the feature.</p>
+        </section>
+
+        <section>
+          <h2>What ilo Is Not</h2>
+          <p><strong>Not a framework for building AI agents.</strong> There are plenty of those. ilo is a language for agents to write programs <em>in</em>.</p>
+          <p><strong>Not optimised for human readability.</strong> Humans can read it - it's not obfuscated - but no decision is made because it "looks cleaner" or "reads more naturally." If a design is uglier but costs fewer total tokens, it wins.</p>
+          <p><strong>Not theoretical.</strong> Every principle here addresses measured failure modes in AI-generated code: hallucinated APIs, context window exhaustion, wasted retry cycles from vague errors.</p>
+        </section>
+
+        <section>
+          <h2>What ilo Is</h2>
+          <p>A <strong>minimal, verified action space</strong> - the smallest set of constructs an agent needs to express computational intent, with relationships made explicit and everything else stripped away.</p>
+        </section>
+
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <span class="footer-logo">ilo</span>
+        <span class="footer-copy">MIT License</span>
+      </div>
+      <div class="footer-links">
+        <a href="/docs/introduction/">Docs</a>
+        <a href="https://github.com/ilo-lang/ilo" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.npmjs.com/package/ilo-lang" target="_blank" rel="noopener">npm</a>
+        <a href="https://crates.io/crates/ilo" target="_blank" rel="noopener">crates.io</a>
+        <a href="https://www.reddit.com/r/ilolang/" target="_blank" rel="noopener">Reddit</a>
+        <a href="mailto:hello@ilo-lang.ai">hello@ilo-lang.ai</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
+
+<style>
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  :root {
+    --bg: #08080c;
+    --bg-raised: #0e0e14;
+    --bg-card: #111118;
+    --border: rgba(255, 255, 255, 0.06);
+    --border-hover: rgba(245, 158, 11, 0.25);
+    --text: #e4e4e8;
+    --text-muted: #7a7a90;
+    --text-dim: #3e3e52;
+    --accent: #f59e0b;
+    --accent-bright: #fbbf24;
+    --accent-dim: rgba(245, 158, 11, 0.08);
+    --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+    --font-body: 'Bricolage Grotesque', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --container: 760px;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .container {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(8, 8, 12, 0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .nav-github {
+    color: var(--text-muted);
+    transition: color 0.2s;
+  }
+
+  .nav-github:hover { color: var(--text); }
+
+  .nav-cta {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--bg);
+    background: var(--accent);
+    padding: 6px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--accent-bright); }
+
+  main { flex: 1; }
+
+  .manifesto {
+    padding: 6rem 0 4rem;
+  }
+
+  .manifesto-header {
+    margin-bottom: 4rem;
+  }
+
+  .manifesto-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .manifesto section {
+    margin-bottom: 3rem;
+  }
+
+  .manifesto h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+    color: var(--text);
+  }
+
+  .manifesto h3 {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.75rem;
+    color: var(--accent);
+  }
+
+  .manifesto p {
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .manifesto p strong {
+    color: var(--text);
+  }
+
+  .manifesto ul {
+    margin-bottom: 1rem;
+    padding-left: 1.25rem;
+  }
+
+  .manifesto li {
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 0.5rem;
+  }
+
+  .manifesto li strong {
+    color: var(--text);
+  }
+
+  .manifesto code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    color: var(--accent);
+  }
+
+  .manifesto pre {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+    overflow-x: auto;
+  }
+
+  .manifesto pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .manifesto em {
+    color: var(--text);
+    font-style: italic;
+  }
+
+  .principle {
+    margin-bottom: 2.5rem;
+    padding-left: 1.25rem;
+    border-left: 2px solid var(--border);
+  }
+
+  .aside {
+    background: var(--accent-dim);
+    border: 1px solid rgba(245, 158, 11, 0.12);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .aside strong {
+    color: var(--text);
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .footer-logo {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text);
+  }
+
+  .footer-copy {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer-links a {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--text); }
+
+  @media (max-width: 640px) {
+    .manifesto {
+      padding: 3rem 0 2rem;
+    }
+
+    .manifesto-header {
+      margin-bottom: 2.5rem;
+    }
+
+    .principle {
+      padding-left: 1rem;
+    }
+
+    .footer-inner {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+    }
+
+    .footer-links {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+</style>

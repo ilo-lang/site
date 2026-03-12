@@ -53,6 +53,7 @@ export default defineConfig({
         ThemeSelect: './src/components/ThemeSelect.astro',
       },
       sidebar: [
+        { label: 'Manifesto', link: '/manifesto' },
         {
           label: 'Getting Started',
           items: [
