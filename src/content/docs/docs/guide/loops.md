@@ -49,7 +49,7 @@ The loop binding (`x`) is fresh each iteration. Outer variables (`s`) persist ac
 
 ## Range — `@binding start..end{body}`
 
-Iterates from `start` (inclusive) to `end` (exclusive):
+ilo's equivalent of a traditional `for` loop. Iterates from `start` (inclusive) to `end` (exclusive):
 
 Inline:
 
