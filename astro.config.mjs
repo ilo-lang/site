@@ -71,6 +71,7 @@ export default defineConfig({
             { label: 'Prefix Notation', slug: 'docs/guide/prefix-notation' },
             { label: 'Guards & Control Flow', slug: 'docs/guide/guards' },
             { label: 'Collections', slug: 'docs/guide/collections' },
+            { label: 'Loops', slug: 'docs/guide/loops' },
             { label: 'Pipes', slug: 'docs/guide/pipes' },
             { label: 'Error Handling', slug: 'docs/guide/error-handling' },
             { label: 'Data & I/O', slug: 'docs/guide/data-io' },
