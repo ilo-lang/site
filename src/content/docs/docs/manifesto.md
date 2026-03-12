@@ -132,15 +132,15 @@ The agent loads the target function's source, its dependencies' signatures, and 
 
 ## Principles We Considered and Dropped
 
-**Deterministic** - falls out naturally from constrained + self-contained. An agent doesn't think about determinism; it thinks "did this work?" If the language is constrained and self-contained, determinism follows.
+**Deterministic** - if the language is constrained (closed world, no ambient state) and self-contained (explicit deps, pure functions), determinism falls out for free. It doesn't need its own principle because it's a consequence of principles 2 and 3 — not a design lever you pull independently.
 
-**Append-only** - solved by small self-contained units. If units are small enough, regenerating them is cheap and safe. No need for a structural constraint.
+**Append-only** - the idea was that agents should only add code, never edit it. But if units are small enough to fit in a few dozen tokens, regenerating one is cheaper than maintaining append-only structural constraints. Small self-contained units (principle 3) make this unnecessary.
 
-**Immediate feedback** - a property of the runtime/tooling, not the language itself. Important for the ecosystem, but not a language principle.
+**Immediate feedback** - fast error cycles are critical for agents, but that's a property of the runtime and tooling (`ilo verify`, typed errors, zero-startup execution), not the language design itself. It matters for the ecosystem but doesn't constrain language decisions, so it doesn't belong in the principles.
 
 ## The Name
 
-*ilo* is Toki Pona for "tool."
+*ilo* is the Toki Pona word for "tool."
 
 Toki Pona is a constructed language built around radical minimalism. ~120 words. 14 phonemes. Complex ideas expressed by combining simple terms. It constrains human expression to force clarity of thought.
 
