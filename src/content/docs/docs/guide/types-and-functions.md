@@ -22,7 +22,7 @@ funcname param1:type param2:type>returntype;body
 | `R` | Result | Success or error value |
 | `O` | Optional | Nil or a value: `O n` |
 
-`_` means "don't care" — same as in match patterns. Use it for heterogeneous lists (`L _`), results where you ignore a type (`R _ t`), or generic parameters (`x:_`).
+`_` means "don't care" — same as in match patterns. Use it for mixed-type lists (`L _`), results where you ignore a type (`R _ t`), or generic parameters (`x:_`).
 
 ## Examples
 
