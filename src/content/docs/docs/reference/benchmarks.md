@@ -17,8 +17,8 @@ ilo has four execution backends:
 |---------|------|-------|
 | **ilo AOT** | `ilo compile` | Cranelift ahead-of-time compiler → standalone native binary |
 | **ilo JIT** | `ilo` *(default)* | Cranelift-based just-in-time compiler |
-| **ilo VM** | `--run-vm` | Register-based bytecode virtual machine |
-| **Interpreter** | `--run-tree` | Tree-walking interpreter (simplest, slowest) |
+| **ilo VM** | `ilo --run-vm` | Register-based bytecode virtual machine |
+| **Interpreter** | `ilo --run-tree` | Tree-walking interpreter (simplest, slowest) |
 
 ## Languages tested
 
