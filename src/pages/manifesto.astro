@@ -46,7 +46,11 @@
         <section>
           <h2>The Only Metric</h2>
           <p><strong>Total tokens from intent to working code.</strong></p>
-          <pre><code>Total cost = spec loading + generation + context loading + error feedback + retries</code></pre>
+          <pre><code>Total cost = spec loading
+           + generation
+           + context loading
+           + error feedback
+           + retries</code></pre>
           <p>Every design decision is evaluated against this number. If a feature reduces it, it's in. If it increases it, it's out. No exceptions for elegance, readability, or convention.</p>
           <p>Until agents are trained on ilo, spec clarity is itself a token cost - a confusing spec means more retries. Some decisions that look like "readability" concessions are actually optimising the spec-loading term.</p>
         </section>
