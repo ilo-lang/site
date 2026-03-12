@@ -85,6 +85,7 @@ export default defineConfig({
             { label: 'CLI Reference', slug: 'docs/reference/cli' },
             { label: 'Built-in Functions', slug: 'docs/reference/builtins' },
             { label: 'Error Codes', slug: 'docs/reference/error-codes' },
+            { label: 'Benchmarks', slug: 'docs/reference/benchmarks' },
           ],
         },
         {
