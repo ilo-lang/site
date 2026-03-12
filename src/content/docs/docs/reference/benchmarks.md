@@ -190,14 +190,4 @@ ilo has four execution backends:
 - Each benchmark warms up before timing begins
 - Compiled languages use optimised builds (`-O2` / `-O`)
 - V8 and LuaJIT benefit from JIT warmup during the iteration loop
-- Results are from 2026-03-12 — run `./research/bench/run.sh` to regenerate
-
-## Reproduce
-
-```bash
-# from the ilo repo root
-cargo build --release --features cranelift
-./research/bench/run.sh 10000
-```
-
-This automatically updates this page.
+- Results are from 2026-03-12
