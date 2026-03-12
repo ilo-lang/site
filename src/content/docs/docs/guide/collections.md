@@ -11,7 +11,7 @@ Lists use `L` followed by the element type: `L n` (list of numbers), `L t` (list
 nums=[1 2 3 4 5]        -- L n (list of numbers)
 words=["hi" "bye"]      -- L t (list of text)
 w="world"
-greet=["hi" w]          -- L t (variable in list)
+greet=["hi" w]          -- L t (variables work too)
 args=["search" 10 true] -- L _ (mixed types)
 ```
 
