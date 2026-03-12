@@ -87,6 +87,7 @@ export default defineConfig({
             { label: 'Built-in Functions', slug: 'docs/reference/builtins' },
             { label: 'Error Codes', slug: 'docs/reference/error-codes' },
             { label: 'Benchmarks', slug: 'docs/reference/benchmarks' },
+            { label: 'Syntax Experiments', slug: 'docs/reference/syntax-experiments' },
           ],
         },
         {
