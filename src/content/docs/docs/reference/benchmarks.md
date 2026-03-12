@@ -11,7 +11,7 @@ These are micro-benchmarks — they measure raw execution speed, not end-to-end 
 
 ## Execution engines
 
-ilo has three execution backends:
+ilo has two execution backends:
 
 - **ilo VM** — register-based bytecode virtual machine (default)
 - **ilo JIT** — Cranelift-based just-in-time compiler (opt-in via `--features cranelift`)
