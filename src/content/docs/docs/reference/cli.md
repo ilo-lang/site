@@ -35,6 +35,7 @@ ilo 'dbl x:n>n;*x 2 tot p:n q:n r:n>n;s=*p q;t=*s r;+s t' tot 10 20 30
 | `--tools tools.json` | Load HTTP tool declarations |
 | `--mcp mcp.json` | Connect MCP servers |
 | `--no-hints`, `-nh` | Suppress idiomatic hints |
+| `compile` | AOT compile to standalone native binary |
 
 ## List arguments
 
@@ -172,6 +173,29 @@ Error code prefixes indicate the phase:
 | `ILO-R___` | Runtime (execution) |
 
 The verifier provides context-aware hints: "did you mean?" suggestions (Levenshtein-based), type conversion advice, missing match arms, and arity mismatches.
+
+## AOT compilation
+
+Compile an ilo program to a standalone native binary:
+
+```bash
+ilo compile program.ilo              # → outputs ./program
+ilo compile program.ilo -o mybin     # → outputs ./mybin
+ilo compile 'f x:n>n;*x 2' -o dbl   # inline code
+ilo compile program.ilo -o bin func  # compile specific function
+```
+
+The compiler uses Cranelift to emit native machine code, links with the system `cc`, and produces a self-contained executable with no runtime dependencies.
+
+```bash
+ilo compile 'dbl x:n>n;*x 2' -o dbl
+./dbl 5
+# → 10
+```
+
+**Current scope:** numeric-only programs (arithmetic, comparisons, guards, loops). Programs using strings, lists, records, or function calls will get a clear compile-time error indicating what isn't yet supported.
+
+Requires the `cranelift` feature (enabled by default in release builds).
 
 ## Backend selection
 
