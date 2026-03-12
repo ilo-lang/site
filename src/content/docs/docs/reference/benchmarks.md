@@ -34,17 +34,17 @@ ilo has three execution backends:
 
 | Language | ns/call | vs fastest |
 |----------|--------:|------------|
-| Rust (native) | 119ns | **fastest** |
-| Go | 287ns | 2.4x |
-| LuaJIT | 288ns | 2.4x |
-| TypeScript | 446ns | 3.7x |
-| Node/V8 | 455ns | 3.8x |
-| ilo JIT | 4.2us | 35.2x |
-| Lua | 6.0us | 50.7x |
-| PHP | 6.5us | 54.9x |
-| ilo VM | 13.7us | 115.4x |
-| Ruby | 23.8us | 199.9x |
-| Python 3 | 41.4us | 348.0x |
+| Rust (native) | 139ns | **fastest** |
+| LuaJIT | 430ns | 3.1x |
+| TypeScript | 436ns | 3.1x |
+| Go | 473ns | 3.4x |
+| Node/V8 | 477ns | 3.4x |
+| ilo JIT | 4.2us | 30.1x |
+| Lua | 6.0us | 42.8x |
+| PHP | 6.5us | 46.9x |
+| ilo VM | 13.5us | 96.8x |
+| Ruby | 22.5us | 161.8x |
+| Python 3 | 42.1us | 302.8x |
 
 ### string
 
@@ -52,17 +52,17 @@ ilo has three execution backends:
 
 | Language | ns/call | vs fastest |
 |----------|--------:|------------|
-| Rust (native) | 134ns | **fastest** |
-| TypeScript | 395ns | 2.9x |
-| Node/V8 | 438ns | 3.3x |
-| LuaJIT | 768ns | 5.7x |
-| PHP | 1.3us | 9.9x |
-| Go | 2.3us | 17.1x |
-| Python 3 | 2.7us | 19.8x |
-| ilo JIT | 3.3us | 24.7x |
-| ilo VM | 5.2us | 38.8x |
-| Lua | 5.6us | 41.5x |
-| Ruby | 9.4us | 69.9x |
+| Rust (native) | 308ns | **fastest** |
+| TypeScript | 393ns | 1.3x |
+| Node/V8 | 446ns | 1.4x |
+| LuaJIT | 923ns | 3.0x |
+| PHP | 1.3us | 4.2x |
+| Python 3 | 2.5us | 8.2x |
+| ilo JIT | 3.3us | 10.7x |
+| Go | 4.3us | 14.0x |
+| ilo VM | 5.0us | 16.1x |
+| Lua | 5.0us | 16.1x |
+| Ruby | 9.0us | 29.1x |
 
 ### record
 
@@ -70,16 +70,16 @@ ilo has three execution backends:
 
 | Language | ns/call | vs fastest |
 |----------|--------:|------------|
-| Go | 30ns | **fastest** |
-| LuaJIT | 59ns | 2.0x |
-| TypeScript | 266ns | 8.9x |
-| Node/V8 | 295ns | 9.8x |
-| ilo JIT | 655ns | 21.8x |
-| ilo VM | 3.3us | 111.4x |
-| PHP | 4.1us | 136.6x |
-| Lua | 9.7us | 321.7x |
-| Ruby | 10.8us | 359.5x |
-| Python 3 | 15.5us | 517.4x |
+| Go | 58ns | **fastest** |
+| LuaJIT | 107ns | 1.8x |
+| TypeScript | 231ns | 4.0x |
+| Node/V8 | 344ns | 5.9x |
+| ilo JIT | 638ns | 11.0x |
+| ilo VM | 3.2us | 55.9x |
+| PHP | 4.2us | 72.3x |
+| Lua | 9.5us | 163.7x |
+| Ruby | 10.7us | 184.3x |
+| Python 3 | 15.3us | 263.3x |
 
 ### mixed
 
@@ -87,16 +87,16 @@ ilo has three execution backends:
 
 | Language | ns/call | vs fastest |
 |----------|--------:|------------|
-| Go | 5.1us | **fastest** |
-| TypeScript | 5.4us | 1.1x |
-| Node/V8 | 5.7us | 1.1x |
-| Rust (native) | 8.3us | 1.6x |
-| PHP | 8.5us | 1.7x |
-| LuaJIT | 10.4us | 2.1x |
-| ilo JIT | 40.8us | 8.0x |
-| ilo VM | 42.8us | 8.4x |
-| Python 3 | 44.6us | 8.8x |
-| Lua | 48.0us | 9.4x |
+| Node/V8 | 5.3us | **fastest** |
+| TypeScript | 5.3us | 1.0x |
+| Go | 6.2us | 1.2x |
+| PHP | 8.4us | 1.6x |
+| Rust (native) | 9.5us | 1.8x |
+| LuaJIT | 10.2us | 1.9x |
+| ilo JIT | 40.8us | 7.7x |
+| ilo VM | 41.4us | 7.8x |
+| Python 3 | 43.1us | 8.2x |
+| Lua | 48.8us | 9.3x |
 
 ### guards
 
@@ -104,17 +104,17 @@ ilo has three execution backends:
 
 | Language | ns/call | vs fastest |
 |----------|--------:|------------|
-| Go | 285ns | **fastest** |
-| Rust (native) | 836ns | 2.9x |
-| Node/V8 | 1.0us | 3.7x |
-| TypeScript | 1.0us | 3.7x |
-| LuaJIT | 1.7us | 5.9x |
-| PHP | 25.8us | 90.7x |
-| Lua | 30.6us | 107.5x |
-| ilo VM | 50.5us | 177.2x |
-| Ruby | 62.8us | 220.5x |
-| Python 3 | 87.4us | 306.6x |
-| ilo JIT | 124.0us | 435.0x |
+| Go | 646ns | **fastest** |
+| TypeScript | 1.0us | 1.6x |
+| Node/V8 | 1.1us | 1.8x |
+| Rust (native) | 1.5us | 2.3x |
+| LuaJIT | 2.7us | 4.1x |
+| PHP | 26.4us | 40.9x |
+| Lua | 31.2us | 48.2x |
+| ilo VM | 51.4us | 79.5x |
+| Ruby | 63.4us | 98.1x |
+| Python 3 | 88.6us | 137.2x |
+| ilo JIT | 123.0us | 190.4x |
 
 ### recurse
 
@@ -122,17 +122,17 @@ ilo has three execution backends:
 
 | Language | ns/call | vs fastest |
 |----------|--------:|------------|
-| Rust (native) | 259ns | **fastest** |
-| TypeScript | 400ns | 1.5x |
-| Go | 408ns | 1.6x |
-| Node/V8 | 525ns | 2.0x |
-| LuaJIT | 757ns | 2.9x |
-| Lua | 3.2us | 12.3x |
-| PHP | 4.4us | 16.9x |
-| Ruby | 4.7us | 18.0x |
-| ilo VM | 4.9us | 19.0x |
-| ilo JIT | 5.0us | 19.4x |
-| Python 3 | 9.3us | 35.8x |
+| Rust (native) | 276ns | **fastest** |
+| Go | 366ns | 1.3x |
+| TypeScript | 375ns | 1.4x |
+| Node/V8 | 462ns | 1.7x |
+| LuaJIT | 764ns | 2.8x |
+| Lua | 3.1us | 11.1x |
+| PHP | 4.3us | 15.7x |
+| Ruby | 4.7us | 16.9x |
+| ilo VM | 4.9us | 17.8x |
+| ilo JIT | 5.0us | 18.2x |
+| Python 3 | 9.2us | 33.5x |
 
 ## Methodology
 
