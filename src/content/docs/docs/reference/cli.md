@@ -180,7 +180,7 @@ ilo supports multiple execution backends. The default is Cranelift JIT with an i
 | Flag | Backend |
 |------|---------|
 | *(default)* | Cranelift JIT, falls back to interpreter |
-| `--run-interp` | Tree-walking interpreter |
+| `--run-tree` | Tree-walking interpreter |
 | `--run-vm` | Register VM (bytecode) |
 | `--run-cranelift` | Cranelift JIT |
 | `--run-jit` | Custom ARM64 JIT (macOS Apple Silicon only) |

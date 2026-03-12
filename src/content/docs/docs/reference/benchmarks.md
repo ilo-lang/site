@@ -13,9 +13,11 @@ These are micro-benchmarks — they measure raw execution speed, not end-to-end 
 
 ilo has three execution backends:
 
-- **Interpreter** — tree-walking interpreter (simplest, slowest)
-- **ilo VM** — register-based bytecode virtual machine (default)
-- **ilo JIT** — Cranelift-based just-in-time compiler (opt-in via `--features cranelift`)
+| Backend | Flag | Notes |
+|---------|------|-------|
+| **ilo JIT** | *(default)* | Cranelift-based just-in-time compiler |
+| **ilo VM** | `--run-vm` | Register-based bytecode virtual machine |
+| **Interpreter** | `--run-tree` | Tree-walking interpreter (simplest, slowest) |
 
 ## Languages tested
 
