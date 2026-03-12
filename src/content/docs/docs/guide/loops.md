@@ -80,6 +80,13 @@ ilo 'f>L n;xs=[];@i 0..3{xs=+=xs i};xs' f
 # → [0, 1, 2]
 ```
 
+Both bounds can be variables or expressions:
+
+```bash
+ilo 'f n:n>n;s=0;@i 0..n{s=+s i};s' 4
+# → 6  (0+1+2+3)
+```
+
 If `start >= end`, the loop never executes.
 
 ## While — `wh condition{body}`
