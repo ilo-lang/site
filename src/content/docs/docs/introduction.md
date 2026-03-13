@@ -3,7 +3,7 @@ title: Introduction
 description: What is ilo and why does it exist?
 ---
 
-**ilo** is a token-optimised programming language for AI agents. Named from [Toki Pona](https://en.wikipedia.org/wiki/Toki_Pona) for [the word "tool"](https://sona.pona.la/wiki/ilo), it's designed to minimise the total token cost when AI agents write and run programs.
+**ilo** is a token-optimised programming language for AI agents. Named from the [Toki Pona](https://en.wikipedia.org/wiki/Toki_Pona) word for ["tool"](https://sona.pona.la/wiki/ilo), it's designed to minimise the total token cost when AI agents write and run programs.
 
 ## The problem
 
