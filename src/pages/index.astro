@@ -254,7 +254,7 @@
               <div class="example-compare">
                 <div class="example-version">
                   <div class="example-version-label">Inline</div>
-                  <pre class="example-code"><code><span class="syn-dim">$</span> ilo <span class="syn-s">'p r:L ?>n;c=flt q r;sum c'</span> <span class="syn-s">'q x:?>b;>x 0'</span> 10,-3,7,-1,4
+                  <pre class="example-code"><code><span class="syn-dim">$</span> ilo <span class="syn-s">'p r:L _>n;c=flt q r;s=sum c;+s 0 q x:_>b;>x 0'</span> p 10,-3,7,-1,4
 <span class="syn-result">21</span></code></pre>
                 </div>
                 <div class="example-version">
@@ -276,7 +276,7 @@
               <div class="example-compare">
                 <div class="example-version">
                   <div class="example-version-label">Inline</div>
-                  <pre class="example-code"><code><span class="syn-dim">$</span> ilo <span class="syn-s">'dbl x:n>n;*x 2'</span> <span class="syn-s">'inc x:n>n;+x 1'</span> <span class="syn-s">'rn x:n>n;x>>dbl>>inc'</span> 5
+                  <pre class="example-code"><code><span class="syn-dim">$</span> ilo <span class="syn-s">'dbl x:n>n;*x 2 inc x:n>n;+x 1 rn x:n>n;x>>dbl>>inc'</span> rn 5
 <span class="syn-result">11</span></code></pre>
                 </div>
                 <div class="example-version">
@@ -300,7 +300,7 @@
               <div class="example-compare">
                 <div class="example-version">
                   <div class="example-version-label">Inline</div>
-                  <pre class="example-code"><code><span class="syn-dim">$</span> ilo <span class="syn-s">'sq x:n>n;*x x'</span> <span class="syn-s">'big x:n>b;>x 10'</span> <span class="syn-s">'kp xs:L n>L n;flt big (map sq xs)'</span> 1,2,3,4,5
+                  <pre class="example-code"><code><span class="syn-dim">$</span> ilo <span class="syn-s">'sq x:n>n;*x x big x:n>b;>x 10 kp xs:L n>L n;flt big (map sq xs)'</span> kp 1,2,3,4,5
 <span class="syn-result">16,25</span></code></pre>
                 </div>
                 <div class="example-version">
