@@ -259,11 +259,11 @@
                 </div>
                 <div class="example-version">
                   <div class="example-version-label">File</div>
-                  <pre class="example-code"><code><span class="syn-fn">proc</span> <span class="syn-p">rows</span><span class="syn-t">:List</span> <span class="syn-t">?</span> <span class="syn-op">&gt;</span> <span class="syn-t">number</span>
+                  <pre class="example-code"><code><span class="syn-fn">proc</span> <span class="syn-p">rows</span><span class="syn-t">:List number</span> <span class="syn-op">&gt;</span> <span class="syn-t">number</span>
   <span class="syn-p">clean</span> = <span class="syn-fn">filter</span> <span class="syn-fn">pos</span> <span class="syn-p">rows</span>
   <span class="syn-fn">sum</span> <span class="syn-p">clean</span>
 
-<span class="syn-fn">pos</span> <span class="syn-p">x</span><span class="syn-t">:?</span> <span class="syn-op">&gt;</span> <span class="syn-t">bool</span>
+<span class="syn-fn">pos</span> <span class="syn-p">x</span><span class="syn-t">:number</span> <span class="syn-op">&gt;</span> <span class="syn-t">bool</span>
   <span class="syn-op">&gt;</span> <span class="syn-p">x</span> 0
 </code></pre>
                   <pre class="example-output"><code><span class="syn-dim">$</span> ilo pipeline.ilo proc [10,-3,7,-1,4]
