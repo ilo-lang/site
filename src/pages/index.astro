@@ -259,14 +259,14 @@
                 </div>
                 <div class="example-version">
                   <div class="example-version-label">File</div>
-                  <pre class="example-code"><code><span class="syn-fn">proc</span> <span class="syn-p">rows</span><span class="syn-t">:List number</span> <span class="syn-op">&gt;</span> <span class="syn-t">number</span>
-  <span class="syn-p">clean</span> = <span class="syn-fn">filter</span> <span class="syn-fn">pos</span> <span class="syn-p">rows</span>
-  <span class="syn-fn">sum</span> <span class="syn-p">clean</span>
+                  <pre class="example-code"><code><span class="syn-fn">p</span> <span class="syn-p">r</span><span class="syn-t">:List number</span> <span class="syn-op">&gt;</span> <span class="syn-t">number</span>
+  <span class="syn-p">c</span> = <span class="syn-fn">filter</span> <span class="syn-fn">q</span> <span class="syn-p">r</span>
+  <span class="syn-fn">sum</span> <span class="syn-p">c</span>
 
-<span class="syn-fn">pos</span> <span class="syn-p">x</span><span class="syn-t">:number</span> <span class="syn-op">&gt;</span> <span class="syn-t">bool</span>
+<span class="syn-fn">q</span> <span class="syn-p">x</span><span class="syn-t">:number</span> <span class="syn-op">&gt;</span> <span class="syn-t">bool</span>
   <span class="syn-op">&gt;</span> <span class="syn-p">x</span> 0
 </code></pre>
-                  <pre class="example-output"><code><span class="syn-dim">$</span> ilo pipeline.ilo proc [10,-3,7,-1,4]
+                  <pre class="example-output"><code><span class="syn-dim">$</span> ilo pipeline.ilo p [10,-3,7,-1,4]
 <span class="syn-result">21</span></code></pre>
                 </div>
               </div>
@@ -311,10 +311,10 @@
 <span class="syn-fn">big</span> <span class="syn-p">x</span><span class="syn-t">:number</span> <span class="syn-op">&gt;</span> <span class="syn-t">bool</span>
   <span class="syn-op">&gt;</span> <span class="syn-p">x</span> 10
 
-<span class="syn-fn">keep</span> <span class="syn-p">xs</span><span class="syn-t">:List number</span> <span class="syn-op">&gt;</span> <span class="syn-t">List number</span>
+<span class="syn-fn">kp</span> <span class="syn-p">xs</span><span class="syn-t">:List number</span> <span class="syn-op">&gt;</span> <span class="syn-t">List number</span>
   <span class="syn-fn">filter</span> <span class="syn-fn">big</span> (<span class="syn-fn">map</span> <span class="syn-fn">sq</span> <span class="syn-p">xs</span>)
 </code></pre>
-                  <pre class="example-output"><code><span class="syn-dim">$</span> ilo lists.ilo keep [1,2,3,4,5]
+                  <pre class="example-output"><code><span class="syn-dim">$</span> ilo lists.ilo kp [1,2,3,4,5]
 <span class="syn-result">[16, 25]</span></code></pre>
                 </div>
               </div>
@@ -324,20 +324,20 @@
               <div class="example-compare">
                 <div class="example-version">
                   <div class="example-version-label">Inline</div>
-                  <pre class="example-code"><code><span class="syn-dim">$</span> ilo <span class="syn-s">'sf url:t>t;r=$url;??r "fallback"'</span> "https://api.example.com/data"
+                  <pre class="example-code"><code><span class="syn-dim">$</span> ilo <span class="syn-s">'sf url:t>t;r=get url;?r{~v:v;_:"fallback"}'</span> sf "https://api.example.com/data"
 <span class="syn-result">fallback</span></code></pre>
                 </div>
                 <div class="example-version">
                   <div class="example-version-label">File</div>
-                  <pre class="example-code"><code><span class="syn-fn">safe</span> <span class="syn-p">url</span><span class="syn-t">:text</span> <span class="syn-op">&gt;</span> <span class="syn-t">text</span>
+                  <pre class="example-code"><code><span class="syn-fn">sf</span> <span class="syn-p">url</span><span class="syn-t">:text</span> <span class="syn-op">&gt;</span> <span class="syn-t">text</span>
   <span class="syn-p">r</span> = <span class="syn-fn">get</span> <span class="syn-p">url</span>
-  <span class="syn-op">??</span> <span class="syn-p">r</span> <span class="syn-s">"fallback"</span>
+  <span class="syn-op">?</span> <span class="syn-p">r</span> { <span class="syn-op">~</span><span class="syn-p">v</span>: <span class="syn-p">v</span>; <span class="syn-p">_</span>: <span class="syn-s">"fallback"</span> }
 </code></pre>
-                  <pre class="example-output"><code><span class="syn-dim">$</span> ilo safe.ilo safe "https://api.example.com/data"
+                  <pre class="example-output"><code><span class="syn-dim">$</span> ilo sf.ilo sf "https://api.example.com/data"
 <span class="syn-result">fallback</span></code></pre>
                 </div>
               </div>
-              <div class="example-desc">HTTP GET with nil-coalesce fallback. Errors are values, not exceptions.</div>
+              <div class="example-desc">HTTP GET with Result match fallback. Errors are values, not exceptions.</div>
             </div>
           </div>
         </div>
