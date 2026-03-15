@@ -324,14 +324,14 @@
               <div class="example-compare">
                 <div class="example-version">
                   <div class="example-version-label">Inline</div>
-                  <pre class="example-code"><code><span class="syn-dim">$</span> ilo <span class="syn-s">'sf url:t>t;r=get url;?r{~v:v;_:"fallback"}'</span> sf "https://api.example.com/data"
+                  <pre class="example-code"><code><span class="syn-dim">$</span> ilo <span class="syn-s">'sf url&#58;t&gt;t;r=get url;?r&#123;~v&#58;v;_&#58;"fallback"&#125;'</span> sf "https&#58;//api.example.com/data"
 <span class="syn-result">fallback</span></code></pre>
                 </div>
                 <div class="example-version">
                   <div class="example-version-label">File</div>
                   <pre class="example-code"><code><span class="syn-fn">sf</span> <span class="syn-p">url</span><span class="syn-t">:text</span> <span class="syn-op">&gt;</span> <span class="syn-t">text</span>
   <span class="syn-p">r</span> = <span class="syn-fn">get</span> <span class="syn-p">url</span>
-  <span class="syn-op">?</span> <span class="syn-p">r</span> { <span class="syn-op">~</span><span class="syn-p">v</span>: <span class="syn-p">v</span>; <span class="syn-p">_</span>: <span class="syn-s">"fallback"</span> }
+  <span class="syn-op">?</span> <span class="syn-p">r</span> &#123; <span class="syn-op">~</span><span class="syn-p">v</span>&#58; <span class="syn-p">v</span>; <span class="syn-p">_</span>&#58; <span class="syn-s">"fallback"</span> &#125;
 </code></pre>
                   <pre class="example-output"><code><span class="syn-dim">$</span> ilo sf.ilo sf "https://api.example.com/data"
 <span class="syn-result">fallback</span></code></pre>
