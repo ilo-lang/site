@@ -22,7 +22,7 @@ export const spec = {
     L: { name: 'list', notes: 'Use as `L _` where `_` is element type' },
     M: { name: 'map', notes: 'Use as `M k v`' },
     R: { name: 'result', notes: 'Use as `R ok err`. Auto-unwrap with `!`' },
-    fn: { name: 'function', notes: 'First-class function type' },
+    fn: { name: 'function', notes: 'Function value, can be passed and returned' },
     _: { name: 'wildcard', notes: 'Generic placeholder' },
   },
   operators: {
