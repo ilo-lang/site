@@ -41,7 +41,7 @@ export const GET: APIRoute = async () => {
 
 > Token-optimised programming language for AI agents. Prefix notation, strongly typed, verified before execution. Roughly 0.33x the tokens and 0.22x the characters of equivalent Python.
 
-ilo is designed for LLMs to write, not humans. Type errors return compact codes (ILO-T004) instead of stack traces, so agents correct faster with fewer retries.
+The intended author of an ilo program is an LLM. Type errors return compact codes (e.g. ILO-T004) rather than stack traces.
 
 This file follows the [llms.txt](https://llmstxt.org) convention. Full content at [/llms-full.txt](${SITE_URL}/llms-full.txt). Machine-readable language manifest at [/spec.json](${SITE_URL}/spec.json).
 
