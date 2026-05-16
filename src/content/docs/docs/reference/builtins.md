@@ -51,6 +51,7 @@ description: Complete reference for ilo's built-in functions
 | `len` | `length` | `L _ > n` | List length | `len [1,2,3]` → `3` |
 | `hd` | `head` | `L _ > _` | First element | `hd [1,2,3]` → `1` |
 | `tl` | `tail` | `L _ > L _` | All elements except first | `tl [1,2,3]` → `[2,3]` |
+| `at` | | `L _ n > _` | i-th element (0-indexed; negative counts from end; float `i` auto-floors) | `at [10,20,30] 1` → `20`; `at xs 1.7` floors to `at xs 1` |
 | `rev` | `reverse` | `L _ > L _` | Reverse a list | `rev [1,2,3]` → `[3,2,1]` |
 | `srt` | `sort` | `L _ > L _` | Sort a list | `srt [3,1,2]` → `[1,2,3]` |
 | `srt` | `sort` | `fn L _ > L _` | Sort by key function | `srt cmp xs` |
