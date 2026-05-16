@@ -42,6 +42,10 @@ description: Complete reference for ilo's built-in functions
 | `spl` | `t t > L t` | Split string by delimiter | `spl "a,b,c" ","` → `["a","b","c"]` |
 | `has` | `t t > b` | Check if string contains substring | `has "hello" "ell"` → `true` |
 | `rgx` | `t t > L t` | Regex match (returns captures) | `rgx "abc123" "[0-9]+"` → `["123"]` |
+| `padl` | `t n > t` | Left-pad to width with spaces (no-op if already wider) | `padl "hi" 5` → `"   hi"` |
+| `padr` | `t n > t` | Right-pad to width with spaces (no-op if already wider) | `padr "hi" 5` → `"hi   "` |
+| `padl` | `t n t > t` | Left-pad to width with a 1-character pad string. Common for sortable zero-padded numeric keys | `padl "42" 5 "0"` → `"00042"` |
+| `padr` | `t n t > t` | Right-pad to width with a 1-character pad string. Common for dot-leader alignment | `padr "x" 4 "."` → `"x..."` |
 | `fmt` | `t ... > t` | Format string with values. **`fmt` is pure-functional sprintf, not print** — a bare `fmt "..." v` statement is silently discarded on every engine. Use `prnt fmt "..." v` to print or `line=fmt "..." v` to capture. The verifier emits **ILO-T032** when `fmt`/`fmt2` is a non-tail statement with no binding (tail position, e.g. `f v:n>t;fmt "x={}" v`, is the documented "return formatted text" idiom and does not warn) | `fmt "{} is {}" "sky" "blue"` |
 
 ## Collections (Lists)
