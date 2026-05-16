@@ -135,6 +135,9 @@ description: Complete reference for ilo's built-in functions
 | Function | Signature | Description | Example |
 |----------|-----------|-------------|---------|
 | `now` | `> n` | Current Unix timestamp (seconds) | `now` |
+| `sleep` | `n > _` | Pause current engine for `ms` milliseconds | `sleep 100` |
+| `dtfmt` | `n t > R t t` | Format Unix epoch as text (strftime, UTC) | `dtfmt 1700000000 "%Y-%m-%d"` |
+| `dtparse` | `t t > R n t` | Parse text to Unix epoch (strftime, UTC) | `dtparse "2024-01-15" "%Y-%m-%d"` |
 
 ## Auto-unwrap `!`
 
