@@ -64,6 +64,7 @@ description: Complete reference for ilo's built-in functions
 | Function | Alias | Signature | Description | Example |
 |----------|-------|-----------|-------------|---------|
 | `map` | | `fn L _ > L _` | Apply function to each element | `map dbl [1,2,3]` |
+| `mapr` | | `fn L _ > R (L _) _` | Map with short-circuit Result propagation: collects Ok values, returns the first Err | `mapr num ["1","2","3"]` → `~[1,2,3]` |
 | `flt` | `filter` | `fn L _ > L _` | Keep elements where function returns true | `flt pos [1,-2,3]` |
 | `fld` | `fold` | `fn _ L _ > _` | Reduce list to single value | `fld add 0 [1,2,3]` |
 | `grp` | `group` | `fn L _ > M t L _` | Group elements by function result | `grp cat xs` |
