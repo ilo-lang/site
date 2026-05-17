@@ -36,6 +36,7 @@ ilo verifies programs before execution. When verification fails, you get a compa
 | `ILO-P017` | Inline lambda captures outer scope |
 | `ILO-P018` | Variadic builtin not in trailing position |
 | `ILO-P020` | Incomplete function header |
+| `ILO-P021` | Double-minus prefix-binop trap rejected - `- -<op> a b <op> c d` for `<op> ∈ {+, *, /}` is rejected at parse time because it silently miscompiles into `-(a-b)`. Use `- 0 +*a b *c d` or bind the inner result first. |
 
 ## Type / verifier errors (ILO-T)
 

@@ -18,6 +18,23 @@ Select a named function in a multi-function program:
 ilo 'dbl x:n>n;*x 2 tot p:n q:n r:n>n;s=*p q;t=*s r;+s t' tot 10 20 30
 ```
 
+### Subcommand dispatch
+
+The first positional argument after the source is treated as a function name **only if** it is a valid identifier and matches a defined function. The matcher accepts hyphenated identifiers, so `ilo file.ilo foo-bar` dispatches to the `foo-bar` function.
+
+If the first positional is not a valid identifier (e.g. a path, a number, a list literal), it is treated as an argument to `main` when `main` is defined:
+
+```bash
+ilo file.ilo /tmp/data.json      # routes to main, /tmp/data.json is arg 1
+ilo file.ilo 1,2,3               # routes to main, list literal is arg 1
+```
+
+This matches the default-engine heuristic: if there's only one function, or there's a `main`, no explicit dispatch is needed. The same auto-pick-main applies to the engine-selection flags (`--run-tree`, `--run-vm`, `--run-cranelift`) - they fall back to `main` (or the sole function) when no subcommand is supplied:
+
+```bash
+ilo file.ilo --run-vm 5          # runs main 5 on the VM
+```
+
 ## Flags
 
 | Flag | Description |

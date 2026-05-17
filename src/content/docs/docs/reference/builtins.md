@@ -42,6 +42,8 @@ description: Complete reference for ilo's built-in functions
 | `spl` | `t t > L t` | Split string by delimiter | `spl "a,b,c" ","` → `["a","b","c"]` |
 | `has` | `t t > b` | Check if string contains substring | `has "hello" "ell"` → `true` |
 | `rgx` | `t t > L t` | Regex match (returns captures) | `rgx "abc123" "[0-9]+"` → `["123"]` |
+| `rgxall` | `t t > L (L t)` | All matches with captures - one inner list per match. With no capture groups, each inner list holds the whole match. | `rgxall "(\\w+)=(\\d+)" "a=1 b=2"` → `[["a","1"],["b","2"]]` |
+| `rgxall1` | `t t > L t` | All matches of a single-group pattern, flattened. With no capture groups, returns the list of whole matches. Errors at verify-time if the pattern has 2+ capture groups - use `rgxall` instead. | `rgxall1 "(\\d+)" "a=1 b=2"` → `["1","2"]` |
 | `fmt` | `t ... > t` | Format string with values. **`fmt` is pure-functional sprintf, not print** — a bare `fmt "..." v` statement is silently discarded on every engine. Use `prnt fmt "..." v` to print or `line=fmt "..." v` to capture. The verifier emits **ILO-T032** when `fmt`/`fmt2` is a non-tail statement with no binding (tail position, e.g. `f v:n>t;fmt "x={}" v`, is the documented "return formatted text" idiom and does not warn) | `fmt "{} is {}" "sky" "blue"` |
 
 ## Collections (Lists)
@@ -67,6 +69,7 @@ description: Complete reference for ilo's built-in functions
 | `map` | | `fn L _ > L _` | Apply function to each element | `map dbl [1,2,3]` |
 | `mapr` | | `fn L _ > R (L _) _` | Map with short-circuit Result propagation: collects Ok values, returns the first Err | `mapr num ["1","2","3"]` → `~[1,2,3]` |
 | `flt` | `filter` | `fn L _ > L _` | Keep elements where function returns true | `flt pos [1,-2,3]` |
+| `ct` | `count` | `fn L _ > n` | Count elements where predicate returns true. Predicate must return `b` (verifier error otherwise). Allocation-free vs `len (flt fn xs)`. | `ct pos [-1,2,-3,4]` → `2` |
 | `fld` | `fold` | `fn _ L _ > _` | Reduce list to single value | `fld add 0 [1,2,3]` |
 | `grp` | `group` | `fn L _ > M t L _` | Group elements by function result | `grp cat xs` |
 
@@ -199,6 +202,7 @@ All builtins accept long-form names that resolve to the canonical short form. il
 | `slice` | `slc` |
 | `unique` | `unq` |
 | `filter` | `flt` |
+| `count` | `ct` |
 | `fold` | `fld` |
 | `flatten` | `flat` |
 | `concat` | `cat` |
