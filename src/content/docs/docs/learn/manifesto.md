@@ -132,7 +132,7 @@ The agent loads the target function's source, its dependencies' signatures, and 
 
 ## Principles We Considered and Dropped
 
-**Deterministic** - if the language is constrained (closed world, no ambient state) and self-contained (explicit deps, pure functions), determinism falls out for free. It doesn't need its own principle because it's a consequence of principles 2 and 3 — not a design lever you pull independently.
+**Deterministic** - if the language is constrained (closed world, no ambient state) and self-contained (explicit deps, pure functions), determinism falls out for free. It doesn't need its own principle because it's a consequence of principles 2 and 3, not a design lever you pull independently.
 
 **Append-only** - the idea was that agents should only add code, never edit it. But if units are small enough to fit in a few dozen tokens, regenerating one is cheaper than maintaining append-only structural constraints. Small self-contained units (principle 3) make this unnecessary.
 

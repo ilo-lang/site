@@ -8,7 +8,7 @@ Use this when comparing ilo runtime performance against other languages or acros
 Micro-benchmarks comparing ilo's execution engines against compiled, JIT, and interpreted languages. Each benchmark runs **10000 iterations** and reports the median per-call time in nanoseconds.
 
 :::note
-These are micro-benchmarks — they measure raw execution speed, not end-to-end agent workflow performance. ilo's primary optimisation target is **total token cost** (generation + errors + retries), not runtime speed.
+These are micro-benchmarks. They measure raw execution speed, not end-to-end agent workflow performance. ilo's primary optimisation target is **total token cost** (generation + errors + retries), not runtime speed.
 :::
 
 ## Execution engines
@@ -150,7 +150,7 @@ ilo has four execution backends:
 
 ### recurse
 
-*fibonacci(10) — recursive calls*
+*fibonacci(10), recursive calls*
 
 | Language | ns/call | vs fastest |
 |----------|--------:|------------|

@@ -1,4 +1,4 @@
-/* Tailwind: theme + utilities only — no preflight, which clobbers Starlight's text colors */
+/* Tailwind: theme + utilities only. No preflight, which clobbers Starlight's text colors */
 @layer tw;
 @import "tailwindcss/theme" layer(tw);
 @import "tailwindcss/utilities" layer(tw);
@@ -6,12 +6,12 @@
 /* Load matching fonts for docs */
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/* Disable JetBrains Mono ligatures — keep operators as separate chars */
+/* Disable JetBrains Mono ligatures, keep operators as separate chars */
 code, pre, .sl-markdown-content code, .sl-markdown-content pre {
   font-variant-ligatures: none;
 }
 
-/* ilo brand: warm amber on deep ink — softened palette */
+/* ilo brand: warm amber on deep ink, softened palette */
 :root {
   --sl-color-accent-low: #2c1a0a;
   --sl-color-accent: #e09422;

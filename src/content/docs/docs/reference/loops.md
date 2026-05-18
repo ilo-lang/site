@@ -7,7 +7,7 @@ Use this when iterating with foreach, range, while, or controlling flow with `br
 
 ilo has three loop constructs: **foreach** (`@`), **range** (`@..`), and **while** (`wh`). All return the last iteration's body value (`nil` if the loop never executes).
 
-## Foreach — `@binding list{body}`
+## Foreach: `@binding list{body}`
 
 Iterates over each element in a list:
 
@@ -49,7 +49,7 @@ ilo 'total xs:L n>n;s=0;@x xs{s=+s x};s' 1,2,3
 
 The loop binding (`x`) is fresh each iteration. Outer variables (`s`) persist across iterations.
 
-## Range — `@binding start..end{body}`
+## Range: `@binding start..end{body}`
 
 ilo's equivalent of a traditional `for` loop. Iterates from `start` (inclusive) to `end` (exclusive):
 
@@ -91,7 +91,7 @@ ilo 'f n:n>n;s=0;@i 0..n{s=+s i};s' 4
 
 If `start >= end`, the loop never executes.
 
-## While — `wh condition{body}`
+## While: `wh condition{body}`
 
 Loops while the condition is truthy:
 
@@ -119,7 +119,7 @@ ilo 'f>n;i=0;s=0;wh <i 5{i=+i 1;s=+s i};s' f
 # → 15  (1+2+3+4+5)
 ```
 
-Unlike `@`, while loops don't create a fresh binding per iteration — all variables persist.
+Unlike `@`, while loops don't create a fresh binding per iteration; all variables persist.
 
 ## Loops stay flat
 
@@ -136,7 +136,7 @@ def count_passing(scores):
     return count
 ```
 
-In ilo, [guards](/docs/reference/guards) inside loops keep the body flat — no indentation creep:
+In ilo, [guards](/docs/reference/guards) inside loops keep the body flat. No indentation creep:
 
 ```ilo
 count-passing scores:L n > n
@@ -148,7 +148,7 @@ count-passing scores:L n > n
   c
 ```
 
-Guards return or continue without nesting. Add more conditions and the indentation stays the same — each guard is an independent flat check.
+Guards return or continue without nesting. Add more conditions and the indentation stays the same: each guard is an independent flat check.
 
 ## Break and continue
 
@@ -169,14 +169,14 @@ ilo 'f>n;i=0;wh true{i=+i 1;>=i 3{brk}};i' f
 # → 3
 ```
 
-Continue example — skip iterations where `i >= 3`:
+Continue example, skip iterations where `i >= 3`:
 
 ```bash
 ilo 'f>n;i=0;s=0;wh <i 5{i=+i 1;>=i 3{cnt};s=+s i};s' f
 # → 3  (1+2, skips 3, 4, 5)
 ```
 
-Both `brk` and `cnt` work inside guards within loops. `brk expr` accepts an optional value (currently discarded — the loop returns the last body value before the break).
+Both `brk` and `cnt` work inside guards within loops. `brk expr` accepts an optional value (currently discarded; the loop returns the last body value before the break).
 
 ## Early return from loops
 
@@ -211,4 +211,4 @@ ilo 'first-big xs:L n>n;@x xs{>=x 10{ret x}};0' 3,7,12,5
 | **Use when** | Iterating a list | Counting over numbers | Custom stop condition |
 | **Fresh binding** | Yes | Yes | No |
 
-For simple list transforms, prefer [`map`](/docs/builtins/collections#higher-order-functions), [`flt`](/docs/builtins/collections#higher-order-functions), and [`fld`](/docs/builtins/collections#higher-order-functions) — loops are for when you need mutable state or early exit.
+For simple list transforms, prefer [`map`](/docs/builtins/collections#higher-order-functions), [`flt`](/docs/builtins/collections#higher-order-functions), and [`fld`](/docs/builtins/collections#higher-order-functions). Loops are for when you need mutable state or early exit.

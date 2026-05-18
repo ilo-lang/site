@@ -18,13 +18,13 @@ funcname param1:type param2:type>returntype;body
 | `n` | Number | Integers and floats |
 | `t` | Text | Strings |
 | `b` | Boolean | `true` / `false` |
-| `_` | Any | Wildcard — accepts any type |
+| `_` | Any | Wildcard, accepts any type |
 | `L` | List | Ordered collection `[1 2 3]` |
 | `M` | Map | Key-value pairs `{"key" "val"}` |
 | `R` | Result | Success or error value |
 | `O` | Optional | Nil or a value: `O n` |
 
-`_` means "don't care" — same as in match patterns. Use it for mixed-type lists (`L _`), results where you ignore a type (`R _ t`), or generic parameters (`x:_`).
+`_` means "don't care", same as in match patterns. Use it for mixed-type lists (`L _`), results where you ignore a type (`R _ t`), or generic parameters (`x:_`).
 
 ## Examples
 
