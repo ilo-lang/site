@@ -72,6 +72,10 @@ ilo verifies programs before execution. When verification fails, you get a compa
 | `ILO-T028` | `brk`/`cnt` used outside a loop |
 | `ILO-T029` | Unreachable code |
 | `ILO-T032` | Bare `fmt` result is discarded |
+| `ILO-T033` | Bare mutation-shaped builtin result is discarded |
+| `ILO-T034` | `!` / `!!` used on a non-callable value |
+| `ILO-T035` | Function exceeds the 256-register VM cap |
+| `ILO-T036` | Call requires too many register slots (VM cap) |
 
 ## Warnings (ILO-W)
 
