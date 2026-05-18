@@ -257,7 +257,7 @@ ilo compile 'dbl x:n>n;*x 2' -o dbl
 
 AOT-compiled binaries match the in-process runners byte-for-byte: top-level `~v` prints bare `v` on stdout with exit 0; `^e` prints `^e` on stderr with exit 1; non-Result returns print plain on stdout. Output is identical whether you `ilo run` or `ilo compile && ./binary`.
 
-**Supported surface:** the same shape as the Cranelift JIT: numeric and text arithmetic, comparisons, guards and conditionals, loops, function calls, records, lists, maps, strings, JSON, HTTP, and all builtins routed through the JIT runtime. A handful of advanced HOF dispatch forms with closure capture from the enclosing scope fall through to the tree interpreter; those don't AOT-compile yet.
+**Supported surface:** the same shape as the Cranelift JIT: numeric and text arithmetic, comparisons, guards and conditionals, loops, function calls, records, lists, maps, strings, JSON, HTTP, and all builtins routed through the JIT runtime. HOFs that take a function value (`map fn xs`, `flt fn xs`, `fld fn xs init`, including inline lambdas with Phase 2 closure capture) currently miscompile under AOT and return `nil`; pin to `--run-vm` or `--run-tree` for those shapes until the AOT fix lands. The in-process Cranelift JIT (`--jit`) and the VM both handle Phase 2 capture natively, no engine fallback needed.
 
 Requires the `cranelift` feature (enabled by default in release builds).
 
