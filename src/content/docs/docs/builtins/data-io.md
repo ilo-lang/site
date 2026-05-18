@@ -44,6 +44,31 @@ lines p:t>R L t t;rdl p
 parse s:t>R _ t;rdb s "json"
 ```
 
+### Listing directories
+
+`ls dir` returns the entries of `dir` (filenames only, not full paths), sorted lexicographically. Both file and directory entries are included. Missing directories surface as `Err`; empty directories return `[]`, not `Err`.
+
+```ilo
+entries d:t>R (L t) t;ls d
+```
+
+### Recursive walk
+
+`walk dir` does a depth-first traversal of `dir` and returns every path it finds relative to `dir`, sorted. Symlinks are not followed (matches the safer of the two `find` defaults and avoids the cycle trap that bites recursive globs in symlinked trees).
+
+```ilo
+all p:t>R (L t) t;walk p
+```
+
+### Glob
+
+`glob dir pat` returns the paths under `dir` (relative, sorted) that match a shell-style pattern. `*`/`?`/`[abc]` match within a single path segment; `**` matches any number of nested segments (including zero), so `**/*.ilo` finds every `.ilo` file in the tree, including ones in `dir` itself. No matches returns `[]`, not `Err`.
+
+```ilo
+ilo-files d:t>R (L t) t;glob d "**/*.ilo"
+csv-here d:t>R (L t) t;glob d "*.csv"
+```
+
 ## Writing files
 
 `wr path data` writes data to a file. Format can be specified as a third argument:
