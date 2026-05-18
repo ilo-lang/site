@@ -13,14 +13,13 @@ These are micro-benchmarks. They measure raw execution speed, not end-to-end age
 
 ## Execution engines
 
-ilo has four execution backends:
+ilo has three public execution backends (the tree-walking interpreter is internal-only as of 0.12.x):
 
 | Backend | Flag | Notes |
 |---------|------|-------|
 | **ilo AOT** | `ilo compile` | Cranelift ahead-of-time compiler → standalone native binary |
 | **ilo VM** | `ilo` *(default)* / `--run-vm` | Register-based bytecode virtual machine, all opcodes |
 | **ilo JIT** | `ilo --jit` | Cranelift-based just-in-time compiler, opt-in for hot loops |
-| **Interpreter** | `ilo --run-tree` | Tree-walking interpreter (simplest, slowest) |
 
 ## Languages tested
 
@@ -28,7 +27,7 @@ ilo has four execution backends:
 |----------|-----------|
 | **Compiled (AOT)** | Rust (`rustc -O`), Go, C# (.NET), Kotlin (JVM) |
 | **JIT** | LuaJIT, Node.js (V8), TypeScript (tsx/V8), PyPy 3 |
-| **ilo** | ilo JIT, ilo VM, ilo Interpreter |
+| **ilo** | ilo JIT, ilo VM |
 | **Interpreted** | Lua, Ruby, PHP, Python 3 (CPython) |
 
 ## Results
@@ -55,7 +54,6 @@ ilo has four execution backends:
 | ilo VM | 14.7us | 44.7x |
 | Ruby | 20.6us | 62.7x |
 | Python 3 | 29.5us | 89.6x |
-| ilo Interpreter | 94.3us | 286.5x |
 
 ### string
 
@@ -78,7 +76,6 @@ ilo has four execution backends:
 | Ruby | 5.1us | 36.7x |
 | Lua | 5.2us | 37.7x |
 | ilo AOT | 7.5us | 54.2x |
-| ilo Interpreter | 16.4us | 118.6x |
 
 ### record
 
@@ -100,7 +97,6 @@ ilo has four execution backends:
 | Lua | 7.6us | 61.1x |
 | Ruby | 8.6us | 69.4x |
 | Python 3 | 8.6us | 69.7x |
-| ilo Interpreter | 57.2us | 461.1x |
 
 ### mixed
 
@@ -123,7 +119,6 @@ ilo has four execution backends:
 | ilo AOT | 46.4us | 8.8x |
 | ilo JIT | 49.0us | 9.2x |
 | Lua | 50.2us | 9.5x |
-| ilo Interpreter | 1.4ms | 255.2x |
 
 ### guards
 
@@ -146,7 +141,6 @@ ilo has four execution backends:
 | Ruby | 38.9us | 98.6x |
 | ilo VM | 53.3us | 135.3x |
 | Python 3 | 65.6us | 166.4x |
-| ilo Interpreter | 984.2us | 2497.9x |
 
 ### recurse
 
@@ -169,7 +163,6 @@ ilo has four execution backends:
 | PHP | 5.0us | 36.5x |
 | Python 3 | 6.0us | 43.9x |
 | ilo VM | 6.9us | 50.5x |
-| ilo Interpreter | 158.0us | 1153.4x |
 
 ### foreach
 
@@ -192,7 +185,6 @@ ilo has four execution backends:
 | ilo JIT | 11.2us | 181.3x |
 | ilo AOT | 13.2us | 212.9x |
 | ilo VM | 14.7us | 236.7x |
-| ilo Interpreter | 78.0us | 1257.9x |
 
 ### while
 
@@ -215,7 +207,6 @@ ilo has four execution backends:
 | ilo VM | 1.5us | 1496.0x |
 | Ruby | 2.3us | 2341.0x |
 | Python 3 | 2.6us | 2614.0x |
-| ilo Interpreter | 10.3us | 10329.0x |
 
 ### pipe
 
@@ -238,7 +229,6 @@ ilo has four execution backends:
 | PHP | 6.5us | 144.5x |
 | ilo VM | 6.7us | 149.8x |
 | Python 3 | 10.2us | 227.8x |
-| ilo Interpreter | 147.5us | 3278.1x |
 
 ### file
 
@@ -261,7 +251,6 @@ ilo has four execution backends:
 | Go | 20.5us | 1.9x |
 | C# (.NET) | 22.0us | 2.1x |
 | PyPy 3 | 23.1us | 2.2x |
-| ilo Interpreter | 31.7us | 3.0x |
 
 ### api
 
@@ -284,7 +273,6 @@ ilo has four execution backends:
 | Ruby | 284.4us | 373.2x |
 | ilo VM | 942.3us | 1236.6x |
 | ilo JIT | 3.3ms | 4325.0x |
-| ilo Interpreter | 3.3ms | 4366.4x |
 
 ## Methodology
 

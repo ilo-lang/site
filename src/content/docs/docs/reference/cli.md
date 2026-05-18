@@ -54,7 +54,7 @@ ilo file.ilo /tmp/data.json      # routes to main, /tmp/data.json is arg 1
 ilo file.ilo 1,2,3               # routes to main, list literal is arg 1
 ```
 
-This matches the default-engine heuristic: if there's only one function, or there's a `main`, no explicit dispatch is needed. The same auto-pick-main applies to the engine-selection flags (`--run-tree`, `--run-vm`, `--jit`) - they fall back to `main` (or the sole function) when no subcommand is supplied:
+This matches the default-engine heuristic: if there's only one function, or there's a `main`, no explicit dispatch is needed. The same auto-pick-main applies to the engine-selection flags (`--run-vm`, `--jit`) - they fall back to `main` (or the sole function) when no subcommand is supplied:
 
 ```bash
 ilo file.ilo --run-vm 5          # runs main 5 on the VM
@@ -257,7 +257,7 @@ ilo compile 'dbl x:n>n;*x 2' -o dbl
 
 AOT-compiled binaries match the in-process runners byte-for-byte: top-level `~v` prints bare `v` on stdout with exit 0; `^e` prints `^e` on stderr with exit 1; non-Result returns print plain on stdout. Output is identical whether you `ilo run` or `ilo compile && ./binary`.
 
-**Supported surface:** the same shape as the Cranelift JIT: numeric and text arithmetic, comparisons, guards and conditionals, loops, function calls, records, lists, maps, strings, JSON, HTTP, and all builtins routed through the JIT runtime. HOFs that take a function value (`map fn xs`, `flt fn xs`, `fld fn xs init`, including inline lambdas with Phase 2 closure capture) currently miscompile under AOT and return `nil`; pin to `--run-vm` or `--run-tree` for those shapes until the AOT fix lands. The in-process Cranelift JIT (`--jit`) and the VM both handle Phase 2 capture natively, no engine fallback needed.
+**Supported surface:** the same shape as the Cranelift JIT: numeric and text arithmetic, comparisons, guards and conditionals, loops, function calls, records, lists, maps, strings, JSON, HTTP, all builtins routed through the JIT runtime, and HOFs that take a function value (`map fn xs`, `flt fn xs`, `fld fn xs init`, `grp`, `uniqby`, fn-ref return and call), including inline lambdas with Phase 2 closure capture. As of 0.12.1, AOT-compiled binaries embed a postcard-serialised `CompiledProgram` blob into `.rodata` and a runtime helper deserialises it on startup so dispatch helpers can re-enter the VM on user-fn callbacks identically to the in-process runners. Pre-0.12.1, these shapes silently returned `nil` under AOT (engine audit PR #413 gap #1).
 
 Requires the `cranelift` feature (enabled by default in release builds).
 
@@ -303,8 +303,9 @@ ilo supports multiple execution backends. The default is the bytecode register V
 | *(default)* | Register VM (closure-aware, all opcodes supported) |
 | `--jit` | Cranelift JIT (hot numeric loops; falls back to VM on bailout) |
 | `--run-vm` | Register VM (explicit form of the default) |
-| `--run-tree` | Tree-walking interpreter (reference semantics) |
 | `--run-llvm` | LLVM JIT (requires `--features llvm` build) |
+
+`--run-tree` / `--run` were removed from the public CLI in the 0.12.x soft-deprecation. The tree-walking interpreter stays in-tree as the internal dispatch target for a small set of HOF / regex / IO shapes the VM and Cranelift haven't lifted natively yet; the VM bails to it transparently. Full removal is deferred to 0.13.0+.
 
 ```bash
 ilo 'fac n:n>n;<=n 1 1;r=fac -n 1;*n r' --jit fac 10
