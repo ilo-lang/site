@@ -247,6 +247,8 @@ ilo compile program.ilo -o bin func  # compile specific function
 
 The compiler uses Cranelift to emit native machine code, links with the system `cc`, and produces a self-contained executable with no runtime dependencies.
 
+**Entry-pick.** AOT follows the same entry-pick rules as the in-process engines: an explicit positional `func` argument wins; otherwise a single user-defined function is used directly; otherwise `main` is used if defined. With multiple functions and no `main` and no explicit entry, compilation fails with `ILO-E801` and exits 1 without writing a binary - rather than silently picking the first declared function (which produced binaries that called the wrong entry symbol and SIGSEGV'd at runtime).
+
 ```bash
 ilo compile 'dbl x:n>n;*x 2' -o dbl
 ./dbl 5
@@ -270,6 +272,27 @@ For a program whose entry function returns a Result, ilo splits the `~`/`^` wrap
 | any non-Result   | `v` | — | 0 |
 
 In `--json` mode the value is always wrapped (`{"ok": v}` / `{"error": ...}`) on stdout; exit codes match the table above. The contract applies uniformly to in-process runners and AOT-compiled binaries: output is byte-for-byte identical across every backend.
+
+## JSON output across subcommands
+
+Every subcommand that produces machine-readable output supports `--json` (or `-j`). New envelopes start with `"schemaVersion": 1` so agents can route on the contract and the shape can evolve without breaking older consumers. A few long-standing outputs predate the convention (`run`, `graph`, `--ast`, `serv`, `tools --json`) and keep their original shape.
+
+| Command                     | `--json` support                | Versioned? |
+| --------------------------- | ------------------------------- | ---------- |
+| `ilo run` / `ilo file.ilo`  | yes (success + error envelopes) | legacy     |
+| `ilo check`                 | yes (one diagnostic per line)   | per-diag   |
+| `ilo build` / `ilo compile` | yes (`output`, `sizeBytes`, `durationMs`) | yes |
+| `ilo graph`                 | yes (always JSON unless `--dot`) | legacy    |
+| `ilo --ast`                 | yes (AST as JSON)               | legacy     |
+| `ilo explain ILO-XXXX`      | yes                              | yes        |
+| `ilo skill list/get/path/show` | yes                           | yes        |
+| `ilo version`               | yes (`version`, `features`)      | yes        |
+| `ilo tools`                 | yes (via `--json` subflag)       | legacy     |
+| `ilo serv`                  | yes (JSONL stdio)                | legacy     |
+
+`spec` and `repl` are intentionally not JSON: `spec` emits markdown / `ai.txt`, `repl` is interactive.
+
+The full per-command schema reference lives in [`JSON_OUTPUT.md`](https://github.com/ilo-lang/ilo/blob/main/JSON_OUTPUT.md) in the ilo repo; it's locked by `tests/json_output_contracts.rs` so future changes that break a schema fail CI.
 
 ## Backend selection
 
