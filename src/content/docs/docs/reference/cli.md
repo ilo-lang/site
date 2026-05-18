@@ -234,20 +234,23 @@ Requires the `cranelift` feature (enabled by default in release builds).
 
 ## Backend selection
 
-ilo supports multiple execution backends. The default is Cranelift JIT with an interpreter fallback:
+ilo supports multiple execution backends. The default is the bytecode register VM. Cranelift JIT is opt-in via `--cranelift` for hot numeric loops:
 
 | Flag | Backend |
 |------|---------|
-| *(default)* | Cranelift JIT, falls back to interpreter |
-| `--run-tree` | Tree-walking interpreter |
-| `--run-vm` | Register VM (bytecode) |
-| `--run-cranelift` | Cranelift JIT |
+| *(default)* | Register VM (closure-aware, all opcodes supported) |
+| `--cranelift` | Cranelift JIT (hot numeric loops; falls back to VM on bailout) |
+| `--run-cranelift` | Same as `--cranelift` |
+| `--run-vm` | Register VM (explicit form of the default) |
+| `--run-tree` | Tree-walking interpreter (reference semantics) |
 | `--run-jit` | Custom ARM64 JIT (macOS Apple Silicon only) |
 | `--run-llvm` | LLVM JIT (requires `--features llvm` build) |
 
 ```bash
-ilo 'fac n:n>n;<=n 1 1;r=fac -n 1;*n r' --run-vm fac 10
+ilo 'fac n:n>n;<=n 1 1;r=fac -n 1;*n r' --cranelift fac 10
 ```
+
+**Why the VM is the default.** It supports every opcode in the language (closures, listview windows, fused len-of-filter, every modern shape) without compile-and-bail cost. The pre-v0.11.9 default was Cranelift JIT with VM fallback - it paid the JIT compile cost on every program before discovering the JIT couldn't handle some opcode and falling back anyway. Opt into the JIT explicitly when a hot numeric loop justifies the compile time.
 
 ## REPL
 
