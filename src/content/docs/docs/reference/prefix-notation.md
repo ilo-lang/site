@@ -1,7 +1,9 @@
 ---
 title: Prefix Notation
-description: How prefix notation saves tokens and characters
+description: Use this when writing arithmetic, comparisons, or any operator expression in ilo.
 ---
+
+Use this when writing arithmetic, comparisons, or any operator expression in ilo.
 
 Prefix notation is ilo's core token-saving device. Operators come before their operands.
 

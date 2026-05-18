@@ -1,7 +1,9 @@
 ---
 title: Pipes
-description: Function chaining with the pipe operator
+description: Use this when chaining transforms left-to-right with the pipe operator.
 ---
+
+Use this when chaining transforms left-to-right with the pipe operator.
 
 Inspired by Unix shell pipes (`|`), the pipe operator `>>` chains function calls left-to-right:
 

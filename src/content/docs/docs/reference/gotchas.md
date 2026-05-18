@@ -1,7 +1,9 @@
 ---
 title: Gotchas
-description: Common surprises and disambiguation in ilo
+description: Use this when something parses unexpectedly or you hit a common ilo trap.
 ---
+
+Use this when something parses unexpectedly or you hit a common ilo trap.
 
 ## `?` and `_` — context-sensitive symbols
 

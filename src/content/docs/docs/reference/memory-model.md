@@ -1,7 +1,9 @@
 ---
 title: Memory Model
-description: How ilo manages memory, compared to Rust, Zero, and Go
+description: Use this when reasoning about ownership, copying, and how ilo manages memory compared to Rust, Zero, and Go.
 ---
+
+Use this when reasoning about ownership, copying, and how ilo manages memory compared to Rust, Zero, and Go.
 
 ## Short version
 
@@ -66,6 +68,6 @@ The honest framing: ilo trades a small amount of runtime cost for a much smaller
 
 ## Further reading
 
-- [Manifesto](/docs/manifesto/): why ilo makes the design choices it does
-- [Built-in Functions](/docs/reference/builtins/): the closed-world API surface
-- [Specification](/docs/reference/spec/): the full language reference
+- [Manifesto](/docs/learn/manifesto/): why ilo makes the design choices it does
+- [Built-in Functions](/docs/builtins/numbers/): the closed-world API surface
+- [Specification](/docs/reference/language/): the full language reference

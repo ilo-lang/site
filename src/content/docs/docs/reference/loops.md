@@ -1,7 +1,9 @@
 ---
 title: Loops
-description: Iterating with foreach, range, and while loops
+description: Use this when iterating with foreach, range, while, or controlling flow with `brk` and `cnt`.
 ---
+
+Use this when iterating with foreach, range, while, or controlling flow with `brk` and `cnt`.
 
 ilo has three loop constructs: **foreach** (`@`), **range** (`@..`), and **while** (`wh`). All return the last iteration's body value (`nil` if the loop never executes).
 
@@ -134,7 +136,7 @@ def count_passing(scores):
     return count
 ```
 
-In ilo, [guards](/docs/guide/guards) inside loops keep the body flat — no indentation creep:
+In ilo, [guards](/docs/reference/guards) inside loops keep the body flat — no indentation creep:
 
 ```ilo
 count-passing scores:L n > n
@@ -209,4 +211,4 @@ ilo 'first-big xs:L n>n;@x xs{>=x 10{ret x}};0' 3,7,12,5
 | **Use when** | Iterating a list | Counting over numbers | Custom stop condition |
 | **Fresh binding** | Yes | Yes | No |
 
-For simple list transforms, prefer [`map`](/docs/guide/collections#map), [`flt`](/docs/guide/collections#flt--filter), and [`fld`](/docs/guide/collections#fld--fold) — loops are for when you need mutable state or early exit.
+For simple list transforms, prefer [`map`](/docs/builtins/collections#higher-order-functions), [`flt`](/docs/builtins/collections#higher-order-functions), and [`fld`](/docs/builtins/collections#higher-order-functions) — loops are for when you need mutable state or early exit.
