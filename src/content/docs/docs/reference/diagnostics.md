@@ -1,9 +1,39 @@
 ---
-title: Error Codes
-description: ilo verification and runtime error codes
+title: Diagnostics
+description: Use this when you need to decode an ILO-* error code, understand fixSafety, or look up a repair plan.
 ---
 
+Use this when you need to decode an ILO-* error code, understand fixSafety, or look up a repair plan.
+
 ilo verifies programs before execution. When verification fails, you get a compact error code. Runtime failures emit codes too. Use `ilo --explain ILO-XNNN` for the full explanation.
+
+## fixSafety taxonomy
+
+Every diagnostic carries a `fixSafety` tag that tells an agent how aggressively it may auto-correct the code without re-asking the user:
+
+| fixSafety | Meaning | Agent behaviour |
+|-----------|---------|-----------------|
+| `safe` | Mechanical, no semantic change | Apply the suggested fix without confirmation. |
+| `likely` | Almost always correct, but reads context | Apply and continue; surface a one-line note. |
+| `risky` | Multiple valid repairs exist | Propose and ask for confirmation. |
+| `manual` | Requires human judgment | Surface the diagnostic and stop. |
+
+## Repair plans
+
+Diagnostics with a structured repair plan attach a JSON block to the JSON-mode (`-j`) error. The plan lists ordered edits the agent can apply mechanically:
+
+```json
+{
+  "code": "ILO-T004",
+  "message": "undefined variable 'y'",
+  "fixSafety": "likely",
+  "repair": [
+    {"kind": "rename", "from": "y", "to": "x"}
+  ]
+}
+```
+
+See `ilo --explain ILO-XNNN` for the per-code repair contract.
 
 ## Lexer errors (ILO-L)
 
