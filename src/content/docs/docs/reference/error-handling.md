@@ -1,7 +1,9 @@
 ---
 title: Error Handling
-description: Results, optionals, auto-unwrap, and nil-coalesce
+description: Use this when handling Results, optionals, auto-unwrap with `!`, or nil-coalesce with `??`.
 ---
+
+Use this when handling Results, optionals, auto-unwrap with `!`, or nil-coalesce with `??`.
 
 ## Why not try/catch?
 

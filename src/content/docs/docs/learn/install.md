@@ -1,7 +1,9 @@
 ---
-title: Installation
-description: Install ilo on any platform
+title: Install
+description: Use this when you need to install ilo on a specific platform (Claude Code, npm, macOS, Linux, Windows, source, or other agents).
 ---
+
+Use this when you need to install ilo on a specific platform.
 
 ## Claude Code (recommended)
 

@@ -1,7 +1,9 @@
 ---
 title: Types & Functions
-description: ilo's type system and function declarations
+description: Use this when declaring functions, return types, or working with ilo's type sigils.
 ---
+
+Use this when declaring functions, return types, or working with ilo's type sigils.
 
 Every ilo function declares its parameter types and return type inline:
 

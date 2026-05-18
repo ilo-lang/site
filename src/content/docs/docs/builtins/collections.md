@@ -1,7 +1,9 @@
 ---
 title: Collections
-description: Lists, maps, and data operations
+description: Use this when working with lists, maps, or other collection operations.
 ---
+
+Use this when working with lists, maps, or other collection operations.
 
 ## Lists
 
@@ -52,7 +54,7 @@ rou 3.5         -- → 4 (round)
 
 ### Higher-order functions
 
-Pass functions to `map`, `flt`, and `fld` to transform, filter, and reduce lists. Most builtins have a short and long form, both work: `flt` or `filter`, `fld` or `fold`, `srt` or `sort`, etc. See the full [alias table](/docs/reference/builtins#builtin-aliases). The examples below use short forms inline and long forms in multiline.
+Pass functions to `map`, `flt`, and `fld` to transform, filter, and reduce lists. Most builtins have a short and long form, both work: `flt` or `filter`, `fld` or `fold`, `srt` or `sort`, etc. See the full [alias table](/docs/builtins/numbers#aliases). The examples below use short forms inline and long forms in multiline.
 
 #### `map`
 
@@ -313,52 +315,40 @@ ilo 'f xs:L t>L t;unq xs' a,b,a,c,b
 # → [a, b, c]
 ```
 
-## String builtins
+## Function reference
 
-Built-in functions for text manipulation:
+| Function | Alias | Signature | Description |
+|----------|-------|-----------|-------------|
+| `len` | `length` | `L _ > n` | List length |
+| `hd` | `head` | `L _ > _` | First element |
+| `tl` | `tail` | `L _ > L _` | All elements except first |
+| `at` | | `L _ n > _` | i-th element (0-indexed; negative counts from end; float `i` auto-floors) |
+| `rev` | `reverse` | `L _ > L _` | Reverse a list |
+| `srt` | `sort` | `L _ > L _` | Sort a list |
+| `srt` | `sort` | `fn L _ > L _` | Sort by key function |
+| `slc` | `slice` | `L _ n n > L _` | Slice (start, end) |
+| `flat` | `flatten` | `L L _ > L _` | Flatten one level of nesting |
+| `unq` | `unique` | `L _ > L _` | Remove duplicates |
+| `has` | `contains` | `L _ _ > b` | Membership |
+| `map` | | `fn L _ > L _` | Apply function to each element |
+| `mapr` | | `fn L _ > R (L _) _` | Map with short-circuit Result propagation: collects Ok values, returns the first Err |
+| `flt` | `filter` | `fn L _ > L _` | Keep elements where function returns true |
+| `ct` | `count` | `fn L _ > n` | Count elements where predicate returns true. Allocation-free vs `len (flt fn xs)`. |
+| `fld` | `fold` | `fn _ L _ > _` | Reduce list to single value |
+| `grp` | `group` | `fn L _ > M t L _` | Group elements by function result |
+| `mmap` | | `> M` | Create empty map |
+| `mget` | | `M t > _` | Get value by key |
+| `mset` | | `M t _ > M` | Set key-value pair |
+| `mhas` | | `M t > b` | Check if key exists |
+| `mkeys` | | `M > L t` | Get all keys |
+| `mvals` | | `M > L _` | Get all values |
+| `mdel` | | `M t > M` | Remove key, return new map |
 
-| Call | Meaning |
-|------|---------|
-| `trm s` | trim leading and trailing whitespace |
-| `spl s sep` | split text by separator |
-| `fmt tmpl args...` | format string with `{}` placeholders |
-| `cat xs sep` | join list of text with separator |
+### Variable-index dot-notation
 
-### `trm` - trim whitespace
+The variable-index form `xs.i` is sugar for `at xs i`. The parser builds a field-access node and a post-parse desugar pass rewrites it whenever the field identifier resolves to a binding in the current scope (parameter, let, foreach, range, match-arm). If the identifier is also a declared field on a record type, the rewrite is skipped and the strict `.field` record-access semantics apply.
 
-```bash
-ilo 'f s:t>t;trm s' "  hello  "
-# → hello
-```
+## See also
 
-### `spl` - split text
-
-```bash
-ilo 'f s:t>L t;spl s ","' "a,b,c"
-# → [a, b, c]
-```
-
-### `fmt` - format strings
-
-`{}` placeholders are filled left-to-right:
-
-```bash
-ilo 'f>t;fmt "{} + {} = {}" 1 2 3' f
-# → 1 + 2 = 3
-```
-
-### `cat` - join list with separator
-
-```bash
-ilo 'f xs:L t>t;cat xs ", "' a,b,c
-# → a, b, c
-```
-
-### `rgx` - regex extract
-
-`rgx pat s` extracts all matches of a regex pattern from a string. Without capture groups it returns all matches; with groups it returns the first match's captures:
-
-```bash
-ilo 'f s:t>L t;rgx "\\d+" s' "abc 123 def 456"
-# → [123, 456]
-```
+- [Text](/docs/builtins/text/) for string operations (`trm`, `spl`, `fmt`, `cat`, `rgx`)
+- [Numbers](/docs/builtins/numbers/) for numeric aggregation (`min`, `max`, `median`, `stdev`)

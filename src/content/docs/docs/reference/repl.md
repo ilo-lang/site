@@ -1,7 +1,9 @@
 ---
 title: The REPL
-description: Interactive ilo sessions for experimenting and prototyping
+description: Use this when running an interactive ilo session for experimenting or prototyping.
 ---
+
+Use this when running an interactive ilo session for experimenting or prototyping.
 
 ## Start a session
 

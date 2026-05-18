@@ -1,7 +1,9 @@
 ---
 title: Imports
-description: Splitting ilo programs across multiple files
+description: Use this when splitting an ilo program across multiple files.
 ---
+
+Use this when splitting an ilo program across multiple files.
 
 Split programs across files with `use`:
 

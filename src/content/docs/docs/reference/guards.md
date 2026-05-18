@@ -1,7 +1,9 @@
 ---
 title: Guards & Control Flow
-description: Flat conditional logic with guards
+description: Use this when expressing conditional logic without nesting (replaces if/else).
 ---
+
+Use this when expressing conditional logic without nesting (replaces if/else).
 
 ilo uses **guards** instead of if/else. Guards are flat statements that return early - no nesting, no closing braces.
 
@@ -87,7 +89,7 @@ ilo 'f x:n>n;!>x 0 0;x' -3
 # → 0
 ```
 
-Negated braceless guards work with any comparison. Use [`^` (throw)](/docs/guide/error-handling) to return an error instead of a value: `!<=n 0 ^"must be positive"`.
+Negated braceless guards work with any comparison. Use [`^` (throw)](/docs/reference/error-handling) to return an error instead of a value: `!<=n 0 ^"must be positive"`.
 
 ## Braced guards
 
@@ -225,7 +227,7 @@ show a:n b:n>t;r=div a b;?r{~v:str v;^e:e}' show 10 0
 # → divide by zero
 ```
 
-See [Error Handling](/docs/guide/error-handling) for more on `~` (Ok), `^` (Err), and the `R` type.
+See [Error Handling](/docs/reference/error-handling) for more on `~` (Ok), `^` (Err), and the `R` type.
 
 ### Matching on type
 
