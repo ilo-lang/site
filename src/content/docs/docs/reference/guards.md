@@ -188,10 +188,10 @@ describe x:t > t       -- text in, text out
 
 ### Matching on Result types
 
-Functions that can fail return `R ok_type err_type` (a Result). A Result isn't a parameter type — it comes from calling a fallible function and capturing the return value. Use match to handle both cases:
+Functions that can fail return `R ok_type err_type` (a Result). A Result isn't a parameter type. It comes from calling a fallible function and capturing the return value. Use match to handle both cases:
 
-- `~v` — matches the Ok variant, binds the inner value to `v`
-- `^e` — matches the Err variant, binds the error to `e`
+- `~v`: matches the Ok variant, binds the inner value to `v`
+- `^e`: matches the Err variant, binds the error to `e`
 
 Inline:
 
@@ -215,7 +215,7 @@ show a:n b:n > t             -- two numbers in, text out
   }                          -- end match
 ```
 
-`div` returns `R n t` — either an Ok number or an Err string. `show` captures the Result in `r` (without auto-unwrapping) and matches on it.
+`div` returns `R n t`: either an Ok number or an Err string. `show` captures the Result in `r` (without auto-unwrapping) and matches on it.
 
 ```bash
 ilo 'div a:n b:n>R n t;=b 0 ^"divide by zero";~/a b

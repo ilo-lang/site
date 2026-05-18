@@ -5,7 +5,7 @@ description: Use this when something parses unexpectedly or you hit a common ilo
 
 Use this when something parses unexpectedly or you hit a common ilo trap.
 
-## `?` and `_` — context-sensitive symbols
+## `?` and `_`: context-sensitive symbols
 
 `?` has two meanings, `_` has two meanings:
 

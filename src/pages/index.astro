@@ -1331,7 +1331,7 @@ import { SITE_URL, softwareApplicationSchema, websiteSchema } from '../lib/schem
     50% { opacity: 0.6; }
   }
 
-  /* Scroll animations — progressive enhancement: visible by default, animated only when JS adds .animate-ready */
+  /* Scroll animations: progressive enhancement, visible by default, animated only when JS adds .animate-ready */
   .animate-ready [data-animate] {
     opacity: 0;
     transform: translateY(24px);
@@ -1486,7 +1486,7 @@ import { SITE_URL, softwareApplicationSchema, websiteSchema } from '../lib/schem
     });
   });
 
-  // Scroll animations — enable only after JS is ready
+  // Scroll animations: enable only after JS is ready
   document.documentElement.classList.add('animate-ready');
   const observer = new IntersectionObserver(
     (entries) => {

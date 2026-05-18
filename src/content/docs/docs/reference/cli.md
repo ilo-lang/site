@@ -255,7 +255,7 @@ ilo compile 'dbl x:n>n;*x 2' -o dbl
 
 AOT-compiled binaries match the in-process runners byte-for-byte: top-level `~v` prints bare `v` on stdout with exit 0; `^e` prints `^e` on stderr with exit 1; non-Result returns print plain on stdout. Output is identical whether you `ilo run` or `ilo compile && ./binary`.
 
-**Supported surface:** the same shape as the Cranelift JIT — numeric and text arithmetic, comparisons, guards and conditionals, loops, function calls, records, lists, maps, strings, JSON, HTTP, and all builtins routed through the JIT runtime. A handful of advanced HOF dispatch forms with closure capture from the enclosing scope fall through to the tree interpreter; those don't AOT-compile yet.
+**Supported surface:** the same shape as the Cranelift JIT: numeric and text arithmetic, comparisons, guards and conditionals, loops, function calls, records, lists, maps, strings, JSON, HTTP, and all builtins routed through the JIT runtime. A handful of advanced HOF dispatch forms with closure capture from the enclosing scope fall through to the tree interpreter; those don't AOT-compile yet.
 
 Requires the `cranelift` feature (enabled by default in release builds).
 
@@ -269,7 +269,7 @@ For a program whose entry function returns a Result, ilo splits the `~`/`^` wrap
 | `^e` (Err)       | — | `^e` | 1 |
 | any non-Result   | `v` | — | 0 |
 
-In `--json` mode the value is always wrapped (`{"ok": v}` / `{"error": ...}`) on stdout; exit codes match the table above. The contract applies uniformly to in-process runners and AOT-compiled binaries — output is byte-for-byte identical across every backend.
+In `--json` mode the value is always wrapped (`{"ok": v}` / `{"error": ...}`) on stdout; exit codes match the table above. The contract applies uniformly to in-process runners and AOT-compiled binaries: output is byte-for-byte identical across every backend.
 
 ## Backend selection
 
