@@ -58,13 +58,15 @@ entries d:t>R (L t) t;lsd d
 
 `walk dir` does a depth-first traversal of `dir` and returns every path it finds relative to `dir`, sorted. Symlinks are not followed (matches the safer of the two `find` defaults and avoids the cycle trap that bites recursive globs in symlinked trees).
 
+Unreadable subdirectories (most commonly permission-denied: sandbox roots, sibling-user homes, `/var/db` on macOS) are silently skipped. The locked dir's own entry is still in the result; just its contents are not enumerated. This means `walk /` or `walk ~/` produce useful output instead of aborting on the first locked sibling. An unreadable *root* still returns `Err`, so "starting point unreadable" is distinguishable from "some descendant unreadable".
+
 ```ilo
 all p:t>R (L t) t;walk p
 ```
 
 ### Glob
 
-`glob dir pat` returns the paths under `dir` (relative, sorted) that match a shell-style pattern. `*`/`?`/`[abc]` match within a single path segment; `**` matches any number of nested segments (including zero), so `**/*.ilo` finds every `.ilo` file in the tree, including ones in `dir` itself. No matches returns `[]`, not `Err`.
+`glob dir pat` returns the paths under `dir` (relative, sorted) that match a shell-style pattern. `*`/`?`/`[abc]` match within a single path segment; `**` matches any number of nested segments (including zero), so `**/*.ilo` finds every `.ilo` file in the tree, including ones in `dir` itself. No matches returns `[]`, not `Err`. Shares `walk`'s traversal, so unreadable subdirectories are skipped silently here too.
 
 ```ilo
 ilo-files d:t>R (L t) t;glob d "**/*.ilo"
