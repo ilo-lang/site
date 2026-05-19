@@ -73,6 +73,42 @@ ilo-files d:t>R (L t) t;glob d "**/*.ilo"
 csv-here d:t>R (L t) t;glob d "*.csv"
 ```
 
+### Path manipulation
+
+`dirname`, `basename`, and `pathjoin` are pure-text path operations. No I/O, no Result wrapper, total on all inputs. Unix forward-slash semantics; Windows backslash handling is a 0.13.0 concern.
+
+`dirname path` returns the POSIX parent directory:
+
+- `dirname "/a/b/c.txt"` → `"/a/b"`
+- `dirname "/"` → `"/"` (root is its own parent, POSIX)
+- `dirname "/a"` → `"/"` (single-component absolute path)
+- `dirname "foo.txt"` → `""` (no directory component; POSIX returns `"."` here, ilo returns `""` so the cat round-trip below stays clean)
+- `dirname "foo/"` → `""` (trailing slash stripped, no directory component remains)
+- `dirname ""` → `""`
+
+`basename path` returns the POSIX final path segment:
+
+- `basename "/a/b/c.txt"` → `"c.txt"`
+- `basename "/"` → `"/"` (root is its own basename, POSIX edge)
+- `basename "foo/"` → `"foo"` (trailing slash stripped first)
+- `basename ""` → `""`
+
+`pathjoin parts` joins a list of segments with `/`, collapsing duplicate separators at joints and dropping empty segments. The list form (not variadic) avoids the arity-inference trap that `fmt`'s variadic shape lives with:
+
+- `pathjoin ["a" "b" "c.txt"]` → `"a/b/c.txt"`
+- `pathjoin ["a/" "/b/" "c.txt"]` → `"a/b/c.txt"` (joint slashes deduped)
+- `pathjoin []` → `""`
+- `pathjoin ["foo"]` → `"foo"`
+- `pathjoin ["/" "a"]` → `"/a"` (leading absolute root preserved)
+- `pathjoin ["" "a" ""]` → `"a"` (empty segments dropped)
+
+Round-trip:
+
+```ilo
+-- Split a path and rejoin it; the result equals the original.
+roundtrip p:t>t;pathjoin [dirname p basename p]
+```
+
 ## Writing files
 
 `wr path data` writes data to a file. Format can be specified as a third argument:
