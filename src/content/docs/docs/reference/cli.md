@@ -283,26 +283,29 @@ For a program whose entry function returns a Result, ilo splits the `~`/`^` wrap
 | `^e` (Err)       | — | `^e` | 1 |
 | any non-Result   | `v` | — | 0 |
 
-In `--json` mode the value is always wrapped (`{"ok": v}` / `{"error": ...}`) on stdout; exit codes match the table above. The contract applies uniformly to in-process runners and AOT-compiled binaries: output is byte-for-byte identical across every backend.
+In `--json` mode the value is always wrapped (`{"schemaVersion": 1, "ok": v}` / `{"schemaVersion": 1, "error": ...}`) on stdout; exit codes match the table above. The contract applies uniformly to in-process runners and AOT-compiled binaries: output is byte-for-byte identical across every backend.
 
 ## JSON output across subcommands
 
-Every subcommand that produces machine-readable output supports `--json` (or `-j`). New envelopes start with `"schemaVersion": 1` so agents can route on the contract and the shape can evolve without breaking older consumers. A few long-standing outputs predate the convention (`run`, `graph`, `--ast`, `serv`, `tools --json`) and keep their original shape.
+Every subcommand that produces machine-readable output supports `--json` (or `-j`), and every envelope starts with `"schemaVersion": 1` so agents can route on the contract and the shape can evolve without breaking older consumers. Five long-standing outputs (`run`, `graph`, `--ast`, `serv`, `tools --json`) and the newly-added `ilo spec --json` mode were brought into the convention in 0.12.1.
 
-| Command                     | `--json` support                | Versioned? |
-| --------------------------- | ------------------------------- | ---------- |
-| `ilo run` / `ilo file.ilo`  | yes (success + error envelopes) | legacy     |
-| `ilo check`                 | yes (one diagnostic per line)   | per-diag   |
-| `ilo build` / `ilo compile` | yes (`output`, `sizeBytes`, `durationMs`) | yes |
-| `ilo graph`                 | yes (always JSON unless `--dot`) | legacy    |
-| `ilo --ast`                 | yes (AST as JSON)               | legacy     |
-| `ilo explain ILO-XXXX`      | yes                              | yes        |
-| `ilo skill list/get/path/show` | yes                           | yes        |
-| `ilo version`               | yes (`version`, `features`)      | yes        |
-| `ilo tools`                 | yes (via `--json` subflag)       | legacy     |
-| `ilo serv`                  | yes (JSONL stdio)                | legacy     |
+For five of those six the change is strictly additive — the existing object envelopes gained one extra top-level field next to their existing keys. The one observable break is `ilo tools --json`: its legacy shape was a bare array, so wrapping it as `{"schemaVersion": 1, "tools": [...]}` changes the top-level type. Indexing consumers should read `.tools[0]` instead of `[0]`.
 
-`spec` and `repl` are intentionally not JSON: `spec` emits markdown / `ai.txt`, `repl` is interactive.
+| Command                     | `--json` support                | Versioned?                    |
+| --------------------------- | ------------------------------- | ----------------------------- |
+| `ilo run` / `ilo file.ilo`  | yes (success + error envelopes) | yes (0.12.1+)                 |
+| `ilo check`                 | yes (one diagnostic per line)   | per-diag                      |
+| `ilo build` / `ilo compile` | yes (`output`, `sizeBytes`, `durationMs`) | yes                 |
+| `ilo graph`                 | yes (always JSON unless `--dot`) | yes (0.12.1+)                |
+| `ilo --ast`                 | yes (AST as JSON)               | yes (0.12.1+)                 |
+| `ilo explain ILO-XXXX`      | yes                              | yes                          |
+| `ilo skill list/get/path/show` | yes                           | yes                          |
+| `ilo version`               | yes (`version`, `features`)      | yes                          |
+| `ilo tools`                 | yes (via `--json` subflag)       | yes (0.12.1+, breaking wrap) |
+| `ilo serv`                  | yes (JSONL stdio)                | yes (0.12.1+, every line)    |
+| `ilo spec [lang\|ai]`       | yes (wraps prose, 0.12.1+)       | yes (0.12.1+)                |
+
+`spec` emits markdown / `ai.txt` for humans by default; with `--json` it wraps the prose as `{"schemaVersion": 1, "format": "markdown"|"ai-txt", "content": "..."}` so the contract matches every other emitter. `repl` is interactive and stays out of the JSON contract — the JSONL-over-stdio equivalent for agents is `ilo serv`.
 
 The full per-command schema reference lives in [`JSON_OUTPUT.md`](https://github.com/ilo-lang/ilo/blob/main/JSON_OUTPUT.md) in the ilo repo; it's locked by `tests/json_output_contracts.rs` so future changes that break a schema fail CI.
 
