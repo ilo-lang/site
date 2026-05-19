@@ -17,7 +17,7 @@ ilo programs verify once and then run on one of three public engines. Every engi
 
 The tree-walking interpreter is no longer a user-selectable engine: `--run-tree` / `--run` were removed from the public CLI in the 0.12.x soft-deprecation. The tree-walker stays in-tree as the internal dispatch target for a small set of HOF / regex / IO shapes the VM and Cranelift haven't lifted natively yet; the VM bails to it transparently. Full removal is deferred to 0.13.0+.
 
-The CLI picks a sensible default per command. To force an engine, see `--run-vm` / `--jit` in the [CLI Reference](/docs/reference/cli/).
+The CLI picks a sensible default per command. To force an engine, see `--vm` / `--jit` in the [CLI Reference](/docs/reference/cli/).
 
 ## Contracts every engine shares
 

@@ -54,10 +54,10 @@ ilo file.ilo /tmp/data.json      # routes to main, /tmp/data.json is arg 1
 ilo file.ilo 1,2,3               # routes to main, list literal is arg 1
 ```
 
-This matches the default-engine heuristic: if there's only one function, or there's a `main`, no explicit dispatch is needed. The same auto-pick-main applies to the engine-selection flags (`--run-vm`, `--jit`) - they fall back to `main` (or the sole function) when no subcommand is supplied:
+This matches the default-engine heuristic: if there's only one function, or there's a `main`, no explicit dispatch is needed. The same auto-pick-main applies to the engine-selection flags (`--vm`, `--jit`) - they fall back to `main` (or the sole function) when no subcommand is supplied:
 
 ```bash
-ilo file.ilo --run-vm 5          # runs main 5 on the VM
+ilo file.ilo --vm 5          # runs main 5 on the VM
 ```
 
 ### Unknown `--flag` guard
@@ -302,7 +302,8 @@ ilo supports multiple execution backends. The default is the bytecode register V
 |------|---------|
 | *(default)* | Register VM (closure-aware, all opcodes supported) |
 | `--jit` | Cranelift JIT (hot numeric loops; falls back to VM on bailout) |
-| `--run-vm` | Register VM (explicit form of the default) |
+| `--vm` | Register VM (canonical explicit form, symmetric with `--jit`) |
+| `--run-vm` | Deprecated alias for `--vm`. Emits a one-shot stderr hint; removed in 0.13.0. |
 | `--run-llvm` | LLVM JIT (requires `--features llvm` build) |
 
 `--run-tree` / `--run` were removed from the public CLI in the 0.12.x soft-deprecation. The tree-walking interpreter stays in-tree as the internal dispatch target for a small set of HOF / regex / IO shapes the VM and Cranelift haven't lifted natively yet; the VM bails to it transparently. Full removal is deferred to 0.13.0+.
