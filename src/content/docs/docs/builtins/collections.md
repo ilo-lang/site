@@ -44,6 +44,15 @@ slen s:t>n;len s                          -- string length as key
 srt slen ["banana" "fig" "apple" "kiwi"]  -- → [fig kiwi apple banana]
 ```
 
+`rsrt` mirrors `srt` and also takes a key function for descending sort-by (`rsrt fn list`):
+
+```ilo
+slen s:t>n;len s                            -- string length as key
+rsrt slen ["banana" "fig" "apple" "kiwi"]   -- → [banana apple kiwi fig]
+```
+
+Both `srt` and `rsrt` also accept a 3-arg `fn ctx list` form where `fn` takes `(elem, ctx)`. This is the cross-engine alternative when you want explicit state without forming a closure.
+
 Number functions that pair well with lists:
 
 ```ilo
@@ -256,6 +265,7 @@ ilo 'scores>n;m=mmap;m=mset m "alice" 99;m=mset m "bob" 87;mget m "alice"' score
 | `mmap` | `M t _` | create empty map |
 | `mset m k v` | `M k v` | new map with key set |
 | `mget m k` | value or nil | value at key |
+| `mget-or m k default` | `v` | value at key, or `default` if missing |
 | `mhas m k` | `b` | key exists? |
 | `mkeys m` | `L t` | sorted list of keys |
 | `mvals m` | `L v` | values sorted by key |
@@ -273,15 +283,34 @@ ilo 'check>b;m=mset mmap "x" "1";mhas m "x"' check
 
 Functions that reduce a collection to a single value:
 
-### `sum` and `avg`
+### `sum`, `prod`, and `avg`
 
 ```bash
 ilo 'f xs:L n>n;sum xs' 1,2,3,4,5
 # → 15
 
+ilo 'f xs:L n>n;prod xs' 1,2,3,4,5
+# → 120
+
 ilo 'f xs:L n>n;avg xs' 2,4,6
 # → 4
 ```
+
+`sum []` returns 0 (additive identity). `prod []` returns 1 (multiplicative identity).
+
+### `cumsum` and `cprod`
+
+Running (prefix) accumulations over a numeric list:
+
+```bash
+ilo 'f>L n;cumsum [1,2,3,4]' f
+# → [1, 3, 6, 10]
+
+ilo 'f>L n;cprod [1,2,3,4]' f
+# → [1, 2, 6, 24]
+```
+
+Output length always matches input length. Empty input returns `[]`.
 
 ### `grp` - group by key function
 
@@ -323,15 +352,19 @@ ilo 'f xs:L t>L t;unq xs' a,b,a,c,b
 | `hd` | `head` | `L _ > _` | First element |
 | `tl` | `tail` | `L _ > L _` | All elements except first |
 | `at` | | `L _ n > _` | i-th element (0-indexed; negative counts from end; float `i` auto-floors) |
+| `lget-or` | | `L a n a > a` | element at index `i`, or `default` if out of range (negative indices like `at`; never errors on OOB) |
 | `rev` | `reverse` | `L _ > L _` | Reverse a list |
 | `srt` | `sort` | `L _ > L _` | Sort a list |
 | `srt` | `sort` | `fn L _ > L _` | Sort by key function |
+| `rsrt` | | `L _ > L _` | Sort a list descending |
+| `rsrt` | | `fn L _ > L _` | Sort descending by key function |
 | `slc` | `slice` | `L _ n n > L _` | Slice (start, end) |
 | `flat` | `flatten` | `L L _ > L _` | Flatten one level of nesting |
 | `unq` | `unique` | `L _ > L _` | Remove duplicates |
 | `has` | `contains` | `L _ _ > b` | Membership |
 | `map` | | `fn L _ > L _` | Apply function to each element |
 | `mapr` | | `fn L _ > R (L _) _` | Map with short-circuit Result propagation: collects Ok values, returns the first Err |
+| `default-on-err` | | `R T E T > T` | Unwrap `R T E` to `T`, returning the default if Err. Mirror of `??` for Result (`??` is nil-coalesce for `O T` only). Prefer over `?r{~v:v;^_:d}` when the error payload is unused. |
 | `flt` | `filter` | `fn L _ > L _` | Keep elements where function returns true |
 | `ct` | `count` | `fn L _ > n` | Count elements where predicate returns true. Allocation-free vs `len (flt fn xs)`. |
 | `fld` | `fold` | `fn _ L _ > _` | Reduce list to single value |
