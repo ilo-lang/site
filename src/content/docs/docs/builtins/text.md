@@ -22,6 +22,7 @@ Use this when concatenating, formatting, splitting, searching, or matching strin
 | `rgx` | `t t > L t` | Regex match (returns captures) | `rgx "abc123" "[0-9]+"` -> `["123"]` |
 | `rgxall` | `t t > L (L t)` | All matches with captures, one inner list per match. With no capture groups, each inner list holds the whole match. | `rgxall "(\\w+)=(\\d+)" "a=1 b=2"` -> `[["a","1"],["b","2"]]` |
 | `rgxall1` | `t t > L t` | All matches of a single-group pattern, flattened. With no capture groups, returns the list of whole matches. Errors at verify-time if the pattern has 2+ capture groups, use `rgxall` instead. | `rgxall1 "(\\d+)" "a=1 b=2"` -> `["1","2"]` |
+| `rgxall-multi` | `L t t > L t` | Multi-pattern flat-match. Apply each pattern in the list to the string and concatenate hits in pattern order. Per-pattern semantics follow `rgxall1` (0 groups -> whole matches; 1 group -> capture-1 strings; 2+ groups errors). | `rgxall-multi ["\\d+" "[A-Z]+"] "x=1 ERR=2"` -> `["1","2","ERR"]` |
 
 ## Formatting
 
