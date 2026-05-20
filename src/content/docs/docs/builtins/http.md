@@ -37,7 +37,9 @@ r=pst-to url body 3000
 
 ## Process spawn
 
-`run cmd argv` is the only process-spawn primitive. The first argument is the program (text), the second is the argv list (`L t`), and the result is a `Result` whose `Ok` carries a three-key Map of `stdout` / `stderr` / `code` as text.
+ilo provides two process-spawn primitives: `run` and `run2`. Both share the same no-shell-no-glob security model, the same concurrency and cap policy, and the same UTF-8 handling. They differ only in what the `Ok` payload looks like.
+
+`run cmd argv` returns a loose Map with text values for stdout, stderr, and exit code.
 
 ```ilo
 r=run "echo" ["hi"]
@@ -47,9 +49,21 @@ $"git" ["status" "--short"]
 -- equivalent: $ is the sigil shortcut for run
 ```
 
+`run2 cmd argv` returns a typed `RunResult` record with dot-access. `exit` is a number (`n`), not text, so numeric comparisons work directly.
+
+```ilo
+r=run2!! "echo" ["hi"]
+-- RunResult{stdout:"hi\n"; stderr:""; exit:0}
+
+=0 r.exit   -- true
+<0 r.exit   -- false (signal-killed processes surface as exit:-1 on Unix)
+```
+
+Prefer `run2` for new code. `run` is kept for compatibility.
+
 **No shell, no interpolation, no glob.** The argv list is passed directly to `std::process::Command::args`. There is no `sh -c`, no string concatenation between `cmd` and `argv`, and no glob expansion. This is the principled defence against shell injection.
 
-**Non-zero exit is NOT an error.** `Err` is reserved for spawn failures (command not found, permission denied, output cap exceeded). A child that returns a non-zero exit code surfaces as `Ok({"stdout":..., "stderr":..., "code":"<n>"})`; the caller inspects `code` and branches.
+**Non-zero exit is NOT an error.** `Err` is reserved for spawn failures (command not found, permission denied, output cap exceeded). A child that returns a non-zero exit code surfaces in the `Ok` arm; the caller inspects `exit` (run2) or `code` (run) and branches.
 
 **Captured output is capped at 10 MiB per stream.** Either stream exceeding the cap returns an `Err` rather than partial capture.
 
