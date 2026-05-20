@@ -73,6 +73,31 @@ ilo-files d:t>R (L t) t;glob d "**/*.ilo"
 csv-here d:t>R (L t) t;glob d "*.csv"
 ```
 
+### File metadata
+
+Four atomic primitives sit alongside the directory enumerators. The shape is deliberately not one fat `stat` map: agents that want the size pay the size cost, agents that want a predicate pay the predicate cost, and the natural one-liners stay one token wide.
+
+- `fsize path > R n t` returns the file size in bytes. `Err` on missing, permission-denied, or path-is-directory.
+- `mtime path > R n t` returns the last modification time as Unix epoch seconds (`f64`, fractional preserved). `Err` on missing or permission-denied. Pairs with `now` for "is this file older than N seconds" checks.
+- `isfile path > b` returns `true` iff `path` resolves to a regular file. Missing, permission-denied, and non-file all collapse to `false`.
+- `isdir path > b` returns `true` iff `path` resolves to a directory. Same `false`-on-failure collapse as `isfile`.
+
+The asymmetry between size/mtime (`R n t`) and the predicates (`b`) is deliberate. Predicates almost always feed into a single-token branch (`?isfile p{...}`), so collapsing the error tier into `false` is the right ergonomic — Python uses the same convention for `os.path.isfile`. Size and mtime callers usually want to distinguish "missing" from "permission-denied" from "this is a directory, not a file", so the error tier stays exposed.
+
+All four follow symlinks (POSIX `stat`, not `lstat`). Metadata calls are leaf queries where "what does this path resolve to?" is almost always the question; `walk` and `glob` are the place where symlink-following needs to be off (for cycle safety).
+
+```ilo
+sz p:t>R n t;fsize p
+isnew p:t>b;t=mtime! p;d=-(now)t;<d 3600.0   -- modified in the last hour
+kind p:t>t;f=isfile p;d=isdir p;?f{true:"file";false:?d{true:"dir";false:"other"}}
+```
+
+A common composition pattern is filtering `walk` output to keep only regular files:
+
+```ilo
+files d:t>L t;xs=walk! d;flt (p:t>b;isfile cat [d "/" p] "") xs
+```
+
 ### Path manipulation
 
 `dirname`, `basename`, and `pathjoin` are pure-text path operations. No I/O, no Result wrapper, total on all inputs. Unix forward-slash semantics; Windows backslash handling is a 0.13.0 concern.
@@ -148,6 +173,7 @@ home>t;env! "HOME"
 | `jpth` | `t t > R t t` | Extract JSON path | `jpth data "users.0.name"` |
 | `jdmp` | `_ > t` | Dump value as JSON string | `jdmp [1,2,3]` |
 | `jpar` | `t > R _ t` | Parse JSON string to value | `jpar '{"a":1}'` |
+| `jpar-list` | `t > R (L _) t` | Parse JSON string, assert top-level is array | `@x (jpar-list! body){...}` |
 
 ## Time
 
