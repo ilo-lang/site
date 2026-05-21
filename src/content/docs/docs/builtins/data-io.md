@@ -170,7 +170,7 @@ home>t;env! "HOME"
 | Function | Signature | Description | Example |
 |----------|-----------|-------------|---------|
 | `rdb` | `t t > R _ t` | Parse data (format: `"json"`, `"csv"`) | `rdb data "json"` |
-| `jpth` | `t t > R t t` | Extract JSON path | `jpth data "users.0.name"` |
+| `jpth` | `t t > R _ t` | Extract JSON path; Ok variant is the typed leaf (number→`n`, string→`t`, array→`L _`, object→record) | `jpth data "users.0.name"` |
 | `jdmp` | `_ > t` | Dump value as JSON string | `jdmp [1,2,3]` |
 | `jpar` | `t > R _ t` | Parse JSON string to value | `jpar '{"a":1}'` |
 | `jpar!` | `t > _` | Parse JSON and auto-unwrap the Result. Inside an `R`-returning function, Err propagates to the caller; otherwise use `jpar!!` to panic on parse error. | `r=jpar! body;r.name` |
