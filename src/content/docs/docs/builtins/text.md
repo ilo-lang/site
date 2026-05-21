@@ -28,9 +28,21 @@ Use this when concatenating, formatting, splitting, searching, or matching strin
 
 | Function | Signature | Description | Example |
 |----------|-----------|-------------|---------|
-| `fmt` | `t ... > t` | Format string with values | `fmt "{} is {}" "sky" "blue"` |
+| `fmt` | `t ... > t` | Format string with values | `fmt "{.2f} {:5}" 3.14159 42` |
 
 `fmt` is pure-functional sprintf, **not print**. A bare `fmt "..." v` statement is silently discarded on every engine. Use `prnt fmt "..." v` to print or `line=fmt "..." v` to capture. The verifier emits **ILO-T032** when `fmt`/`fmt2` is a non-tail statement with no binding (tail position, e.g. `f v:n>t;fmt "x={}" v`, is the documented "return formatted text" idiom and does not warn).
+
+**Supported placeholder specs:**
+
+| Spec | Meaning | Example |
+|------|---------|---------|
+| `{}` | Any value | `fmt "{}" 42` → `"42"` |
+| `{.Nf}` / `{:.Nf}` | N decimal places | `fmt "{.2f}" 3.14159` → `"3.14"` |
+| `{:N}` | Right-align to width N | `fmt "{:5}" "hi"` → `"   hi"` |
+| `{:Nd}` | Integer, right-aligned to width N | `fmt "{:5d}" 42.0` → `"   42"` |
+| `{:<N}` | Left-align to width N | `fmt "{:<5}" "hi"` → `"hi   "` |
+
+Zero-padded widths (`{:06d}`) and `{:.N}` without the `f` suffix are rejected at verify-time when the template is a literal, or at runtime otherwise.
 
 ## Conversion
 
