@@ -346,6 +346,24 @@ Boundary cases: `a=0` freezes at `xs[0]` (constant output); `a=1` reproduces
 unchanged regardless of `a`. Replaces the fold-with-running-state pattern in
 one call.
 
+### `where` - parallel-list conditional select
+
+`where cond xs ys > L a` is the NumPy `np.where` equivalent: for each `i`,
+`output[i] = xs[i] if cond[i] else ys[i]`. All three lists must be the same
+length; a mismatch raises `ILO-R009` at runtime. The element type of `xs` /
+`ys` is preserved in the output.
+
+```bash
+ilo 'f>L n;where [true, false, true] [1, 2, 3] [10, 20, 30]' f
+# → [1, 20, 3]
+```
+
+Replaces the
+`map (i:n>_;?h (at cond i) (at xs i) (at ys i)) (range 0 (len xs))` recipe in
+one call. Empty input returns `[]`. Works for any element type: lists of
+numbers, text, or any other ilo value type are all supported as long as
+`xs` and `ys` share the same element type.
+
 ### `grp` - group by key function
 
 `grp fn xs` groups a list by a key function, returning `M t (L a)`:
