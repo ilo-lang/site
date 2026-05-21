@@ -138,6 +138,7 @@ Every diagnostic ilo emits has the shape `ILO-<letter><digits>`. The letter is t
 | Code | Description |
 |------|-------------|
 | `ILO-W001` | Guard without else inside loop (retired) |
+| `ILO-W002` | Iterating `jpar!` result, use `jpar-list!` instead |
 
 ## Runtime errors (ILO-R)
 
