@@ -66,6 +66,16 @@ All comparisons return `b`.
 | `argmin` | `L n > n` | Index of min element (first occurrence wins on ties; errors on empty) | `argmin [3,1,9,2]` -> `1` |
 | `argsort` | `L n > L n` | Sorted-index permutation ascending (stable; empty returns `[]`) | `argsort [3,1,2]` -> `[1,2,0]` |
 
+## Numeric prelude (list constructors)
+
+| Function | Signature | Description | Example |
+|----------|-----------|-------------|---------|
+| `linspace` | `n n n > L n` | `n` evenly-spaced floats from `a` to `b` inclusive (numpy `endpoint=True`). `n=0` returns `[]`; `n=1` returns `[a]`. Last element pinned to `b` to avoid float-accumulated drift. | `linspace 0 10 5` -> `[0, 2.5, 5, 7.5, 10]` |
+| `ones` | `n > L n` | `n` copies of `1.0`. `n=0` returns `[]`. Saves the design-matrix-column `map (i:n>n;1) (range 0 n)` cascade. | `ones 5` -> `[1, 1, 1, 1, 1]` |
+| `rep` | `n T > L T` | `n` copies of any value (element type follows the value). `n=0` returns `[]`. Saves `map (i:n>T;v) (range 0 n)` for accumulator seeding and constant tables. | `rep 3 7` -> `[7, 7, 7]`, `rep 3 "x"` -> `["x", "x", "x"]` |
+
+All three reject negative `n` with `ILO-R009` and cap at 1,000,000 elements.
+
 ## Conversions
 
 | Function | Signature | Description | Example |
