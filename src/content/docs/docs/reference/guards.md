@@ -217,6 +217,13 @@ show a:n b:n > t             -- two numbers in, text out
 
 `div` returns `R n t`: either an Ok number or an Err string. `show` captures the Result in `r` (without auto-unwrapping) and matches on it.
 
+You can also skip the rebind and put the call directly in the scrutinee slot — either bare or parenthesised, both parse the same:
+
+```ilo
+show a:n b:n>t;?div a b{~v:str v;^e:e}
+show a:n b:n>t;?(div a b){~v:str v;^e:e}
+```
+
 ```bash
 ilo 'div a:n b:n>R n t;=b 0 ^"divide by zero";~/a b
 show a:n b:n>t;r=div a b;?r{~v:str v;^e:e}' show 10 2
