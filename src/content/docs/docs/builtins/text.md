@@ -29,6 +29,7 @@ Use this when concatenating, formatting, splitting, searching, or matching strin
 | Function | Signature | Description | Example |
 |----------|-----------|-------------|---------|
 | `fmt` | `t ... > t` | Format string with values | `fmt "{.2f} {:5}" 3.14159 42` |
+| `fmt2` | `n n > t` | Format a number to N decimal places (half-to-even rounding; digits clamped to `0..=20`). Decimal formatter, **not** a list-splat variant of `fmt`. Compose with `fmt` for template + precision. | `fmt2 3.14159 2` -> `"3.14"`, `fmt "x={}" (fmt2 v 2)` |
 
 `fmt` is pure-functional sprintf, **not print**. A bare `fmt "..." v` statement is silently discarded on every engine. Use `prnt fmt "..." v` to print or `line=fmt "..." v` to capture. The verifier emits **ILO-T032** when `fmt`/`fmt2` is a non-tail statement with no binding (tail position, e.g. `f v:n>t;fmt "x={}" v`, is the documented "return formatted text" idiom and does not warn).
 
