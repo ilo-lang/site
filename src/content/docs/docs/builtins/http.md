@@ -17,6 +17,10 @@ HTTP and process-spawn builtins require the native binary. They are not availabl
 | `pst` | `t t > R t t` | HTTP POST (url, body). Renamed from `post` in 0.12.0 | `pst url body` |
 | `pst` | `t t M > R t t` | HTTP POST with headers | `pst url body headers` |
 | `pst-to` | `t t n > R t t` | HTTP POST with timeout (ms) | `pst-to url body 5000` |
+| `getx` | `t > R (M t _) t` | HTTP GET, rich response (status, headers, body) | `getx url` |
+| `getx` | `t M > R (M t _) t` | HTTP GET, rich response, with request headers | `getx url headers` |
+| `pstx` | `t t > R (M t _) t` | HTTP POST, rich response | `pstx url body` |
+| `pstx` | `t t M > R (M t _) t` | HTTP POST, rich response, with request headers | `pstx url body headers` |
 | `run` | `t L > R (M t t) t` | Spawn `cmd` with argv list. No shell, no glob. | `run "git" ["status"]` |
 | `$` | `t L > R (M t t) t` | `run` shorthand (sugar for `run`) | `$"git" ["status"]` |
 | `env` | `t > R t t` | Read environment variable | `env "API_KEY"` |
@@ -34,6 +38,28 @@ r=get-to url 5000
 -- 3-second timeout on POST
 r=pst-to url body 3000
 ```
+
+## Rich-response variants: getx / pstx
+
+`get` / `pst` / `get-to` / `pst-to` return `R t t` — body only. That is the right shape for fire-and-forget GETs and POSTs but blocks every workflow that needs response metadata: conditional requests (304 Not Modified branching on `If-None-Match`), redirect following, rate-limit headers (`X-RateLimit-Remaining`), pagination Link headers, cookie capture, status-code branching beyond Ok/Err.
+
+`getx` and `pstx` are the rich variants. The success arm is a `Map[Text, _]` with three keys:
+
+- `status` (`n`) — HTTP status code (200, 304, 404, 500, ...). Non-2xx responses are still Ok with the status surfaced; only transport failure (DNS, connection refused, timeout) returns Err.
+- `headers` (`M t t`) — response headers. Header names are lowercased.
+- `body` (`t`) — response body decoded as UTF-8.
+
+Both accept the same optional trailing `M t t` request-headers map as `get`/`pst`.
+
+```ilo
+-- Conditional request: branch on 304 vs 200
+fetch>R t t;h=mset mmap "if-none-match" "\"abc123\"";r=getx! "https://api.example.com/data" h;st=mget!! r "status";?(=st 304){~"not modified"};~mget!! r "body"
+
+-- Read a rate-limit header
+r=getx! "https://api.github.com/users/octocat";rem=mget!! (mget!! r "headers") "x-ratelimit-remaining"
+```
+
+Existing `get`/`pst` shapes are untouched. Pick `get` when body is all you need; pick `getx` when you need status or headers. Tree-bridge dispatched, so VM and Cranelift JIT inherit identical semantics.
 
 ## Process spawn
 
