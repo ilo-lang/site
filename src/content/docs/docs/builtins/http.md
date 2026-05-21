@@ -83,6 +83,25 @@ f url:t>R t t;r=get! url;~r
 
 See [Error Handling](/docs/reference/error-handling/) for full details on `!` and Result types.
 
+## Parsing Content-Type and other `;`-delimited headers
+
+There is no dedicated `ct-parse` builtin. The same recipe handles `Content-Type`, `Cache-Control`, `Cookie`, `Set-Cookie` attributes, and any other header with `key=value` parameters after a `;` separator: `spl` on `;`, `trm`, lowercase, then `spl "="` for the parameter:
+
+```ilo
+raw = "application/json; charset=utf-8"
+parts = spl raw ";"
+m0 = at parts 0
+media = lwr (trm m0)                          -- "application/json"
+n = len parts
+cs = ?(>=n 2){at parts 1}{""}
+kv = spl (trm cs) "="
+charset = ?(=(len kv) 2){lwr (at kv 1)}{""}   -- "utf-8" or ""
+```
+
+Don't bind to `ct`, it collides with a builtin name (`ILO-P011`). Use `raw`, `ctype`, or similar.
+
+For `,`-joined values such as `Accept: text/html, application/json`, `spl ","` first and loop the resulting list through the same recipe.
+
 ## HTTP tools (typed endpoints)
 
 Tool declarations let you wire external HTTP endpoints as typed ilo functions. Create a `tools.json` file:
